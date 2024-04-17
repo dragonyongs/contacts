@@ -56,7 +56,7 @@ export async function listContact() {
     // group 타이틀 생성
     const groupTitle = document.createElement("div");
     groupTitle.className =
-      "z-10 sticky -top-[1px] px-3 py-2 border-t-0 border-b border-l-0 border-r-0 border-gray-200 bg-white";
+      "z-10 sticky top-[56px] px-3 py-2 border-t-0 border-b border-l-0 border-r-0 border-gray-200 bg-white";
     const memberCount = groupedGroup[contact_group].length; // 그룹 내 데이터 수 계산
     groupTitle.innerHTML = `<p class="text-sm font-semibold">${contact_group}</p> <div class="absolute top-1/2 -translate-y-1/2 right-4 text-sm tracking-tight text-blue-600">${memberCount}명</div>`;
     contactList.appendChild(groupTitle);
