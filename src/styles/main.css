@@ -1,0 +1,63 @@
+@import url("./font-pretendard.css");
+
+html,
+body {
+  font-family: "Pretendard", sans-serif;
+}
+
+.contactWrap {
+  height: calc(100dvh - 55px);
+  padding-bottom: 74px;
+}
+
+.scroll-shadows {
+  overflow: auto;
+  height: calc(100dvh - 129px);
+  -webkit-overflow-scrolling: touch;
+  background:
+    /* Shadow Cover TOP */ linear-gradient(
+        white 30%,
+        rgba(255, 255, 255, 0)
+      )
+      center top,
+    /* Shadow Cover BOTTOM */ linear-gradient(rgba(255, 255, 255, 0), white 70%)
+      center bottom,
+    /* Shadow TOP */
+      radial-gradient(
+        farthest-side at 50% 0,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0)
+      )
+      center top,
+    /* Shadow BOTTOM */
+      radial-gradient(
+        farthest-side at 50% 100%,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0)
+      )
+      center bottom;
+
+  background-repeat: no-repeat;
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+  background-attachment: local, local, scroll, scroll;
+}
+
+app-tab-button {
+  display: flex;
+  width: 100%;
+}
+
+#import_file {
+  position: absolute;
+  top: 0;
+  left: -99999px;
+  width: 0;
+  height: 0;
+}
+
+img.photo_url {
+  width: 96px; /* 원하는 너비 설정 */
+  height: 96px; /* 원하는 높이 설정 */
+  object-fit: cover; /* 이미지 비율 유지하며 컨테이너 꽉 채우기 */
+  object-position: center; /* 이미지를 중앙에 위치 */
+}

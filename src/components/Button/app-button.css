@@ -1,0 +1,52 @@
+:host {
+  --button-white: #fff;
+  --button-black: #000;
+  --button-primary: #2563eb;
+  --button-default: #ddd;
+  --button-success: #109449;
+  --button-danger: #d31b1b;
+  --button-transparent: transparent;
+}
+
+button {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.25rem;
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--button-black);
+  background-color: var(--button-white);
+  border-radius: 0.5rem;
+  border: 1px solid var(--button-default);
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+button.primary {
+  color: var(--button-white);
+  background-color: var(--button-primary);
+}
+
+button.success {
+  color: var(--button-white);
+  background-color: var(--button-success);
+}
+
+button.transparent {
+  border: none;
+  color: var(--button-white);
+  background-color: var(--button-transparent);
+}
+
+button.danger {
+  color: var(--button-white);
+  background-color: var(--button-danger);
+}
