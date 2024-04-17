@@ -36,10 +36,11 @@ export class AppTabButton extends HTMLElement {
         const isScrollNot = document.body.classList.contains("overflow-hidden");
 
         if (isActive && isScrollNot) {
+          console.log("isActive!");
           return;
         }
 
-        if (!isScrollNot) {
+        if (!isActive && !isScrollNot) {
           document.body.classList.add("active");
           document.body.classList.add("overflow-hidden");
         } else {

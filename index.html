@@ -25,21 +25,22 @@
     <div class="container relative mx-auto flex-grow bg-white" x-data="{ modalOpen: false, modalState: 'detail'}"
       x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})">
       <!-- top -->
-      <div class="container sticky z-20 top-0 left-0">
+      <div class="container fixed z-20 top-0 left-0">
         <div class="text-center py-3 bg-[#0635c9]">
-          <h1 class="text-2xl font-normal text-white">My Contacts</h1>
 
           <div x-show="modalOpen && modalState === 'detail'" class="absolute top-0 left-2 flex items-center h-full">
             <app-button data-iconName="chevron-back-outline" data-iconSize="large" class="remove-overflow transparent"
               x-on:click="modalOpen = !modalOpen"></app-button>
           </div>
+          <h1 class="text-2xl font-normal text-white">My Contacts <span x-text=""></span></h1>
+          
         </div>
       </div>
 
-      <div class="contactWrap pb-[74px]">
+      <div class="contactWrap">
         <!-- scroll-shadows -->
         <div class="w-full h-full">
-          <div id="contact-list"></div>
+          <div id="contact-list" class="pt-[56px]"></div>
         </div>
       </div>
 
@@ -60,7 +61,7 @@
               <p class="family_name font-semibold text-3xl text-blue-600">
                 성
               </p>
-              <img src="./icons/ios/16.png" class="photo_url" />
+              <img src="./public/" class="photo_url" />
             </div>
           </div>
 
@@ -149,7 +150,7 @@
     </div>
 
     <!-- Data Modal -->
-    <div x-show="modalOpen && modalState === 'data'" @click.outside="handleOutsideClick"
+    <div x-show="modalOpen && modalState === 'data'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -189,7 +190,7 @@
     </div>
 
     <!-- Search Modal -->
-    <div x-show="modalOpen && modalState === 'search'" @click.outside="handleOutsideClick"
+    <div x-show="modalOpen && modalState === 'search'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -220,7 +221,7 @@
     </div>
 
     <!-- ADD Modal -->
-    <div x-show="modalOpen && modalState === 'add'" @click.outside="handleOutsideClick"
+    <div x-show="modalOpen && modalState === 'add'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -292,8 +293,8 @@
     </div>
 
     <!-- 모달 배경 수정된 코드 -->
-    <div x-show="modalOpen && (modalState === 'add' || modalState === 'data' || modalState === 'search')"
-      @click="modalOpen = !modalOpen"
+    <div x-show="modalOpen && (modalState === 'add' || 'data' || 'search')"
+      @click="handleOutsideClick"
       class="remove-overflow z-30 fixed top-0 left-0 w-full h-screen bg-black opacity-70 cursor-pointer"
       x-transition:enter="transition" x-transition:enter-start="transform opacity-0"
       x-transition:enter-end="transform opacity-100" x-transition:leave="transition ease-in duration-300"

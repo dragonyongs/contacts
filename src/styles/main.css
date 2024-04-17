@@ -6,7 +6,7 @@ body {
 }
 
 .contactWrap {
-  height: calc(100dvh - 55px);
+  min-height: calc(100dvh - 55px);
   padding-bottom: 74px;
 }
 

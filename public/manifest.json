@@ -12,18 +12,16 @@
   "orientation": "any",
   "background_color": "#FFFFFF",
   "prefer_related_applications": false,
-  "display_override": [
-    "window-controls-overlay"
-  ],
+  "display_override": ["window-controls-overlay"],
   "screenshots": [
     {
-      "src": "../src/assets/screen1.png"
+      "src": "./screenshots/screen1.png"
     },
     {
-      "src": "../src/assets/screen2.png"
+      "src": "./screenshots/screen2.png"
     },
     {
-      "src": "../src/assets/screen3.png"
+      "src": "./screenshots/screen3.png"
     }
   ],
   "features": [
@@ -482,9 +480,7 @@
       "sizes": "1024x1024"
     }
   ],
-  "categories": [
-    "productivity"
-  ],
+  "categories": ["productivity"],
   "launch_handler": {
     "client_mode": "navigate-existing"
   },
