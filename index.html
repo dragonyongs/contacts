@@ -25,7 +25,7 @@
     <div class="container relative mx-auto flex-grow bg-white" x-data="{ modalOpen: false, modalState: 'detail'}"
       x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})">
       <!-- top -->
-      <div class="container fixed z-20 top-0 left-0">
+      <div class="container fixed z-20 top-0 left-1/2 -translate-x-1/2">
         <div class="text-center py-3 bg-[#0635c9]">
 
           <div x-show="modalOpen && modalState === 'detail'" class="absolute top-0 left-2 flex items-center h-full">
