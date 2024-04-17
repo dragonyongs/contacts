@@ -1,11 +1,11 @@
 {
-  "id": "/",
+  "id": "/contacts",
   "dir": "ltr",
   "lang": "ko",
   "name": "Contacts",
-  "scope": "/",
+  "scope": "/contacts",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "/contacts",
   "short_name": "Contacts",
   "theme_color": "#0635c9",
   "description": "스마트폰에 저장하기 곤란한 연락처를 저장하세요.",
@@ -17,13 +17,13 @@
   ],
   "screenshots": [
     {
-      "src": "/src/assets/screen1.png"
+      "src": "../src/assets/screen1.png"
     },
     {
-      "src": "/src/assets/screen2.png"
+      "src": "../src/assets/screen2.png"
     },
     {
-      "src": "/src/assets/screen3.png"
+      "src": "../src/assets/screen3.png"
     }
   ],
   "features": [
