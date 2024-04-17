@@ -31,7 +31,7 @@ export class AppModalInput extends HTMLElement {
     template(state) {
         
         return `
-            <link rel="stylesheet" href="../src/components/ModalInput/app-modal-input.css">
+            <link rel="stylesheet" href="./src/components/ModalInput/app-modal-input.css">
             <div class="input-wrap">
                 <input type="${state.type}" name="${state.name}" id="${state.id}" value="${state.value}" placeholder=" " ${state.required === "true" ? "required" : ""} />
                 <label for="${state.id}">${state.label}</label>

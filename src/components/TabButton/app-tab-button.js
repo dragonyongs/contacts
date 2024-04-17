@@ -18,7 +18,7 @@ export class AppTabButton extends HTMLElement {
 
   template(state) {
     return `
-            <link rel="stylesheet" href="../src/components/TabButton/app-tab-button.css">
+            <link rel="stylesheet" href="./src/components/TabButton/app-tab-button.css">
             <button id="${state.id}" type="button" role="button">
                 <ion-icon name="${state.icon}" size="${state.size}"></ion-icon>
                 <slot name="label"></slot>

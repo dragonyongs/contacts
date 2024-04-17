@@ -33,7 +33,7 @@ export class AppButton extends HTMLElement {
 
   template(state) {
     return `
-            <link rel="stylesheet" href="../src/components/Button/app-button.css">
+            <link rel="stylesheet" href="./src/components/Button/app-button.css">
             <button type="${state.type}" role="${state.role}" ${
       state.id ? `id="${state.id}"` : ""
     } class="${state.class}">

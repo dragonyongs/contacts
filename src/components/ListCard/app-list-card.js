@@ -70,7 +70,7 @@ export class AppListCard extends HTMLElement {
     const statusInfo = this.statusInfo;
     const familyName = state.full_name.charAt(0);
     return `
-                <link rel="stylesheet" href="../src/components/ListCard/app-list-card.css">
+                <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
                 <li id="contact-id-${state.contact_id}" ${
       statusInfo.status ? `class="${statusInfo.status}"` : ""
     }>

@@ -37,7 +37,7 @@ export class AppModalSelect extends HTMLElement {
         `;
 
         return `
-            <link rel="stylesheet" href="../src/components/ModalSelect/app-modal-select.css">
+            <link rel="stylesheet" href="./src/components/ModalSelect/app-modal-select.css">
             <div class="select-wrap">
                 ${(state.groups).length === 0 ? '' : ''}
                 ${(state.groups).length === 0 ? inputHTML : selectHTML}
