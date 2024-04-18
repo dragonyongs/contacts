@@ -6,9 +6,15 @@ body {
 }
 
 .contactWrap {
-  height: calc(100dvh - 55px);
   min-height: calc(100dvh - 55px);
-  padding-bottom: 74px;
+  margin-bottom: 74px;
+}
+
+.noData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100dvh - 129px);
 }
 
 .scroll-shadows {

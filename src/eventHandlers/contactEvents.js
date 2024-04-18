@@ -82,7 +82,7 @@ export async function listContact() {
     const emptyMessageWrap = document.createElement("div");
     emptyMessageWrap.className =
       "flex justify-center items-center w-full h-full bg-slate-50";
-    emptyMessageWrap.innerHTML = `<p class="font-semibold text-2xl">연락처를 등록해주세요.</p>`;
+    emptyMessageWrap.innerHTML = `<p class="noData font-semibold text-2xl">연락처를 등록해주세요.</p>`;
     contactList.appendChild(emptyMessageWrap);
   } else if (contacts.length > 0) {
     document.getElementById("contact-list").classList.remove("h-full");

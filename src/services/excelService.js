@@ -173,6 +173,8 @@ async function handleApply(database) {
           document.getElementById("import_button").classList.remove("hidden");
           // 적용하기 버튼 표시
           document.getElementById("apply_button").classList.add("hidden");
+          document.body.classList.remove("active");
+          document.body.classList.remove("overflow-hidden");
   } catch (error) {
     console.error("Failed to apply contacts data: ", error);
     alert("데이터를 적용하는 중에 오류가 발생했습니다.");
