@@ -1,3 +1,9 @@
+let formDataCallback; // formDataCallback 함수를 위한 전역 변수 선언
+
+export function setFormDataCallback(callback) {
+  formDataCallback = callback; // formDataCallback 함수를 설정하는 함수 정의
+}
+
 export class AppButton extends HTMLElement {
   constructor() {
     super();
@@ -100,8 +106,19 @@ export class AppButton extends HTMLElement {
   // 폼 제출 함수
   submitForm(event) {
     event.preventDefault();
+
+    console.log("submitForm 실행");
+
     const formData = new FormData();
     let firstInvalidInput = null;
+    let selectValid = true; // 셀렉트 값이 유효한지 여부를 저장할 변수
+    const selectElement = document.querySelector("#contact_group");
+    const selectValue = selectElement.shadowRoot.querySelector('select').value;
+    if (!selectValue) {
+      console.log("value: false")
+      // 셀렉트 요소이고 값이 유효하지 않을 경우
+      selectValid = false;
+    }
 
     const modalInputs = document.querySelectorAll("app-modal-input");
     modalInputs.forEach((modalInput) => {
@@ -115,17 +132,34 @@ export class AppButton extends HTMLElement {
         formData.append(inputName, validatedValue);
       }
     });
-
-    if (firstInvalidInput) {
-      firstInvalidInput.focus();
-      return;
+    console.log(selectValid);
+    
+    if (firstInvalidInput || !selectValid) {
+      // 유효하지 않은 입력값이 있거나 셀렉트 값이 선택되지 않은 경우
+      if (!selectValid) {
+        alert("app-button 유효한 연락처 그룹을 선택해주세요.");
+      }
+      if (firstInvalidInput) {
+        firstInvalidInput.focus();
+      }
+      return false;
     }
 
-    document.dispatchEvent(
-      new CustomEvent("saveContact", { detail: formData })
-    );
+    console.log(formDataCallback);
 
+    if (formDataCallback) { // formDataCallback이 정의되어 있을 때만 호출
+      const success = formDataCallback(formData); // 외부에서 전달된 콜백 함수 호출
+      if (success) {
+        // 성공했을 때 모달 닫기
+        this.closeModal();
+      }
+    }
+  }
+
+  closeModal() {
     // 입력 필드 초기화
+    const modalInputs = document.querySelectorAll("app-modal-input");
+
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       inputElement.value = "";
@@ -139,7 +173,6 @@ export class AppButton extends HTMLElement {
       new CustomEvent("close-modal", { detail: { open: false } })
     );
   }
-
   
 }
 

@@ -1,4 +1,4 @@
-function handleOutsideClick(event) {
+function handleOutsideClick() {
   console.log("handleOutsideClick 실행");
 
   if (this.modalState === "add" || "search" || "data") {

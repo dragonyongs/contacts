@@ -25,8 +25,8 @@ export class AppModalSelect extends HTMLElement {
     template(state) {
         const optionsHTML = state.groups.map(group => `<option value="${group || ''}">${group || '미지정'}</option>`).join('');
         const selectHTML = `
-            <select id="${state.id}" name="${state.name}">
-                <option selected>연락처 그룹 선택</option>
+            <select id="${state.id}" name="${state.name}" ${state.required === "true" ? "required" : ""} />>
+                <option value="" selected disabled>연락처 그룹 선택</option>
                 ${optionsHTML}
                 <option value="직접입력">직접 입력</option>
             </select>
@@ -46,14 +46,14 @@ export class AppModalSelect extends HTMLElement {
     }
 
     selectEvent() {
-        const selectElement = document.querySelector("app-modal-select");
-        const inputElement = document.getElementById("contact_group_input");
-        const select = selectElement.shadowRoot.querySelector("select");
+        const selectElement = this.shadowRoot.querySelector("select");
+        // const inputElement = this.shadowRoot.getElementById("contact_group_input");
 
-        select.addEventListener('change', function () {
+        selectElement.addEventListener('change', function () {
+            console.log(this.value);
+
             if (this.value === '직접입력') {
-                selectElement.classList.add('hidden');
-                inputElement.classList.remove('hidden');
+                document.querySelector("#contact_group").classList.add('hidden');
             }
         });
 
@@ -63,7 +63,9 @@ export class AppModalSelect extends HTMLElement {
         // 연락처 그룹 데이터를 가져와서 셀렉트 요소에 추가
         const groups = await getContactGroups();
         this.render(groups);
-        this.selectEvent();
+        if(groups.length > 0) {
+            this.selectEvent();
+        }
     }
 
     render(groups){

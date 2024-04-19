@@ -1,26 +1,56 @@
 import { getContactsData } from "../services/dataService.js";
-import { exportContactsToExcel } from "../services/excelService.js";
+import { handleExportToExcel } from "../services/excelService.js";
 import { getDataDB } from "../services/dataDB.js";
-
-// 연락처 목록을 엑셀 파일로 내보내기
-async function handleExportToExcel() {
-  const contacts = await getContactsData();
-  exportContactsToExcel(contacts);
-}
+import { AppButton, setFormDataCallback } from "../components/Button/app-button.js"; // 변경된 경로
 
 export function setupContactEvents() {
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
   document
     .getElementById("export_button")
     .addEventListener("click", handleExportToExcel);
+
+    const saveContactButton = document.getElementById("save_contact_button");
+
+    if(!AppButton) {
+      const appButton = new AppButton();
+
+      saveContactButton.addEventListener("click", (event) => {
+        appButton.submitForm(event); // formDataCallback은 설정하지 않음
+      });
+    }
+
+    // formDataCallback 설정
+    setFormDataCallback((formData) => {
+      const selectElement = document.querySelector("#contact_group");
+      const selectValue = selectElement.value;
+    
+      // 셀렉트 값이 선택되었는지 확인
+      if (selectValue === "" || selectValue === "연락처 그룹 선택") {
+        // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
+        alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
+        return false; // 성공 여부를 반환하지 않음
+      }
+    
+      // 셀렉트 값이 선택되었을 때만 데이터를 전달하고 성공을 반환
+      const success = saveContact(formData); // 폼 제출 시 실행될 함수
+      return success;
+    });
+
+  window.onload = async function () {
+    await listContact();
+  };
+    
 }
+
 
 // 커스텀 이벤트 생성 및 발생시키기
 export function triggerContactUpdateEvent(updatedContacts) {
+  console.log("triggerContactUpdateEvent 실행");
   const event = new CustomEvent("contactUpdate", {
     detail: { updatedContacts, open: false },
   });
   window.dispatchEvent(event);
+
 }
 
 // 이벤트 리스너 추가
@@ -89,83 +119,66 @@ export async function listContact() {
   }
 }
 
-// contactEvents.js
-
 // 연락처 저장 이벤트 리스너
-document.addEventListener("saveContact", async (e) => {
+// document.addEventListener("saveContact", async (e) => {
+async function saveContact(submittedFormData) {
   const database = await getDataDB();
+  const selectElement = document.querySelector('#contact_group').shadowRoot.querySelector('select');
 
-  const formData = e.detail;
+  // let formData = e.detail;
+  
+
+  // if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
+  //   alert("saveContact 유효한 연락처 그룹을 선택해주세요.");
+  //   return false; // 폼 제출 실패
+  // } 
+
+  submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+
   const plainObject = {};
 
   // FormData를 일반 객체로 변환
-  for (let [key, value] of formData.entries()) {
+  for (let [key, value] of submittedFormData.entries()) {
     plainObject[key] = value;
+    // console.log(key, value);
   }
 
+  console.log(plainObject);
+
   // 비어 있는 항목 제거
-  const cleanedObject = Object.entries(plainObject).reduce(
-    (acc, [key, value]) => {
-      if (value !== "" && value !== null && value !== undefined) {
-        acc[key] = value;
-      }
-      return acc;
-    },
-    {}
-  );
+  // const cleanedObject = Object.entries(plainObject).reduce(
+  //   (acc, [key, value]) => {
+  //     if (value !== "" && value !== null && value !== undefined) {
+  //       acc[key] = value;
+  //     }
+  //     return acc;
+  //   },
+  //   {}
+  // );
 
   try {
     // 데이터베이스에 연락처 추가
-    await database.contacts.add(cleanedObject);
+    await database.contacts.add(plainObject);
+
     alert("연락처가 성공적으로 추가되었습니다!");
     document.getElementById("contact-form").reset();
 
     // 연락처 데이터가 업데이트되었을 때 (예: 새 연락처 추가 후)
-    triggerContactUpdateEvent(cleanedObject); // 커스텀 이벤트 발생시키기
+    if (selectElement.value !== "" || selectElement.value !== "연락처 그룹 선택") {
+      triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
+    }
+
+    return true; // 폼 제출 성공
+
   } catch (error) {
     alert("사용자 추가에 실패했습니다: " + error);
-  }
-});
 
-// 새로운 연락처를 저장하는 함수
-export async function saveContact(formData) {
-  const event = new CustomEvent("saveContact", { detail: formData });
-  document.dispatchEvent(event);
-}
-
-// 연락처 삭제 함수
-export async function deleteContact(contactId) {
-  const database = await getDataDB();
-  try {
-    if (contactId) {
-      // 삭제 전 확인 대화상자 표시
-      const isConfirmed = confirm("정말로 연락처를 삭제하시겠습니까?");
-
-      if (isConfirmed) {
-        await database.contacts.delete(Number(contactId));
-        alert("연락처가 성공적으로 삭제되었습니다!");
-        triggerContactUpdateEvent(); // 커스텀 이벤트 발생시키기
-      } else {
-        // 사용자가 취소를 선택한 경우
-        console.log("연락처 삭제가 취소되었습니다.");
-      }
-    }
-  } catch (error) {
-    alert("연락처 삭제에 실패했습니다: " + error);
-    console.log(error);
+    return false; // 폼 제출 실패
   }
 }
-
-window.deleteContact = deleteContact;
-// window.dispatchEvent(
-//   new CustomEvent("close-modal", { detail: { modalOpen: false } })
-// );
+// });
 
 // 연락처 삭제 이벤트 리스너
-document.addEventListener("deleteContact", async () => {
-  await listContact(); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
-});
-
-window.onload = async function () {
-  await listContact();
-};
+// document.addEventListener("deleteContact", async () => {
+//   await listContact(); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
+// });

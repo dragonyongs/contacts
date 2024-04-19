@@ -32,8 +32,8 @@
             <app-button data-iconName="chevron-back-outline" data-iconSize="large" class="remove-overflow transparent"
               x-on:click="modalOpen = !modalOpen"></app-button>
           </div>
-          <h1 class="text-2xl font-normal text-white">My Contacts <span x-text=""></span></h1>
-          
+          <h1 class="text-2xl font-normal text-white">My Contacts</h1>
+
         </div>
       </div>
 
@@ -100,7 +100,7 @@
               <a href="" class="personal_phone_number hover:text-blue-600">-</a>
             </div>
             <div class="p-4 bg-white">
-              <span class="inline-block w-20 font-semibold">이메일 주소</span>
+              <span class="inline-block w-20 font-semibold">이메일</span>
               <span class="email_address">-</span>
             </div>
             <div class="p-4 bg-white flex items-center">
@@ -109,11 +109,6 @@
                 class="photo_url inline-block max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-nowrap">-</span>
             </div>
             <div class="flex gap-x-2 px-2 pb-4">
-              <!-- <app-button type="button" role="button" data-iconName="trash-outline" data-iconSize="small"
-                id="deleteContact" data-id="contact-id" class="flex-1 danger">
-                <span slot="label">삭제</span>
-              </app-button> -->
-
               <app-button type="button" role="button" data-iconName="trash-outline" data-iconSize="small"
                 id="contact-id" class="remove-overflow flex-1 danger" onclick="deleteContact(this.id)"
                 @click="modalOpen = !modalOpen">
@@ -150,8 +145,7 @@
     </div>
 
     <!-- Data Modal -->
-    <div x-show="modalOpen && modalState === 'data'"
-      x-transition:enter="transition ease-out duration-200"
+    <div x-show="modalOpen && modalState === 'data'" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
@@ -190,8 +184,7 @@
     </div>
 
     <!-- Search Modal -->
-    <div x-show="modalOpen && modalState === 'search'"
-      x-transition:enter="transition ease-out duration-200"
+    <div x-show="modalOpen && modalState === 'search'" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
@@ -221,8 +214,7 @@
     </div>
 
     <!-- ADD Modal -->
-    <div x-show="modalOpen && modalState === 'add'"
-      x-transition:enter="transition ease-out duration-200"
+    <div x-show="modalOpen && modalState === 'add'" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
@@ -245,10 +237,10 @@
         </div>
         <form id="contact-form" autocomplete="off">
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
-            <app-modal-select id="contact_group" name="contact_group" class="mt-2"></app-modal-select>
+            <app-modal-select id="contact_group" name="contact_group" class="mt-2" required="true"></app-modal-select>
 
-            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""
-              class="hidden"></app-modal-input>
+            <!-- <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""
+              class="hidden"></app-modal-input> -->
 
             <app-modal-input type="text" id="full_name" name="full_name" data-label="이름" value=""
               required="true"></app-modal-input>
@@ -256,26 +248,23 @@
             <app-modal-input type="text" id="division_name" name="division_name" data-label="소속 본부" value=""
               required="true"></app-modal-input>
 
-            <app-modal-input type="text" id="team_name" name="team_name" data-label="소속 팀" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="text" id="team_name" name="team_name" data-label="소속 팀" value=""></app-modal-input>
 
-            <app-modal-input type="text" id="position" name="position" data-label="직책" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="text" id="position" name="position" data-label="직책" value=""></app-modal-input>
 
-            <app-modal-input type="text" id="rank" name="rank" data-label="직급" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="text" id="rank" name="rank" data-label="직급" value=""></app-modal-input>
 
             <app-modal-input type="text" id="personal_phone_number" name="personal_phone_number" data-label="개인 전화"
-              value="" required="true"></app-modal-input>
+              value=""></app-modal-input>
 
-            <app-modal-input type="text" id="office_phone_number" name="office_phone_number" data-label="회사 전화" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="text" id="office_phone_number" name="office_phone_number" data-label="회사 전화"
+              value=""></app-modal-input>
 
-            <app-modal-input type="number" id="extension_number" name="extension_number" data-label="내선 번호" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="number" id="extension_number" name="extension_number" data-label="내선 번호"
+              value=""></app-modal-input>
 
-            <app-modal-input type="email" id="email_address" name="email_address" data-label="이메일" value=""
-              required="true"></app-modal-input>
+            <app-modal-input type="email" id="email_address" name="email_address" data-label="이메일"
+              value=""></app-modal-input>
 
             <app-modal-input type="text" id="status" name="status" data-label="상태" value=""></app-modal-input>
 
@@ -283,8 +272,8 @@
           </div>
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
-            <app-button type="submit" role="button" data-iconName="save-outline" data-iconSize="small"
-              class="flex-1 primary">
+            <app-button id="save_contact_button" type="submit" role="button" data-iconName="save-outline"
+              data-iconSize="small" class="flex-1 primary">
               <span slot="label" for="import_file">등록</span>
             </app-button>
           </div>
@@ -293,8 +282,7 @@
     </div>
 
     <!-- 모달 배경 수정된 코드 -->
-    <div x-show="modalOpen && (modalState === 'add' || 'data' || 'search')"
-      @click="handleOutsideClick"
+    <div x-show="modalOpen && (modalState === 'add' || 'data' || 'search')" @click="handleOutsideClick"
       class="remove-overflow z-30 fixed top-0 left-0 w-full h-screen bg-black opacity-70 cursor-pointer"
       x-transition:enter="transition" x-transition:enter-start="transform opacity-0"
       x-transition:enter-end="transform opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -360,7 +348,76 @@
       }
     });
 
+    // document.getElementById("contact-form").addEventListener("submit", function (event) {
+    //   console.log("contact-form 실행");
+    //   const selectElement = document.querySelector("#contact_group");
+    //   if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
+    //     alert("유효한 연락처 그룹을 선택해주세요.");
+    //     event.preventDefault(); // 폼 제출을 막습니다.
+    //   }
+    // });
   </script>
+
+  <!-- <script>
+    document.addEventListener("detail-modal", function (e) {
+      const modalDetail = document.querySelector(".modalDetail");
+      const eventData = e.detail;
+
+      const dataMapping = {
+        ".full_name": "textContent",
+        ".rank": "textContent",
+        ".position": "textContent",
+        ".division_name": "textContent",
+        ".team_name": "textContent",
+        ".extension_number": "textContent",
+        ".personal_phone_number": "href",
+        ".office_phone_number": "href",
+        ".email_address": "textContent"
+      };
+
+      Object.keys(dataMapping).forEach(selector => {
+        const property = dataMapping[selector];
+        const element = modalDetail.querySelector(selector);
+        const parentDiv = element.closest('div'); // 부모 div 요소를 찾습니다.
+
+        if (property === "textContent") {
+          if (eventData[selector.slice(1)] === "") {
+            // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
+            parentDiv.classList.add("hidden");
+          } else {
+            element.textContent = eventData[selector.slice(1)];
+            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
+          }
+        } else if (property === "href") {
+          if (eventData[selector.slice(1)] === "") {
+            // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
+            parentDiv.classList.add("hidden");
+          } else {
+            element.href = `tel:${eventData[selector.slice(1)]}`;
+            element.textContent = eventData[selector.slice(1)];
+            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
+          }
+        }
+      });
+
+      const contactButton = modalDetail.querySelector("app-button");
+      contactButton.setAttribute("id", eventData.contact_id);
+
+      const photoUrlElement = modalDetail.querySelector(".photo_url");
+      const familyNameElement = modalDetail.querySelector(".family_name");
+
+      if (eventData.photo_url && eventData.photo_url.length === 0 || !eventData.photo_url) {
+        photoUrlElement.classList.add("hidden");
+        familyNameElement.classList.remove("hidden");
+        familyNameElement.textContent = eventData.family_name;
+      } else {
+        familyNameElement.classList.add("hidden");
+        photoUrlElement.classList.remove("hidden");
+        photoUrlElement.src = eventData.photo_url;
+      }
+    });
+
+  </script> -->
 
   <script type="module" src="./src/components/Button/app-button.js"></script>
   <script type="module" src="./src/components/TabButton/app-tab-button.js"></script>
@@ -368,6 +425,7 @@
   <script type="module" src="./src/components/ModalInput/app-modal-input.js"></script>
   <script type="module" src="./src/components/ModalSelect/app-modal-select.js"></script>
   <script type="module" src="./src/services/excelService.js"></script>
+  <script type="module" src="./src/eventHandlers/contactFunction.js"></script>
   <script type="module" src="./src/main.js"></script>
   <script src="./src/utils/modalUtils.js"></script>
 

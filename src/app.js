@@ -1,4 +1,5 @@
 import { setupContactEvents } from "./eventHandlers/contactEvents.js";
+import { deleteContact } from "../src/eventHandlers/contactFunction.js";
 import { setupExcelService } from "./services/excelService.js";
 import { getDataDB } from "./services/dataDB.js";
 

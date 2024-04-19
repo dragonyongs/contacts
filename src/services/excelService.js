@@ -144,7 +144,8 @@ export async function exportContactsToExcel() {
   XLSX.writeFile(workbook, fileName);
 }
 
-async function handleExportToExcel(database) {
+// 연락처 목록을 엑셀 파일로 내보내기
+export async function handleExportToExcel(database) {
   try {
     const contacts = await getContactsData(database);
     // 엑셀 파일 생성 및 내보내기
