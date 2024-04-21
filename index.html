@@ -27,13 +27,7 @@
       <!-- top -->
       <div class="container fixed z-20 top-0 left-1/2 -translate-x-1/2">
         <div class="text-center py-3 bg-[#0635c9]">
-
-          <div x-show="modalOpen && modalState === 'detail'" class="absolute top-0 left-2 flex items-center h-full">
-            <app-button data-iconName="chevron-back-outline" data-iconSize="large" class="remove-overflow transparent"
-              x-on:click="modalOpen = !modalOpen"></app-button>
-          </div>
           <h1 class="text-2xl font-normal text-white">My Contacts</h1>
-
         </div>
       </div>
 
@@ -66,7 +60,17 @@
               ></app-button>
           </div>
           <!-- Contents -->
-          <div class="flex flex-col justify-center items-center gap-y-3 h-40 bg-[#0635c9]">
+          <div class="z-40 absolute top-0 left-2">
+            <app-button data-iconName="chevron-back-outline" data-iconSize="small" class="remove-overflow transparent"
+              x-on:click="modalOpen = !modalOpen"></app-button>
+          </div>
+          <div class="z-40 absolute top-0 right-2 flex items-center">
+            <app-button data-iconName="create-outline" data-iconSize="small" class="remove-overflow transparent"
+              ></app-button>
+              <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent"  onclick="deleteContact(this.id)"
+              ></app-button>
+          </div>
+          <div class="flex flex-col justify-center items-center gap-y-3 h-40 bg-[#0906c9]">
             <div class="flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
               <p class="family_name font-semibold text-3xl text-blue-600">
                 성
