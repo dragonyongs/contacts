@@ -63,3 +63,7 @@ img.photo_url {
   object-fit: cover; /* 이미지 비율 유지하며 컨테이너 꽉 채우기 */
   object-position: center; /* 이미지를 중앙에 위치 */
 }
+
+#contact-list {
+  padding: 56px 0 75px;
+}

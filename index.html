@@ -34,7 +34,7 @@
       <div class="contactWrap">
         <!-- scroll-shadows -->
         <div class="w-full h-full">
-          <div id="contact-list" class="pt-[56px]"></div>
+          <div id="contact-list"></div>
         </div>
       </div>
 
@@ -56,20 +56,10 @@
           <div class="z-40 absolute top-0 right-2 flex items-center">
             <app-button data-iconName="create-outline" data-iconSize="small" class="remove-overflow transparent"
               ></app-button>
-              <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent"  onclick="deleteContact(this.id)"
-              ></app-button>
+            <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent" onclick="deleteContact(this.id)" @click="modalOpen = !modalOpen"
+            ></app-button>
           </div>
           <!-- Contents -->
-          <div class="z-40 absolute top-0 left-2">
-            <app-button data-iconName="chevron-back-outline" data-iconSize="small" class="remove-overflow transparent"
-              x-on:click="modalOpen = !modalOpen"></app-button>
-          </div>
-          <div class="z-40 absolute top-0 right-2 flex items-center">
-            <app-button data-iconName="create-outline" data-iconSize="small" class="remove-overflow transparent"
-              ></app-button>
-              <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent"  onclick="deleteContact(this.id)"
-              ></app-button>
-          </div>
           <div class="flex flex-col justify-center items-center gap-y-3 h-40 bg-[#0906c9]">
             <div class="flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
               <p class="family_name font-semibold text-3xl text-blue-600">
@@ -122,17 +112,6 @@
               <span
                 class="photo_url inline-block max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-nowrap">-</span>
             </div>
-            <!-- <div class="flex gap-x-2 px-2 pb-4">
-              <app-button type="button" role="button" data-iconName="trash-outline" data-iconSize="small"
-                id="contact-id" class="remove-overflow flex-1 danger" onclick="deleteContact(this.id)"
-                @click="modalOpen = !modalOpen">
-                <span slot="label">삭제</span>
-              </app-button>
-              <app-button type="button" role="button" data-iconName="create-outline" data-iconSize="small"
-                class="flex-1 success">
-                <span slot="label">수정</span>
-              </app-button>
-            </div> -->
           </div>
         </div>
       </div>
@@ -345,7 +324,7 @@
         }
       });
 
-      const contactButton = modalDetail.querySelector("app-button");
+      const contactButton = modalDetail.querySelector("#contact-id");
       contactButton.setAttribute("id", eventData.contact_id);
 
       const photoUrlElement = modalDetail.querySelector(".photo_url");

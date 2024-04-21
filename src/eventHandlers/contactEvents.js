@@ -48,8 +48,9 @@ export function setupContactEvents() {
 export function triggerContactUpdateEvent(updatedContacts) {
   console.log("triggerContactUpdateEvent 실행");
   const event = new CustomEvent("contactUpdate", {
-    detail: { updatedContacts, open: false },
+    detail: { updatedContacts },
   });
+
   window.dispatchEvent(event);
 }
 
