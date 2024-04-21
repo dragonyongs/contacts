@@ -52,9 +52,19 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="transform translate-x-0 opacity-100"
         x-transition:leave-end="transform translate-x-20 opacity-0"
-        class="modalDetail container z-30 fixed top-14 bg-slate-200 w-full">
+        class="modalDetail container z-30 fixed top-0 bg-slate-200 w-full">
         <!-- header -->
         <div class="scroll-shadows">
+          <div class="z-40 absolute top-0 left-2">
+            <app-button data-iconName="chevron-back-outline" data-iconSize="small" class="remove-overflow transparent"
+              x-on:click="modalOpen = !modalOpen"></app-button>
+          </div>
+          <div class="z-40 absolute top-0 right-2 flex items-center">
+            <app-button data-iconName="create-outline" data-iconSize="small" class="remove-overflow transparent"
+              ></app-button>
+              <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent"  onclick="deleteContact(this.id)"
+              ></app-button>
+          </div>
           <!-- Contents -->
           <div class="flex flex-col justify-center items-center gap-y-3 h-40 bg-[#0635c9]">
             <div class="flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
@@ -108,7 +118,7 @@
               <span
                 class="photo_url inline-block max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-nowrap">-</span>
             </div>
-            <div class="flex gap-x-2 px-2 pb-4">
+            <!-- <div class="flex gap-x-2 px-2 pb-4">
               <app-button type="button" role="button" data-iconName="trash-outline" data-iconSize="small"
                 id="contact-id" class="remove-overflow flex-1 danger" onclick="deleteContact(this.id)"
                 @click="modalOpen = !modalOpen">
@@ -118,7 +128,7 @@
                 class="flex-1 success">
                 <span slot="label">수정</span>
               </app-button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -156,7 +166,7 @@
           <h2 class="font-bold text-xl">연락처 데이터 등록</h2>
           <button
             class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            x-on:click="modalOpen = ! modalOpen">
+            @click="handleOutsideClick">
             <ion-icon name="close-outline" size="small"></ion-icon>
           </button>
         </div>
@@ -195,7 +205,7 @@
           <h2 class="font-bold text-xl">연락처 검색</h2>
           <button
             class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            x-on:click="modalOpen = !modalOpen">
+            @click="handleOutsideClick">
             <ion-icon name="close-outline" size="small"></ion-icon>
           </button>
           </app-button>
@@ -231,16 +241,16 @@
 
           <button
             class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            x-on:click="modalOpen = !modalOpen">
+            @click="handleOutsideClick">
             <ion-icon name="close-outline" size="small"></ion-icon>
           </button>
         </div>
         <form id="contact-form" autocomplete="off">
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
-            <app-modal-select id="contact_group" name="contact_group" class="mt-2" required="true"></app-modal-select>
+            <app-modal-select id="contact_group_select" name="contact_group" class="mt-2" required="true"></app-modal-select>
 
-            <!-- <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""
-              class="hidden"></app-modal-input> -->
+            <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group" data-label="연락처 그룹" value=""
+            required="true"></app-modal-input>
 
             <app-modal-input type="text" id="full_name" name="full_name" data-label="이름" value=""
               required="true"></app-modal-input>

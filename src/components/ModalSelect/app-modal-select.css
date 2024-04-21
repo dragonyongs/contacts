@@ -1,47 +1,51 @@
 :host {
-    --tw-text-opacity: 1;
-    --tw-border-opacity: 1;
+  --tw-text-opacity: 1;
+  --tw-border-opacity: 1;
 }
 
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 .select-wrap {
-    position: relative;
-    z-index: 0;
+  position: relative;
+  z-index: 0;
 }
 
 select {
-    display: block;
-    width: 100%;
-    margin-top: .5rem;
-    padding: 0.625rem 0;
-    -webkit-appearance: none;
-    appearance: none;
-    border-width: 0;
-    border-bottom-width: 2px;
-    border-color: rgb(107 114 128 / var(--tw-border-opacity));
-    background-color: transparent;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.625rem 0;
+  -webkit-appearance: none;
+  appearance: none;
+  border-width: 0;
+  border-bottom-width: 2px;
+  border-color: rgb(107 114 128 / var(--tw-border-opacity));
+  background-color: transparent;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
 
 select:not([size]) {
-    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
-    background-position: right .75rem center;
-    background-repeat: no-repeat;
-    background-size: .75em .75em;
-    padding-right: 2.5rem;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 0.75em 0.75em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.hidden {
+  display: none;
 }

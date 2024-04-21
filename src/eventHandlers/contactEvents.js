@@ -1,7 +1,10 @@
 import { getContactsData } from "../services/dataService.js";
 import { handleExportToExcel } from "../services/excelService.js";
 import { getDataDB } from "../services/dataDB.js";
-import { AppButton, setFormDataCallback } from "../components/Button/app-button.js"; // 변경된 경로
+import {
+  AppButton,
+  setFormDataCallback,
+} from "../components/Button/app-button.js"; // 변경된 경로
 
 export function setupContactEvents() {
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
@@ -9,39 +12,37 @@ export function setupContactEvents() {
     .getElementById("export_button")
     .addEventListener("click", handleExportToExcel);
 
-    const saveContactButton = document.getElementById("save_contact_button");
+  const saveContactButton = document.getElementById("save_contact_button");
 
-    if(!AppButton) {
-      const appButton = new AppButton();
+  if (!AppButton) {
+    const appButton = new AppButton();
 
-      saveContactButton.addEventListener("click", (event) => {
-        appButton.submitForm(event); // formDataCallback은 설정하지 않음
-      });
+    saveContactButton.addEventListener("click", (event) => {
+      appButton.submitForm(event); // formDataCallback은 설정하지 않음
+    });
+  }
+
+  // formDataCallback 설정
+  setFormDataCallback((formData) => {
+    const selectElement = document.querySelector("#contact_group_select");
+    const selectValue = selectElement.value;
+
+    // 셀렉트 값이 선택되었는지 확인
+    if (selectValue === "" || selectValue === "연락처 그룹 선택") {
+      // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
+      alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
+      return false; // 성공 여부를 반환하지 않음
     }
 
-    // formDataCallback 설정
-    setFormDataCallback((formData) => {
-      const selectElement = document.querySelector("#contact_group");
-      const selectValue = selectElement.value;
-    
-      // 셀렉트 값이 선택되었는지 확인
-      if (selectValue === "" || selectValue === "연락처 그룹 선택") {
-        // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
-        alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
-        return false; // 성공 여부를 반환하지 않음
-      }
-    
-      // 셀렉트 값이 선택되었을 때만 데이터를 전달하고 성공을 반환
-      const success = saveContact(formData); // 폼 제출 시 실행될 함수
-      return success;
-    });
+    // 셀렉트 값이 선택되었을 때만 데이터를 전달하고 성공을 반환
+    const success = saveContact(formData); // 폼 제출 시 실행될 함수
+    return success;
+  });
 
   window.onload = async function () {
     await listContact();
   };
-    
 }
-
 
 // 커스텀 이벤트 생성 및 발생시키기
 export function triggerContactUpdateEvent(updatedContacts) {
@@ -50,7 +51,6 @@ export function triggerContactUpdateEvent(updatedContacts) {
     detail: { updatedContacts, open: false },
   });
   window.dispatchEvent(event);
-
 }
 
 // 이벤트 리스너 추가
@@ -123,17 +123,21 @@ export async function listContact() {
 // document.addEventListener("saveContact", async (e) => {
 async function saveContact(submittedFormData) {
   const database = await getDataDB();
-  const selectElement = document.querySelector('#contact_group').shadowRoot.querySelector('select');
+  const selectElement = document
+    .querySelector("#contact_group_select")
+    .shadowRoot.querySelector("select");
+  const contactGroupElement = document.querySelector("#contact_group_input");
 
   // let formData = e.detail;
-  
 
   // if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
   //   alert("saveContact 유효한 연락처 그룹을 선택해주세요.");
   //   return false; // 폼 제출 실패
-  // } 
+  // }
 
-  submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+  if (selectElement) {
+    submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+  }
 
   const plainObject = {};
 
@@ -164,12 +168,15 @@ async function saveContact(submittedFormData) {
     document.getElementById("contact-form").reset();
 
     // 연락처 데이터가 업데이트되었을 때 (예: 새 연락처 추가 후)
-    if (selectElement.value !== "" || selectElement.value !== "연락처 그룹 선택") {
+    if (
+      (selectElement && selectElement.value !== "") ||
+      (selectElement && selectElement.value !== "연락처 그룹 선택") ||
+      contactGroupElement
+    ) {
       triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
     }
 
     return true; // 폼 제출 성공
-
   } catch (error) {
     alert("사용자 추가에 실패했습니다: " + error);
 

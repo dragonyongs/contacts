@@ -6,20 +6,15 @@ body {
 }
 
 .contactWrap {
+  height: calc(100dvh - 55px);
   min-height: calc(100dvh - 55px);
-  margin-bottom: 74px;
-}
-
-.noData {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100dvh - 129px);
+  padding-bottom: 74px;
 }
 
 .scroll-shadows {
   overflow: auto;
-  height: calc(100dvh - 129px);
+  position: relative;
+  height: calc(100dvh - 75px);
   -webkit-overflow-scrolling: touch;
   background:
     /* Shadow Cover TOP */ linear-gradient(

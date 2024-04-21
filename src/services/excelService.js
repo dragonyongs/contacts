@@ -170,12 +170,12 @@ async function handleApply(database) {
   try {
     // 데이터베이스에 업데이트된 데이터 적용
     await applyChangesToDatabase(database);
-          // 불러오기 버튼 숨기기
-          document.getElementById("import_button").classList.remove("hidden");
-          // 적용하기 버튼 표시
-          document.getElementById("apply_button").classList.add("hidden");
-          document.body.classList.remove("active");
-          document.body.classList.remove("overflow-hidden");
+    // 불러오기 버튼 숨기기
+    document.getElementById("import_button").classList.remove("hidden");
+    // 적용하기 버튼 표시
+    document.getElementById("apply_button").classList.add("hidden");
+    document.body.classList.remove("active");
+    document.body.classList.remove("overflow-hidden");
   } catch (error) {
     console.error("Failed to apply contacts data: ", error);
     alert("데이터를 적용하는 중에 오류가 발생했습니다.");
