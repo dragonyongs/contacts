@@ -4,7 +4,7 @@ import { setupExcelService } from "./services/excelService.js";
 import { getDataDB } from "./services/dataDB.js";
 
 export async function initializeApp() {
-  console.log("app.jsinitializeApp 실행!");
+  console.log("app.js initializeApp 실행!");
   const database = await getDataDB(); // 데이터베이스 초기화
   setupContactEvents(); // 연락처 이벤트 설정
   setupExcelService(database); // Excel 서비스 설정

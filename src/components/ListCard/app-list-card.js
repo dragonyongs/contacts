@@ -68,7 +68,7 @@ export class AppListCard extends HTMLElement {
 
   template(state) {
     const statusInfo = this.statusInfo;
-    const familyName = state.full_name.charAt(0);
+    // const familyName = state.full_name.charAt(0);
     return `
                 <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
                 <li id="contact-id-${state.contact_id}" ${
@@ -80,7 +80,7 @@ export class AppListCard extends HTMLElement {
                           state.photo_url
                             ? `<img src="${state.photo_url}"
                         alt="" class="object-contain">`
-                            : `${familyName}`
+                            : `${state.family_name}`
                         }
                     </div>
                     <div class="info-wrap">
@@ -115,18 +115,14 @@ export class AppListCard extends HTMLElement {
     // ul 요소에 이벤트 리스너를 추가합니다.
     this.addEventListener("click", (e) => {
       // 클릭한 요소의 ID 값을 가져옵니다.
-      const clickedElementId = e.target.contact_id;
-
-      // ID 값에서 contact-id- 부분을 제외한 숫자 부분을 추출합니다.
-      const contactId = clickedElementId.replace("contact-id-", "");
-
+      const clickedElementId = e.target.closest("app-list-card").getAttribute("data-contactId");
       // state.contact_id와 클릭한 요소의 ID 값의 일치 여부를 확인합니다.
-      if (this.contact_id === contactId) {
+      if (this.contact_id === clickedElementId) {
         // 클릭한 요소의 ID 값과 state.contact_id가 일치하는 경우에만 커스텀 이벤트를 생성하고 전달합니다.
         const family_name = this.full_name.charAt(0);
 
         const eventData = {
-          contact_id: this.contact_id,
+          contact_id: clickedElementId,
           family_name: family_name,
           full_name: this.full_name,
           rank: this.rank,
@@ -147,16 +143,12 @@ export class AppListCard extends HTMLElement {
           detail: eventData,
         });
 
-        // 외부 컴포넌트에서 이벤트 발생
-        window.dispatchEvent(
-          new CustomEvent("detail-modal", { detail: { open: true } })
-        );
-
         // 모달 열리면 body scrool 제한
         document.querySelector("body").classList.add("overflow-hidden");
 
-        // console.log(customEvent);
+        // detail 모달에 이벤트 전달
         document.dispatchEvent(customEvent);
+
       }
     });
   }
@@ -182,13 +174,3 @@ export class AppListCard extends HTMLElement {
 }
 
 customElements.define("app-list-card", AppListCard);
-
-// alert(
-//     `${customEvent.detail.full_name} ${customEvent.detail.team_name} ${
-//     customEvent.detail.status.text
-//         ? `(${customEvent.detail.status.text})`
-//         : ""
-//     }\n${customEvent.detail.personal_phone_number}\n${
-//     customEvent.detail.office_phone_number
-//     }(${customEvent.detail.extension_number})`
-// );

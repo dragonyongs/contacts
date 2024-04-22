@@ -112,8 +112,8 @@ export async function listContact() {
     document.getElementById("contact-list").classList.add("h-full");
     const emptyMessageWrap = document.createElement("div");
     emptyMessageWrap.className =
-      "flex justify-center items-center w-full h-full bg-slate-50";
-    emptyMessageWrap.innerHTML = `<p class="noData font-semibold text-2xl">연락처를 등록해주세요.</p>`;
+      "w-full h-full bg-slate-50";
+    emptyMessageWrap.innerHTML = `<div class="noData"><p>연락처를 등록해주세요.</p></div>`;
     contactList.appendChild(emptyMessageWrap);
   } else if (contacts.length > 0) {
     document.getElementById("contact-list").classList.remove("h-full");
@@ -121,7 +121,6 @@ export async function listContact() {
 }
 
 // 연락처 저장 이벤트 리스너
-// document.addEventListener("saveContact", async (e) => {
 async function saveContact(submittedFormData) {
   const database = await getDataDB();
   const selectElement = document
@@ -129,37 +128,39 @@ async function saveContact(submittedFormData) {
     .shadowRoot.querySelector("select");
   const contactGroupElement = document.querySelector("#contact_group_input");
 
-  // let formData = e.detail;
-
-  // if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
-  //   alert("saveContact 유효한 연락처 그룹을 선택해주세요.");
-  //   return false; // 폼 제출 실패
-  // }
-
   if (selectElement) {
     submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
   }
+
+  const keys = [
+    "full_name",
+    "division_name",
+    "team_name",
+    "position",
+    "rank",
+    "personal_phone_number",
+    "office_phone_number",
+    "extension_number",
+    "contact_group",
+    "photo_url",
+    "email_address"
+  ];
+
+  keys.forEach(key => {
+    const value = submittedFormData.get(key);
+    if (!value) {
+      submittedFormData.set(key, "");
+    }
+  });
 
   const plainObject = {};
 
   // FormData를 일반 객체로 변환
   for (let [key, value] of submittedFormData.entries()) {
     plainObject[key] = value;
-    // console.log(key, value);
   }
 
-  console.log(plainObject);
-
-  // 비어 있는 항목 제거
-  // const cleanedObject = Object.entries(plainObject).reduce(
-  //   (acc, [key, value]) => {
-  //     if (value !== "" && value !== null && value !== undefined) {
-  //       acc[key] = value;
-  //     }
-  //     return acc;
-  //   },
-  //   {}
-  // );
+  console.log('plainObject', plainObject);
 
   try {
     // 데이터베이스에 연락처 추가
@@ -184,9 +185,3 @@ async function saveContact(submittedFormData) {
     return false; // 폼 제출 실패
   }
 }
-// });
-
-// 연락처 삭제 이벤트 리스너
-// document.addEventListener("deleteContact", async () => {
-//   await listContact(); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
-// });

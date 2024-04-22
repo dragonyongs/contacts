@@ -1,18 +1,20 @@
 {
-  "id": "/contacts",
+  "id": "/",
   "dir": "ltr",
   "lang": "ko",
   "name": "Contacts",
-  "scope": "/contacts",
+  "scope": "/",
   "display": "standalone",
-  "start_url": "/contacts",
+  "start_url": "/",
   "short_name": "Contacts",
   "theme_color": "#0635c9",
   "description": "스마트폰에 저장하기 곤란한 연락처를 저장하세요.",
   "orientation": "any",
   "background_color": "#FFFFFF",
   "prefer_related_applications": false,
-  "display_override": ["window-controls-overlay"],
+  "display_override": [
+    "window-controls-overlay"
+  ],
   "screenshots": [
     {
       "src": "./screenshots/screen1.png"
@@ -22,6 +24,15 @@
     },
     {
       "src": "./screenshots/screen3.png"
+    },
+    {
+      "src": "./screenshots/screen4.png"
+    },
+    {
+      "src": "./screenshots/screen5.png"
+    },
+    {
+      "src": "./screenshots/screen7.png"
     }
   ],
   "features": [
@@ -480,7 +491,9 @@
       "sizes": "1024x1024"
     }
   ],
-  "categories": ["productivity"],
+  "categories": [
+    "productivity"
+  ],
   "launch_handler": {
     "client_mode": "navigate-existing"
   },

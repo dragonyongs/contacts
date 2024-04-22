@@ -54,19 +54,22 @@
               x-on:click="modalOpen = !modalOpen"></app-button>
           </div>
           <div class="z-40 absolute top-0 right-2 flex items-center">
-            <app-button data-iconName="create-outline" data-iconSize="small" class="remove-overflow transparent"
-              ></app-button>
-            <app-button id="contact-id" data-iconName="trash-outline" data-iconSize="small" class="remove-overflow transparent" onclick="deleteContact(this.id)" @click="modalOpen = !modalOpen"
-            ></app-button>
+            <app-button data-iconName="create-outline" data-iconSize="small"
+              class="remove-overflow transparent"></app-button>
+            <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
+              class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
+              @click="modalOpen = !modalOpen"></app-button>
           </div>
           <!-- Contents -->
-          <div class="flex flex-col justify-center items-center gap-y-3 h-40 bg-[#0906c9]">
-            <div class="flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
+          <div class="relative overflow-hidden flex flex-col justify-center items-center gap-y-3 h-40 bg-[#22326E]">
+            <div
+              class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
               <p class="family_name font-semibold text-3xl text-blue-600">
                 성
               </p>
-              <img src="./public/" class="photo_url" />
+              <img src="./public/" class="photo_url_img" />
             </div>
+            <div class="photo_url_bg"></div>
           </div>
 
           <!-- Contact Info -->
@@ -230,10 +233,11 @@
         </div>
         <form id="contact-form" autocomplete="off">
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
-            <app-modal-select id="contact_group_select" name="contact_group" class="mt-2" required="true"></app-modal-select>
+            <app-modal-select id="contact_group_select" name="contact_group" class="mt-2"
+              required="true"></app-modal-select>
 
-            <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group" data-label="연락처 그룹" value=""
-            required="true"></app-modal-input>
+            <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
+              data-label="연락처 그룹" value="" required="true"></app-modal-input>
 
             <app-modal-input type="text" id="full_name" name="full_name" data-label="이름" value=""
               required="true"></app-modal-input>
@@ -296,7 +300,8 @@
         ".extension_number": "textContent",
         ".personal_phone_number": "href",
         ".office_phone_number": "href",
-        ".email_address": "textContent"
+        ".email_address": "textContent",
+        ".photo_url": "textContent",
       };
 
       Object.keys(dataMapping).forEach(selector => {
@@ -305,15 +310,15 @@
         const parentDiv = element.closest('div'); // 부모 div 요소를 찾습니다.
 
         if (property === "textContent") {
-          if (eventData[selector.slice(1)] === "") {
+          if (eventData[selector.slice(1)] === undefined || eventData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden");
           } else {
             element.textContent = eventData[selector.slice(1)];
-            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
+            element.classList.remove("hidden");
           }
         } else if (property === "href") {
-          if (eventData[selector.slice(1)] === "") {
+          if (eventData[selector.slice(1)] === undefined || eventData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden");
           } else {
@@ -324,24 +329,31 @@
         }
       });
 
-      const contactButton = modalDetail.querySelector("#contact-id");
-      contactButton.setAttribute("id", eventData.contact_id);
+      // 모달 내부의 버튼에 ID 값을 동적으로 할당
+      const contactButton = document.querySelector(".contact_id");
+      contactButton.setAttribute('id', eventData.contact_id);
 
-      const photoUrlElement = modalDetail.querySelector(".photo_url");
+      const photoUrlElement = modalDetail.querySelector(".photo_url_img");
+      const photoUrlBgElement = modalDetail.querySelector(".photo_url_bg");
       const familyNameElement = modalDetail.querySelector(".family_name");
 
-      if (eventData.photo_url && eventData.photo_url.length === 0 || !eventData.photo_url) {
+      if (eventData.photo_url && eventData.photo_url.length !== "" || !eventData.photo_url) {
         photoUrlElement.classList.add("hidden");
+        photoUrlBgElement.style.backgroundImage = `url(${eventData.photo_url})`;
         familyNameElement.classList.remove("hidden");
         familyNameElement.textContent = eventData.family_name;
       } else {
         familyNameElement.classList.add("hidden");
         photoUrlElement.classList.remove("hidden");
         photoUrlElement.src = eventData.photo_url;
+        photoUrlBgElement.classList.add("hidden");
       }
-    });
 
-    // document.getElementById("contact-form").addEventListener("submit", function (event) {
+    });
+  </script>
+
+  <!-- <script>
+        // document.getElementById("contact-form").addEventListener("submit", function (event) {
     //   console.log("contact-form 실행");
     //   const selectElement = document.querySelector("#contact_group");
     //   if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
@@ -349,9 +361,7 @@
     //     event.preventDefault(); // 폼 제출을 막습니다.
     //   }
     // });
-  </script>
 
-  <!-- <script>
     document.addEventListener("detail-modal", function (e) {
       const modalDetail = document.querySelector(".modalDetail");
       const eventData = e.detail;

@@ -1,3 +1,5 @@
+import { clearModalContent } from "../../eventHandlers/modalEvents.js"
+
 let formDataCallback; // formDataCallback 함수를 위한 전역 변수 선언
 
 export function setFormDataCallback(callback) {
@@ -64,12 +66,14 @@ export class AppButton extends HTMLElement {
       this.addEventListener("click", () => {
         console.log("close");
 
+        // 모달 내의 요소들을 초기화하는 함수 호출
+        clearModalContent();
+
         const isActive = document.body.classList.contains("active");
 
         // 'active' 클래스가 있으면 제거합니다.
         if (isActive) {
           console.log("active 제거");
-
           document.body.classList.remove("active");
         }
 
@@ -132,26 +136,16 @@ export class AppButton extends HTMLElement {
       if (validatedValue) {
         formData.append(inputName, validatedValue);
       }
-      // if (validatedValue === false ) { //&& !firstInvalidInput
-      //   firstInvalidInput = inputElement;
-      // } else {
-      //   formData.append(inputName, validatedValue);
-      // }
     });
     console.log("selectValid", selectValid);
-    // !firstInvalidInput ||  console.log("firstInvalidInput", firstInvalidInput);
+
     if (!selectValid) {
       // 유효하지 않은 입력값이 있거나 셀렉트 값이 선택되지 않은 경우
       if (!selectValid) {
         alert("app-button 유효한 연락처 그룹을 선택해주세요.");
       }
-      // if (firstInvalidInput) {
-      //   firstInvalidInput.focus();
-      // }
       return false;
     }
-
-    console.log("formDataCallback", formDataCallback);
 
     if (formDataCallback) {
       // formDataCallback이 정의되어 있을 때만 호출

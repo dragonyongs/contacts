@@ -5,4 +5,5 @@ function handleOutsideClick() {
     this.modalOpen = false;
     document.body.classList.remove("active", "overflow-hidden");
   }
+
 }

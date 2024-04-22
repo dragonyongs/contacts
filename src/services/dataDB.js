@@ -9,7 +9,7 @@ export async function getDataDB() {
                 ++contact_id,
                 contact_group,
                 full_name,
-                division,
+                division_name,
                 team_name,
                 position,
                 rank,
