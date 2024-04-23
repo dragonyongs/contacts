@@ -148,11 +148,18 @@ export class AppListCard extends HTMLElement {
           detail: eventData,
         });
 
+        const customEditEvent = new CustomEvent("edit-modal", {
+          bubbles: true,
+          composed: true,
+          detail: eventData,
+        });
+
         // 모달 열리면 body scrool 제한
         document.querySelector("body").classList.add("overflow-hidden");
 
         // detail 모달에 이벤트 전달
         document.dispatchEvent(customEvent);
+        document.dispatchEvent(customEditEvent);
 
       }
     });

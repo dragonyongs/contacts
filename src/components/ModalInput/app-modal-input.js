@@ -23,7 +23,7 @@ export class AppModalInput extends HTMLElement {
   }
 
   get value() {
-    return this.getAttribute("value") || "";
+    return this.getAttribute("aria-valuetext") || "";
   }
 
   get required() {
