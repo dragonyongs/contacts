@@ -36,7 +36,7 @@ export class AppButton extends HTMLElement {
   }
 
   get iconSize() {
-    return this.getAttribute("data-iconSize") || "";
+    return this.getAttribute("data-iconSize") || "small";
   }
 
   template(state) {

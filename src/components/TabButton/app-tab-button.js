@@ -71,6 +71,12 @@ export class AppTabButton extends HTMLElement {
         case "data":
           message(id);
           break;
+        case "edit":
+            message(id);
+          break;
+        case "detail":
+            message(id);
+          break;  
         default:
           console.log("Wrong Action!");
       }

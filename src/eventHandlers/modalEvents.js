@@ -1,6 +1,5 @@
 // 모달이 닫힐 때 모달 내의 요소들을 초기화하는 함수
 export function clearModalContent() {
-    console.log('clearModalContent 실행!');
     // 상위 요소 선택
     const detailHeaderElement = document.querySelector('.detailHeader');
 
@@ -8,9 +7,19 @@ export function clearModalContent() {
     const familyNameElement = detailHeaderElement.querySelector('.family_name');
     const photoUrlElement = detailHeaderElement.querySelector('.photo_url_img');
     const photoUrlBgElement = detailHeaderElement.querySelector('.photo_url_bg');
+    photoUrlElement.classList.add('hidden');
+    photoUrlBgElement.classList.add('hidden');
+    familyNameElement.classList.add('hidden');
+
+    photoUrlElement.src = "";
+    photoUrlBgElement.style.backgroundImage = `url()`;
 
     // hidden 클래스 제거
-    familyNameElement.classList.remove('hidden');
-    photoUrlElement.classList.remove('hidden');
-    photoUrlBgElement.classList.remove('hidden');
+    // setTimeout(() => {
+    //     familyNameElement.classList.remove('hidden');
+    // }, 1000);
+
+    // 테마 색상 원복
+    const originalColor = "#0635C9";
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', originalColor);
 }

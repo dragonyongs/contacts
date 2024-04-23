@@ -4,6 +4,10 @@ export class AppListCard extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
+  get id() {
+    return this.getAttribute("id") || "";
+  }
+
   get contact_id() {
     return this.getAttribute("data-contactId") || "";
   }
@@ -71,7 +75,7 @@ export class AppListCard extends HTMLElement {
     // const familyName = state.full_name.charAt(0);
     return `
                 <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
-                <li id="contact-id-${state.contact_id}" ${
+                <li id="${state.id}" data-id="contact-id-${state.contact_id}" ${
       statusInfo.status ? `class="${statusInfo.class}"` : ""
     }>
                     <div
@@ -122,6 +126,7 @@ export class AppListCard extends HTMLElement {
         const family_name = this.full_name.charAt(0);
 
         const eventData = {
+          id: this.id,
           contact_id: clickedElementId,
           family_name: family_name,
           full_name: this.full_name,
@@ -156,6 +161,7 @@ export class AppListCard extends HTMLElement {
   render() {
     const family_name = this.full_name.charAt(0);
     this.shadowRoot.innerHTML = this.template({
+      id: this.id,
       contact_id: this.contact_id,
       family_name: family_name,
       full_name: this.full_name,

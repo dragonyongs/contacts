@@ -10,6 +10,8 @@ export async function initializeApp() {
   setupExcelService(database); // Excel 서비스 설정
   deleteContact(); // 삭제 함수
   
+  //전역 데이터 호출
+  
 }
 
 if ("serviceWorker" in navigator) {
@@ -30,13 +32,12 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
 
-const color = "#22326E";
+const detailColor = "#22326E";
 const contactWrapElement = document.querySelector('.contactWrap');
 contactWrapElement.addEventListener('click', function () {
-  changeThemeColor(color);
+  changeThemeColor(detailColor);
 });
 
-console.log(contactWrapElement);
 function changeThemeColor(color) {
   document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
 }

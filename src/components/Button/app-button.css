@@ -50,3 +50,8 @@ button.danger {
   color: var(--button-white);
   background-color: var(--button-danger);
 }
+
+button > ion-icon.md {
+  width: 1.5rem;
+  height: 1.5rem;
+}
