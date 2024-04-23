@@ -50,8 +50,8 @@
         <!-- header -->
         <div class="scroll-shadows">
           <div class="z-40 absolute top-0 left-2">
-            <app-button data-iconName="chevron-back-outline" data-iconSize="small" class="remove-overflow transparent"
-              x-on:click="modalOpen = !modalOpen"></app-button>
+            <app-button id="closeDetailModal" data-iconName="chevron-back-outline" data-iconSize="small"
+              class="remove-overflow transparent" x-on:click="modalOpen = !modalOpen"></app-button>
           </div>
           <div class="z-40 absolute top-0 right-2 flex items-center">
             <app-button data-iconName="create-outline" data-iconSize="small"
@@ -61,7 +61,8 @@
               @click="modalOpen = !modalOpen"></app-button>
           </div>
           <!-- Contents -->
-          <div class="relative overflow-hidden flex flex-col justify-center items-center gap-y-3 h-40 bg-[#22326E]">
+          <div
+            class="detailHeader relative overflow-hidden flex flex-col justify-center items-center gap-y-3 h-40 bg-[#22326E]">
             <div
               class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
               <p class="family_name font-semibold text-3xl text-blue-600">
@@ -337,90 +338,46 @@
       const photoUrlBgElement = modalDetail.querySelector(".photo_url_bg");
       const familyNameElement = modalDetail.querySelector(".family_name");
 
-      if (eventData.photo_url && eventData.photo_url.length !== "" || !eventData.photo_url) {
-        photoUrlElement.classList.add("hidden");
-        photoUrlBgElement.style.backgroundImage = `url(${eventData.photo_url})`;
-        familyNameElement.classList.remove("hidden");
-        familyNameElement.textContent = eventData.family_name;
-      } else {
-        familyNameElement.classList.add("hidden");
-        photoUrlElement.classList.remove("hidden");
+      if (eventData.photo_url.length > 0) {
         photoUrlElement.src = eventData.photo_url;
+        photoUrlBgElement.style.backgroundImage = `url(${eventData.photo_url})`;
+        familyNameElement.classList.add("hidden");
+      } else if (!eventData.photo_url && eventData.photo_url === "") {
+        familyNameElement.textContent = eventData.family_name;
+        photoUrlElement.classList.add("hidden");
         photoUrlBgElement.classList.add("hidden");
       }
 
-    });
-  </script>
+      // if (eventData.photo_url && eventData.photo_url.length !== "" || !eventData.photo_url) {
+      //   photoUrlElement.classList.add("hidden");
+      //   photoUrlBgElement.style.backgroundImage = `url(${eventData.photo_url})`;
+      //   familyNameElement.classList.remove("hidden");
+      //   familyNameElement.textContent = eventData.family_name;
+      // } else {
+      //   familyNameElement.classList.add("hidden");
+      //   photoUrlElement.classList.remove("hidden");
+      //   photoUrlElement.src = eventData.photo_url;
+      //   photoUrlBgElement.classList.add("hidden");
+      // }
 
-  <!-- <script>
-        // document.getElementById("contact-form").addEventListener("submit", function (event) {
-    //   console.log("contact-form 실행");
-    //   const selectElement = document.querySelector("#contact_group");
-    //   if (selectElement.value === "" || selectElement.value === "연락처 그룹 선택") {
-    //     alert("유효한 연락처 그룹을 선택해주세요.");
-    //     event.preventDefault(); // 폼 제출을 막습니다.
-    //   }
+    });
+
+    // const headerColor = "#22326E";
+    // // Function to change theme color
+    // function changeThemeColor(color) {
+    //   document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
+    // }
+
+    // // Event listener for changes in header color
+    // document.querySelector('app-list-card').addEventListener('click', function () {
+
+    //   var headerColor = window.getComputedStyle(document.getElementById('closeDetailModal')).getPropertyValue('background-color');
+    //   // Set theme color to header color
+    //   console.log(headerColor);
+
+    //   changeThemeColor(headerColor);
     // });
-
-    document.addEventListener("detail-modal", function (e) {
-      const modalDetail = document.querySelector(".modalDetail");
-      const eventData = e.detail;
-
-      const dataMapping = {
-        ".full_name": "textContent",
-        ".rank": "textContent",
-        ".position": "textContent",
-        ".division_name": "textContent",
-        ".team_name": "textContent",
-        ".extension_number": "textContent",
-        ".personal_phone_number": "href",
-        ".office_phone_number": "href",
-        ".email_address": "textContent"
-      };
-
-      Object.keys(dataMapping).forEach(selector => {
-        const property = dataMapping[selector];
-        const element = modalDetail.querySelector(selector);
-        const parentDiv = element.closest('div'); // 부모 div 요소를 찾습니다.
-
-        if (property === "textContent") {
-          if (eventData[selector.slice(1)] === "") {
-            // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
-            parentDiv.classList.add("hidden");
-          } else {
-            element.textContent = eventData[selector.slice(1)];
-            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
-          }
-        } else if (property === "href") {
-          if (eventData[selector.slice(1)] === "") {
-            // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
-            parentDiv.classList.add("hidden");
-          } else {
-            element.href = `tel:${eventData[selector.slice(1)]}`;
-            element.textContent = eventData[selector.slice(1)];
-            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
-          }
-        }
-      });
-
-      const contactButton = modalDetail.querySelector("app-button");
-      contactButton.setAttribute("id", eventData.contact_id);
-
-      const photoUrlElement = modalDetail.querySelector(".photo_url");
-      const familyNameElement = modalDetail.querySelector(".family_name");
-
-      if (eventData.photo_url && eventData.photo_url.length === 0 || !eventData.photo_url) {
-        photoUrlElement.classList.add("hidden");
-        familyNameElement.classList.remove("hidden");
-        familyNameElement.textContent = eventData.family_name;
-      } else {
-        familyNameElement.classList.add("hidden");
-        photoUrlElement.classList.remove("hidden");
-        photoUrlElement.src = eventData.photo_url;
-      }
-    });
-
-  </script> -->
+  </script>
 
   <script type="module" src="./src/components/Button/app-button.js"></script>
   <script type="module" src="./src/components/TabButton/app-tab-button.js"></script>

@@ -27,18 +27,18 @@ export class AppListCard extends HTMLElement {
   get statusInfo() {
     const status = this.getAttribute("data-status").trim() || "";
     switch (status) {
-      case "dayoff":
-        return { status: status, text: "연차" };
-      case "event":
-        return { status: status, text: "행사" };
-      case "sick":
-        return { status: status, text: "병가" };
-      case "business":
-        return { status: status, text: "출장" };
-      case "leave":
-        return { status: status, text: "퇴사" };
+      case "연차":
+        return { status: status, text: "연차", class: "dayoff" };
+      case "행사":
+        return { status: status, text: "행사", class: "event" };
+      case "병가":
+        return { status: status, text: "병가", class: "sick" };
+      case "출장":
+        return { status: status, text: "출장", class: "business" };
+      case "퇴사":
+        return { status: status, text: "퇴사" , class: "leave" };
       default:
-        return { status: "default", text: "" };
+        return { status: "default", text: "", class: "" };
     }
   }
 
@@ -72,7 +72,7 @@ export class AppListCard extends HTMLElement {
     return `
                 <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
                 <li id="contact-id-${state.contact_id}" ${
-      statusInfo.status ? `class="${statusInfo.status}"` : ""
+      statusInfo.status ? `class="${statusInfo.class}"` : ""
     }>
                     <div
                         class="img-wrap">

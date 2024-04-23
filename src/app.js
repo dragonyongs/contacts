@@ -9,6 +9,7 @@ export async function initializeApp() {
   setupContactEvents(); // 연락처 이벤트 설정
   setupExcelService(database); // Excel 서비스 설정
   deleteContact(); // 삭제 함수
+  
 }
 
 if ("serviceWorker" in navigator) {
@@ -27,4 +28,15 @@ if ("serviceWorker" in navigator) {
 if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
   // 아이폰, 아이패드, 아이팟 사용자를 위한 CSS 적용
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
+}
+
+const color = "#22326E";
+const contactWrapElement = document.querySelector('.contactWrap');
+contactWrapElement.addEventListener('click', function () {
+  changeThemeColor(color);
+});
+
+console.log(contactWrapElement);
+function changeThemeColor(color) {
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
 }
