@@ -68,41 +68,40 @@
       x-transition:leave-end="transform translate-x-20 opacity-0"
       class="modalDetail container z-40 fixed top-0 left-1/2 -translate-x-1/2 bg-slate-200 w-full">
       <!-- header -->
-      <div class="scroll-shadows">
-        <div class="z-40 absolute top-0 left-2">
-          <app-button id="closeDetailModal" data-iconName="chevron-back-outline" data-iconSize="small"
-            class="remove-overflow transparent md" x-on:click="modalOpen = !modalOpen"></app-button>
-        </div>
-        <div class="z-40 absolute top-0 right-2 flex items-center">
-          <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
-            class="editButton remove-overflow transparent"
-            x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"
-            data-fullName="${eventData.full_name}" data-rank="${eventData.rank}" data-position="${eventData.position}"
-            data-division_name="${eventData.division_name}" data-team_name="${eventData.team_name}"
-            data-extension_number="${eventData.extension_number}"
-            data-personal_phone_number="${eventData.personal_phone_number}"
-            data-office_phone_number="${eventData.office_phone_number}" data-email_address="${eventData.email_address}"
-            data-photo_url="${eventData.photo_url}"></app-button>
-          <!-- <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
+      <div class="z-40 absolute top-0 left-2">
+        <app-button id="closeDetailModal" data-iconName="chevron-back-outline" data-iconSize="small"
+          class="remove-overflow transparent md" x-on:click="modalOpen = !modalOpen"></app-button>
+      </div>
+      <div class="z-40 absolute top-0 right-2 flex items-center">
+        <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
+          class="editButton remove-overflow transparent"
+          x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"
+          data-fullName="${eventData.full_name}" data-rank="${eventData.rank}" data-position="${eventData.position}"
+          data-division_name="${eventData.division_name}" data-team_name="${eventData.team_name}"
+          data-extension_number="${eventData.extension_number}"
+          data-personal_phone_number="${eventData.personal_phone_number}"
+          data-office_phone_number="${eventData.office_phone_number}" data-email_address="${eventData.email_address}"
+          data-photo_url="${eventData.photo_url}"></app-button>
+        <!-- <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
             class="editButton remove-overflow transparent"
             x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"></app-button> -->
-          <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
-            class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
-            @click="modalOpen = !modalOpen"></app-button>
-        </div>
-        <!-- Contents -->
+        <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
+          class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
+          @click="modalOpen = !modalOpen"></app-button>
+      </div>
+      <!-- Contents -->
+      <div
+        class="detailHeader relative overflow-hidden flex flex-col justify-center items-center gap-y-3 h-40 bg-[#22326E]">
         <div
-          class="detailHeader relative overflow-hidden flex flex-col justify-center items-center gap-y-3 h-40 bg-[#22326E]">
-          <div
-            class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
-            <p class="family_name font-semibold text-3xl text-blue-600 hidden">
-              성
-            </p>
-            <img src="" class="photo_url_img hidden" />
-          </div>
-          <div class="photo_url_bg"></div>
+          class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-24 h-24 bg-white rounded-full overflow-hidden">
+          <p class="family_name font-semibold text-3xl text-blue-600 hidden">
+            성
+          </p>
+          <img src="" class="photo_url_img hidden" />
         </div>
-
+        <div class="photo_url_bg"></div>
+      </div>
+      <div class="scroll-shadows">
         <!-- Contact Info -->
         <div class="flex flex-col gap-y-2 mt-2">
           <div class="p-4 bg-white">
