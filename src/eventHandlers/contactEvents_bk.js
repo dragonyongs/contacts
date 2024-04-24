@@ -24,7 +24,7 @@ export function setupContactEvents() {
 
   // formDataCallback 설정
   setFormDataCallback((formData) => {
-    const selectElement = document.querySelector("#contact_group_select");
+    const selectElement = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
     const selectValue = selectElement.value;
 
     // 셀렉트 값이 선택되었는지 확인

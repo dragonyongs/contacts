@@ -24,7 +24,7 @@ export function setupContactEvents() {
 
   // formDataCallback 설정
   setFormDataCallback((formData) => {
-    const selectElement = document.querySelector("#contact_group_select");
+    const selectElement = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
     const selectValue = selectElement.value;
 
     // 셀렉트 값이 선택되었는지 확인
@@ -97,7 +97,7 @@ export async function listContact() {
     groupedGroup[contact_group].forEach((contact) => {
       const contactItem = document.createElement("li");
       contactItem.innerHTML = `
-                <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; }" id="detail" data-contactId="${contact.contact_id}" data-fullName="${contact.full_name}" data-position="${contact.position}" data-rank="${contact.rank}" 
+                <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; }" id="detail" data-contactId="${contact.contact_id}" data-contactGroup="${contact.contact_group}" data-fullName="${contact.full_name}" data-position="${contact.position}" data-rank="${contact.rank}" 
                 data-teamName="${contact.team_name}" data-status="${contact.status}" data-photoUrl="${contact.photo_url}" data-divisionName="${contact.division_name}"
                 data-personalNumber="${contact.personal_phone_number}" data-officeNumner="${contact.office_phone_number}" data-extensionNumber="${contact.extension_number}" data-emailAddress="${contact.email_address}">
                 </app-list-card>
@@ -133,6 +133,7 @@ async function saveContact(submittedFormData) {
   }
 
   const keys = [
+    "contact_group",
     "full_name",
     "division_name",
     "team_name",

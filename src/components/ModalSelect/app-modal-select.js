@@ -22,17 +22,21 @@ export class AppModalSelect extends HTMLElement {
     return this.getAttribute("required") || "";
   }
 
+  get value() {
+    return this.getAttribute("value") || "";
+  }
+
   template(state) {
     const optionsHTML = state.groups
       .map(
         (group) =>
-          `<option value="${group || ""}">${group || "미지정"}</option>`
+          `<option value="${group || ""}" ${group === state.value ? 'seleted': ''}>${group || "미지정"}</option>`
       )
       .join("");
     const selectHTML = `
             <select id="${state.id}" name="${state.name}" ${
       state.required === "true" ? "required" : ""
-    } />>
+    } value="${state.value}">
                 <option value="" selected disabled>연락처 그룹 선택</option>
                 ${optionsHTML}
                 <option value="직접입력">직접 입력</option>
@@ -82,6 +86,7 @@ export class AppModalSelect extends HTMLElement {
       label: this.label,
       options: this.options,
       groups: groups,
+      value: this.value,
       required: this.required,
     });
   }

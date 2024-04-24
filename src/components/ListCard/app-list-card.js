@@ -24,6 +24,10 @@ export class AppListCard extends HTMLElement {
     return this.getAttribute("data-rank").trim() || "";
   }
 
+  get contact_group() {
+    return this.getAttribute("data-contactGroup").trim() || "";
+  }
+
   get division_name() {
     return this.getAttribute("data-divisionName").trim() || "경영지원본부";
   }
@@ -128,6 +132,7 @@ export class AppListCard extends HTMLElement {
         const eventData = {
           id: this.id,
           contact_id: clickedElementId,
+          contact_group: this.contact_group,
           family_name: family_name,
           full_name: this.full_name,
           rank: this.rank,
@@ -147,20 +152,18 @@ export class AppListCard extends HTMLElement {
           composed: true,
           detail: eventData,
         });
+        document.dispatchEvent(customEvent);
 
         const customEditEvent = new CustomEvent("edit-modal", {
           bubbles: true,
           composed: true,
           detail: eventData,
         });
+        document.dispatchEvent(customEditEvent);
+
 
         // 모달 열리면 body scrool 제한
         document.querySelector("body").classList.add("overflow-hidden");
-
-        // detail 모달에 이벤트 전달
-        document.dispatchEvent(customEvent);
-        document.dispatchEvent(customEditEvent);
-
       }
     });
   }
@@ -170,6 +173,7 @@ export class AppListCard extends HTMLElement {
     this.shadowRoot.innerHTML = this.template({
       id: this.id,
       contact_id: this.contact_id,
+      contact_group: this.contact_group,
       family_name: family_name,
       full_name: this.full_name,
       rank: this.rank,

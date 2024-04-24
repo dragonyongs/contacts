@@ -74,9 +74,18 @@
             class="remove-overflow transparent md" x-on:click="modalOpen = !modalOpen"></app-button>
         </div>
         <div class="z-40 absolute top-0 right-2 flex items-center">
-          <app-button data-iconName="create-outline" data-iconSize="small"
+          <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
             class="editButton remove-overflow transparent"
-            x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"></app-button>
+            x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"
+            data-fullName="${eventData.full_name}" data-rank="${eventData.rank}" data-position="${eventData.position}"
+            data-division_name="${eventData.division_name}" data-team_name="${eventData.team_name}"
+            data-extension_number="${eventData.extension_number}"
+            data-personal_phone_number="${eventData.personal_phone_number}"
+            data-office_phone_number="${eventData.office_phone_number}" data-email_address="${eventData.email_address}"
+            data-photo_url="${eventData.photo_url}"></app-button>
+          <!-- <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
+            class="editButton remove-overflow transparent"
+            x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"></app-button> -->
           <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
             class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
             @click="modalOpen = !modalOpen"></app-button>
@@ -211,7 +220,7 @@
     </div>
 
     <!-- ADD Modal -->
-    <div x-show="modalOpen && (modalState === 'add' || modalState === 'edit')"
+    <div id="addEdit" x-show="modalOpen && modalState === 'add' || modalOpen && modalState === 'edit'"
       x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -235,13 +244,13 @@
         </div>
         <form id="contact-form" autocomplete="off">
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
-            <app-modal-select id="contact_group_select" name="contact_group" class="mt-2"
+            <app-modal-select id="contact_group_select" name="contact_group" value="" class="mt-2"
               required="true"></app-modal-select>
 
             <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
               data-label="연락처 그룹" value="" required="true"></app-modal-input>
 
-            <app-modal-input type="text" id="full_name" name="full_name" data-label="이름" aria-valuetext="" value=""
+            <app-modal-input type="text" id="full_name" name="full_name" data-label="이름"
               required="true"></app-modal-input>
 
             <app-modal-input type="text" id="division_name" name="division_name" data-label="소속 본부" value=""
@@ -306,29 +315,6 @@
     //   console.log(eventData);
     // });
 
-    document.addEventListener("edit-modal", function (e) {
-
-      let test = document.getElementById('contact-form');
-      let fullName = test.querySelector('#full_name');
-      fullName.ariaValueText = "ddd";
-      console.log(fullName);
-
-      const eventData = e.detail;
-
-      // 이름 입력란에 값 설정
-      document.getElementById('full_name').value = eventData.full_name;
-      // console.log(eventData.full_name);
-
-      // 소속 본부 입력란에 값 설정
-      document.getElementById('division_name').value = eventData.division_name;
-
-      // 이메일 입력란에 값 설정
-      document.getElementById('email_address').value = eventData.email_address;
-
-      // 나머지 인풋에도 위와 같이 값을 설정할 수 있습니다.
-    });
-
-
     document.addEventListener("detail-modal", function (e) {
       const modalDetail = document.querySelector(".modalDetail");
       const eventData = e.detail;
@@ -390,6 +376,66 @@
       }
 
     });
+
+    let contactData;
+
+    document.addEventListener("edit-modal", function (e) {
+      contactData = e.detail;
+    });
+
+    document.getElementById('openEditModal').addEventListener("click", function (e) {
+
+      // contact_group
+      let contactGroup = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
+      contactGroup.value = contactData.contact_group;
+      console.log(contactData.contact_group)
+
+      // fullName
+      let fullName = document.getElementById('full_name').shadowRoot.querySelector('#full_name');
+      fullName.value = contactData.full_name;
+
+      // rank
+      let rank = document.getElementById('rank').shadowRoot.querySelector('#rank');
+      rank.value = contactData.rank;
+
+      // position
+      let position = document.getElementById('position').shadowRoot.querySelector('#position');
+      position.value = contactData.position;
+
+      // division_name
+      let divisionName = document.getElementById('division_name').shadowRoot.querySelector('#division_name');
+      divisionName.value = contactData.division_name;
+
+      // team_name
+      let teamName = document.getElementById('team_name').shadowRoot.querySelector('#team_name');
+      teamName.value = contactData.team_name;
+
+      // photo_url
+      let photoUrl = document.getElementById('photo_url').shadowRoot.querySelector('#photo_url');
+      photoUrl.value = contactData.photo_url;
+
+      // personal_phone_number
+      let personalPhoneNumber = document.getElementById('personal_phone_number').shadowRoot.querySelector('#personal_phone_number');
+      personalPhoneNumber.value = contactData.personal_phone_number;
+
+      // office_phone_number
+      let officePhoneNumber = document.getElementById('office_phone_number').shadowRoot.querySelector('#office_phone_number');
+      officePhoneNumber.value = contactData.office_phone_number;
+
+      // extension_number
+      let extensionNumber = document.getElementById('extension_number').shadowRoot.querySelector('#extension_number');
+      extensionNumber.value = contactData.extension_number;
+
+      // status
+      let status = document.getElementById('status').shadowRoot.querySelector('#status');
+      status.value = contactData.status.text;
+
+      // email_address
+      let emailAddress = document.getElementById('email_address').shadowRoot.querySelector('#email_address');
+      emailAddress.value = contactData.email_address;
+
+    });
+
   </script>
 
   <script type="module" src="./src/components/Button/app-button.js"></script>

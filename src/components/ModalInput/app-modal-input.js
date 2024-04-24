@@ -2,8 +2,6 @@ export class AppModalInput extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    // this.inputElement = this.shadowRoot.querySelector("input");
-    // this.inputElement.addEventListener("input", this.handleInput.bind(this));
   }
 
   get id() {
@@ -23,32 +21,12 @@ export class AppModalInput extends HTMLElement {
   }
 
   get value() {
-    return this.getAttribute("aria-valuetext") || "";
+    return this.getAttribute("value") || "";
   }
 
   get required() {
     return this.getAttribute("required") || "";
   }
-
-  //   handleInput(event) {
-  //     const value = event.target.value;
-  //     // 값이 변경될 때마다 유효성 검사
-  //     const validatedValue = this.validateInput(value);
-  //     if (validatedValue !== false) {
-  //       // 유효한 값이면 상위 요소로 전달
-  //       this.dispatchEvent(
-  //         new CustomEvent("input-change", { detail: validatedValue })
-  //       );
-  //     } else {
-  //       // 유효하지 않은 값이면 처리
-  //       // 예: 사용자에게 메시지 표시
-  //     }
-  //   }
-
-  //   validateInput(value) {
-  //     // 유효성 검사 로직 구현
-  //     // 예: 필요한 경우 유효한 값 반환, 그렇지 않으면 false 반환
-  //   }
 
   template(state) {
     return `
@@ -123,11 +101,6 @@ export class AppModalInput extends HTMLElement {
     } else if (inputElement.required && !inputElement.value.trim()) {
       inputElement.classList.add("required");
     }
-
-    // if (inputElement.getAttribute('type') === 'number') {
-    //     console.log(inputElement.value);
-    //     return this.formatPhoneNumber(inputElement);
-    // }
 
     // data-id 속성 값의 마지막 부분이 'number'로 끝나는지 확인
     const dataId = inputElement.getAttribute("id");
