@@ -12,7 +12,7 @@ body {
 .scroll-shadows {
   overflow: auto;
   position: relative;
-  height: calc(100dvh - 73px);
+  height: calc(100dvh - 84px);
   -webkit-overflow-scrolling: touch;
   background:
     /* Shadow Cover TOP */ linear-gradient(
