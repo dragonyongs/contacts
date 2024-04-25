@@ -127,16 +127,29 @@ export class AppButton extends HTMLElement {
       }
     }
 
+    let requiredInputsFilled = true; // 필수 입력란이 모두 채워졌는지 여부를 저장할 변수
     const modalInputs = document.querySelectorAll("app-modal-input");
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
 
+      if (inputElement.required && !validatedValue) {
+        alert(`${inputName} 필수 입력값이 비어있습니다.`);
+        requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
+        return false; // 제출 막기
+      }
+  
       if (validatedValue) {
         formData.append(inputName, validatedValue);
       }
     });
+
+    // 필수 입력값이 비어있으면 제출 막기
+    if (!requiredInputsFilled) {
+      return false;
+    }
+
     console.log("selectValid", selectValid);
 
     if (!selectValid) {

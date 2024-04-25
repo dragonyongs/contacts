@@ -29,7 +29,7 @@ export class AppListCard extends HTMLElement {
   }
 
   get division_name() {
-    return this.getAttribute("data-divisionName").trim() || "경영지원본부";
+    return this.getAttribute("data-divisionName").trim() || "";
   }
 
   get statusInfo() {
@@ -105,8 +105,8 @@ export class AppListCard extends HTMLElement {
                                     : ""
                                 }
                             </div>
-                            <p class="team">${state.team_name} / ${
-      state.division_name
+                            <p class="team">${state.division_name} ${
+                              state.division_name && state.team_name ? `/ ${state.division_name}`: `${state.team_name}`
     }</p>
                         </div>
                         <div class="icon-wrap">

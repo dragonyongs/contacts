@@ -1,4 +1,4 @@
-import { setupContactEvents } from "./eventHandlers/contactEvents.js";
+import { setupContactEvents, listContact } from "./eventHandlers/contactEvents.js";
 import { deleteContact } from "../src/eventHandlers/contactFunction.js";
 import { setupExcelService } from "./services/excelService.js";
 import { getDataDB } from "./services/dataDB.js";
@@ -9,7 +9,7 @@ export async function initializeApp() {
   setupContactEvents(); // 연락처 이벤트 설정
   setupExcelService(database); // Excel 서비스 설정
   deleteContact(); // 삭제 함수
-  
+  listContact();
   //전역 데이터 호출
   
 }

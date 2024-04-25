@@ -61,11 +61,10 @@ export class AppModalSelect extends HTMLElement {
     const inputElement = document.querySelector("#contact_group_input");
 
     selectElement.addEventListener("change", function () {
-      console.log(this.value);
-
       if (this.value === "직접입력") {
         selectElement.remove();
         inputElement.classList.remove("hidden");
+        inputElement.shadowRoot.querySelector('input').focus();
       }
     });
   }

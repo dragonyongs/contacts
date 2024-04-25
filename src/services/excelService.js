@@ -3,6 +3,15 @@ import { listContact } from "../eventHandlers/contactEvents.js";
 
 let globalJsonData = null;
 
+const contactsData = await getContactsData();
+const contactsConunt = contactsData.length;
+console.log(contactsConunt);
+
+if (contactsConunt === 0) {
+  const exportButton = document.getElementById("export_button");
+  exportButton.classList.add('hidden');  
+}
+
 export function setupExcelService(database) {
   console.log("setupExcelService 실행!");
   const importFileInput = document
