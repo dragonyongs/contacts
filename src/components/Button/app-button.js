@@ -1,4 +1,7 @@
-import { clearModalContent, resetDetailContent } from "../../eventHandlers/modalEvents.js"
+import {
+  clearModalContent,
+  resetDetailContent,
+} from "../../eventHandlers/modalEvents.js";
 
 let formDataCallback; // formDataCallback 함수를 위한 전역 변수 선언
 
@@ -46,7 +49,9 @@ export class AppButton extends HTMLElement {
   template(state) {
     return `
             <link rel="stylesheet" href="./src/components/Button/app-button.css">
-            <button type="${state.type}" role="${state.role}" ${ state.id ? `id="${state.id}"` : ""} class="${state.class }">
+            <button type="${state.type}" role="${state.role}" ${
+      state.id ? `id="${state.id}"` : ""
+    } class="${state.class}">
                 ${
                   state.iconName && state.iconSize
                     ? `<ion-icon name="${state.iconName}" size="${state.iconSize}"></ion-icon>`
@@ -104,12 +109,24 @@ export class AppButton extends HTMLElement {
   // 유효성 검사 함수
   validateInput(inputElement) {
     const inputValue = inputElement.value.trim();
+    console.log("inputValue", inputValue);
     if (inputElement.required && !inputValue) {
       inputElement.classList.add("required");
       return false; // 유효성 검사 실패
     }
     inputElement.classList.remove("required");
     return inputValue; // 유효성 검사 통과한 값 반환
+  }
+
+  validateSelect(selectElement) {
+    const selectValue = selectElement.value;
+    console.log("selectValue", selectValue);
+    if (selectElement.required && !selectValue) {
+      selectElement.classList.add("required");
+      return false; // 유효성 검사 실패
+    }
+    selectElement.classList.remove("required");
+    return selectValue; // 유효성 검사 통과한 값 반환
   }
 
   // 폼 제출 함수
@@ -124,7 +141,7 @@ export class AppButton extends HTMLElement {
     const selectElement = document.querySelector("#contact_group_select");
     const costumSelect = selectElement.shadowRoot.querySelector("select");
     if (costumSelect) {
-      const selectValue = costumSelect.value;
+      const selectValue = this.validateSelect(costumSelect);
       if (!selectValue) {
         console.log("value: false");
         // 셀렉트 요소이고 값이 유효하지 않을 경우
@@ -140,11 +157,11 @@ export class AppButton extends HTMLElement {
       const validatedValue = this.validateInput(inputElement);
 
       if (inputElement.required && !validatedValue) {
-        // alert(`${inputName} 필수 입력값이 비어있습니다.`);
+        alert(`${inputName} 필수 입력값이 비어있습니다.`);
         requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
         return false; // 제출 막기
       }
-  
+
       if (validatedValue) {
         formData.append(inputName, validatedValue);
       }
@@ -176,7 +193,7 @@ export class AppButton extends HTMLElement {
   }
 
   // 폼 수정 함수
- updateForm(event) {
+  updateForm(event) {
     event.preventDefault();
 
     // 여기에 수정 폼과 관련된 로직을 추가하세요.
@@ -196,33 +213,35 @@ export class AppButton extends HTMLElement {
 
     document.body.classList.remove("overflow-hidden");
     document.body.classList.remove("active");
-
   }
-
 }
 
 customElements.define("app-button", AppButton);
 
 document.addEventListener("click", (event) => {
   event.stopPropagation(); // 이벤트 버블링 중지
+
   const target = event.target;
+
   if (target.matches('app-button[type="submit"]')) {
     const method = target.getAttribute("data-method");
+
     if (method === "post") {
       console.log("등록 버튼 실행!");
-      const appButton = target.closest('app-button');
+      const appButton = target.closest("app-button");
       if (appButton) {
         appButton.submitForm.call(appButton, event); // submitForm 메서드 호출
       }
     } else if (method === "put") {
       console.log("수정 버튼 실행!", event.target.id);
       // 수정 버튼 실행시 수정 로직 추가
-      const appButton = target.closest('app-button');
+      const appButton = target.closest("app-button");
       if (appButton) {
         appButton.updateForm.call(appButton, event); // updateForm 메서드 호출
       }
+
+      const modalElement = document.querySelector("#addEdit");
+      modalElement.querySelector("button").click();
     }
-    const modalElement = document.querySelector('#addEdit');
-    modalElement.querySelector('button').click();
   }
 });

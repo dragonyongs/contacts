@@ -49,3 +49,11 @@ select:not([size]) {
 .hidden {
   display: none;
 }
+
+select.required {
+  border-bottom-color: #ff0000;
+}
+select.required,
+select.required > option {
+  color: #ff0000;
+}
