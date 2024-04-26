@@ -1,5 +1,9 @@
 // 모달이 닫힐 때 모달 내의 요소들을 초기화하는 함수
 export function clearModalContent() {
+    console.log('clearModalContent');
+}
+
+export function resetDetailContent() {
     // 상위 요소 선택
     const detailHeaderElement = document.querySelector('.detailHeader');
 

@@ -119,49 +119,24 @@ export class AppButton extends HTMLElement {
     console.log("submitForm 실행");
 
     const formData = new FormData();
-    // let firstInvalidInput = null;
-    let selectValid = true; // 셀렉트 값이 유효한지 여부를 저장할 변수
+
+    // 셀렉트 값이 유효한지 확인
     const selectElement = document.querySelector("#contact_group_select");
     const costumSelect = selectElement.shadowRoot.querySelector("select");
+    let selectValid = true;
     if (costumSelect) {
       const selectValue = costumSelect.value;
       if (!selectValue) {
         console.log("value: false");
-        // 셀렉트 요소이고 값이 유효하지 않을 경우
         selectValid = false;
       }
     }
 
-    let requiredInputsFilled = true; // 필수 입력란이 모두 채워졌는지 여부를 저장할 변수
+    // 필수 입력값 체크
     const modalInputs = document.querySelectorAll("app-modal-input");
-    modalInputs.forEach((modalInput) => {
-      const inputElement = modalInput.shadowRoot.querySelector("input");
-      const inputName = inputElement.getAttribute("name");
-      const validatedValue = this.validateInput(inputElement);
+    const requiredInputsFilled = validateModalInputs(modalInputs);
 
-      if (inputElement.required && !validatedValue) {
-        // alert(`${inputName} 필수 입력값이 비어있습니다.`);
-        requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
-        return false; // 제출 막기
-      }
-  
-      if (validatedValue) {
-        formData.append(inputName, validatedValue);
-      }
-    });
-
-    // 필수 입력값이 비어있으면 제출 막기
-    if (!requiredInputsFilled) {
-      return false;
-    }
-
-    console.log("selectValid", selectValid);
-
-    if (!selectValid) {
-      // 유효하지 않은 입력값이 있거나 셀렉트 값이 선택되지 않은 경우
-      if (!selectValid) {
-        alert("app-button 유효한 연락처 그룹을 선택해주세요.");
-      }
+    if (!requiredInputsFilled || !selectValid) {
       return false;
     }
 

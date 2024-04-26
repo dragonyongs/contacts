@@ -4,7 +4,7 @@ import { getDataDB } from "../services/dataDB.js";
 import {
   AppButton,
   setFormDataCallback,
-} from "../components/Button/app-button.js"; // 변경된 경로
+} from "../components/Button/app-button.js";
 
 export function setupContactEvents() {
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
@@ -13,12 +13,19 @@ export function setupContactEvents() {
     .addEventListener("click", handleExportToExcel);
 
   const saveContactButton = document.getElementById("save_contact_button");
+  const updateContactButton = document.getElementById("update_contact_button");
 
   if (!AppButton) {
     const appButton = new AppButton();
 
     saveContactButton.addEventListener("click", (event) => {
-      appButton.submitForm(event); // formDataCallback은 설정하지 않음
+      appButton.submitForm(event);
+      console.log('add Button Click!');
+    });
+
+    updateContactButton.addEventListener("click", (event) => {
+      appButton.submitForm(event);
+      console.log('update Button Click!');
     });
   }
 
@@ -124,7 +131,7 @@ export async function listContact() {
 }
 
 // 연락처 저장 이벤트 리스너
-async function saveContact(submittedFormData) {
+async function saveContact(submittedFormData, contactId = null) {
   const database = await getDataDB();
   const selectElement = document
     .querySelector("#contact_group_select")
@@ -167,10 +174,19 @@ async function saveContact(submittedFormData) {
   console.log('plainObject', plainObject);
 
   try {
-    // 데이터베이스에 연락처 추가
-    await database.contacts.add(plainObject);
+    
+    if (contactId) {
 
-    alert("연락처가 성공적으로 추가되었습니다!");
+      await updateContact(contactId, plainObject);
+      alert("연락처가 성공적으로 수정되었습니다!");
+
+    } else {
+      
+      await database.contacts.add(plainObject);
+      alert("연락처가 성공적으로 추가되었습니다!");
+
+    }
+
     document.getElementById("contact-form").reset();
 
     // 연락처 데이터가 업데이트되었을 때 (예: 새 연락처 추가 후)

@@ -163,6 +163,7 @@ export class AppListCard extends HTMLElement {
 
 
         // 모달 열리면 body scrool 제한
+        document.querySelector("body").classList.add("active");
         document.querySelector("body").classList.add("overflow-hidden");
       }
     });

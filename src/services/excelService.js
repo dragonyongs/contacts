@@ -5,7 +5,7 @@ let globalJsonData = null;
 
 const contactsData = await getContactsData();
 const contactsConunt = contactsData.length;
-console.log(contactsConunt);
+console.log('excelService 실행!');
 
 if (contactsConunt === 0) {
   const exportButton = document.getElementById("export_button");

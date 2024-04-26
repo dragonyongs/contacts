@@ -27,12 +27,14 @@ export class AppModalSelect extends HTMLElement {
   }
 
   template(state) {
+    const groupsCount = Number(state.groups.length);
     const optionsHTML = state.groups
       .map(
         (group) =>
           `<option value="${group || ""}" ${group === state.value ? 'seleted': ''}>${group || "미지정"}</option>`
       )
       .join("");
+
     const selectHTML = `
             <select id="${state.id}" name="${state.name}" ${
       state.required === "true" ? "required" : ""
@@ -43,28 +45,28 @@ export class AppModalSelect extends HTMLElement {
             </select>
         `;
     const inputHTML = `
-            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""
-            class="hidden"></app-modal-input>
+            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
         `;
 
     return `
             <link rel="stylesheet" href="./src/components/ModalSelect/app-modal-select.css">
             <div class="select-wrap">
-                ${state.groups.length === 0 ? "" : ""}
-                ${state.groups.length === 0 ? inputHTML : selectHTML}
+                ${ groupsCount === 0 ? inputHTML : selectHTML}
             </div>
         `;
   }
 
   selectEvent() {
     const selectElement = this.shadowRoot.querySelector("select");
-    const inputElement = document.querySelector("#contact_group_input");
+    console.log('직접입력 선택 후 실행', selectElement);
+    const testWrap = document.querySelector(".testWrap");
 
     selectElement.addEventListener("change", function () {
       if (this.value === "직접입력") {
         selectElement.remove();
-        inputElement.classList.remove("hidden");
-        inputElement.shadowRoot.querySelector('input').focus();
+        // inputElement.classList.remove("hidden");
+        testWrap.innerHTML = `<app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>`;
+        testWrap.querySelector('app-modal-input').shadowRoot.querySelector('input').focus();
       }
     });
   }

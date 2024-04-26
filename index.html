@@ -21,21 +21,27 @@
     window.addEventListener('close-modal', event => { modalOpen = !event.detail.open; });
     window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;});
     ">
-    <!-- middle x-data="{ modalOpen: false, modalState: 'detail'}" x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})" -->
+    <!-- middle x-data="{ modalOpen: false, modalTabState: 'detail'}" x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})" -->
     <div class="relative flex-grow bg-white">
       <!-- top -->
       <div class="fixed z-20 top-0 left-0 w-full">
         <div class="text-center py-3 bg-[#0635c9]">
           <h1 class="text-2xl font-normal text-white">My Contacts</h1>
+          <!-- <app-input type="text" id="serachKeyword"
+            class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" name="search_keyword"
+            data-label="검색" value="" placeholder="이름, 전화번호, 팀 검색"></app-input> -->
         </div>
+
       </div>
 
       <div class="contactWrap">
+
         <!-- scroll-shadows -->
         <div class="w-full h-full">
           <div id="contact-list">
           </div>
         </div>
+
       </div>
 
       <!-- Button -->
@@ -45,15 +51,15 @@
           <span slot="label">목록</span>
         </app-tab-button>
         <app-tab-button id="add" data-icon="add-outline" class="remove-overflow"
-          x-on:click="if (modalState !== 'add') { modalOpen = true; modalState = 'add'; } else { modalOpen = !modalOpen; }">
+          x-on:click="if (modalTabState !== 'add') { modalOpen = true; modalTabState = 'add'; } else { modalOpen = !modalOpen; modalState = ''; }">
           <span slot="label">등록</span>
         </app-tab-button>
         <app-tab-button id="search" data-icon="search-outline" class="remove-overflow"
-          x-on:click="if (modalState !== 'search') { modalOpen = true; modalState = 'search'; } else { modalOpen = !modalOpen; }">
+          x-on:click="if (modalTabState !== 'search') { modalOpen = true; modalTabState = 'search'; } else { modalOpen = !modalOpen; modalState = ''; }">
           <span slot="label">검색</span>
         </app-tab-button>
         <app-tab-button id="data" data-icon="server-outline" class="remove-overflow"
-          x-on:click="if (modalState !== 'data') { modalOpen = true; modalState = 'data'; } else { modalOpen = !modalOpen; }">
+          x-on:click="if (modalTabState !== 'data') { modalOpen = true; modalTabState = 'data'; } else { modalOpen = !modalOpen; modalState = ''; }">
           <span slot="label">데이터</span>
         </app-tab-button>
       </div>
@@ -61,30 +67,34 @@
     </div>
 
     <!-- Contact Detail Modal -->
-    <div x-show="modalOpen && modalState === 'detail'" x-transition:enter="transition ease-out duration-200"
+    <div
+      x-show="modalOpen && modalState === 'detail' || modalOpen && modalTabState === 'add' && modalState === 'detail'"
+      x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-x-20 opacity-0"
       x-transition:enter-end="transform translate-x-0 opacity-100" x-transition:leave="transition ease-in duration-200"
       x-transition:leave-start="transform translate-x-0 opacity-100"
       x-transition:leave-end="transform translate-x-20 opacity-0"
-      class="modalDetail z-40 fixed top-0 left-0 bg-slate-200 w-full">
+      class="modalDetail z-20 fixed top-0 left-0 bg-slate-200 w-full">
       <!-- header -->
       <div class="z-40 absolute top-0 left-2">
         <app-button id="closeDetailModal" data-iconName="chevron-back-outline" data-iconSize="small"
-          class="remove-overflow transparent md" x-on:click="modalOpen = !modalOpen"></app-button>
+          class="remove-overflow transparent md" @click="handleOutsideClick"></app-button>
       </div>
       <div class="z-40 absolute top-0 right-2 flex items-center">
-        <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small"
-          class="editButton remove-overflow transparent"
-          x-on:click="if (modalState !== 'edit') { modalOpen = true; modalState = 'edit'; }"
+
+        <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small" class="transparent"
+          x-on:click="if (modalTabState !== 'edit') { modalOpen = true; modalTabState = 'edit'; }"
           data-fullName="${eventData.full_name}" data-rank="${eventData.rank}" data-position="${eventData.position}"
           data-division_name="${eventData.division_name}" data-team_name="${eventData.team_name}"
           data-extension_number="${eventData.extension_number}"
           data-personal_phone_number="${eventData.personal_phone_number}"
           data-office_phone_number="${eventData.office_phone_number}" data-email_address="${eventData.email_address}"
           data-photo_url="${eventData.photo_url}"></app-button>
+
         <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
           class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
-          @click="modalOpen = !modalOpen"></app-button>
+          @click="handleOutsideClick"></app-button>
+
       </div>
       <!-- Contents -->
       <div
@@ -147,7 +157,7 @@
     </div>
 
     <!-- Data Modal -->
-    <div x-show="modalOpen && modalState === 'data'" x-transition:enter="transition ease-out duration-200"
+    <div x-show="modalOpen && modalTabState === 'data'" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
@@ -173,7 +183,7 @@
               <span slot="label">업로드</span>
             </app-button>
             <app-button type="button" role="button" data-iconName="checkmark-outline" data-iconSize="small"
-              id="apply_button" class="flex-1 primary hidden">
+              id="apply_button" class="flex-1 primary hidden" @click="handleOutsideClick">
               <span slot="label">적용하기</span>
             </app-button>
             <app-button type="button" role="button" data-iconName="cloud-download-outline" data-iconSize="small"
@@ -186,7 +196,7 @@
     </div>
 
     <!-- Search Modal -->
-    <div x-show="modalOpen && modalState === 'search'" x-transition:enter="transition ease-out duration-200"
+    <div x-show="modalOpen && modalTabState === 'search'" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
@@ -205,9 +215,9 @@
         <form action="" class="w-full" autocomplete="off">
           <div class="flex gap-x-2 w-full">
             <input type="text" placeholder="이름, 전화번호, 팀 검색"
-              class="flex-1 py-3 px-4 border border-slate-200 rounded-md text-sm" />
+              class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
             <button type="submit" role="button"
-              class="bg-slate-700 py-2 px-4 font-semibold text-sm text-white rounded-md">
+              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700">
               검색
             </button>
           </div>
@@ -216,7 +226,7 @@
     </div>
 
     <!-- ADD Modal -->
-    <div id="addEdit" x-show="modalOpen && modalState === 'add' || modalOpen && modalState === 'edit'"
+    <div id="addEdit" x-show="modalOpen && modalTabState === 'add' || modalOpen && modalTabState === 'edit'"
       data-modal-state="addEdit" x-transition:enter="transition ease-out duration-200"
       x-transition:enter-start="transform translate-y-20 opacity-0"
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
@@ -227,14 +237,14 @@
         <div class="text-center border-b p-4">
           <h2 class="font-semibold text-xl">
             연락처
-            <span x-show="modalState === 'add'">등록</span>
-            <span x-show="modalState === 'edit'">수정</span>
-            <span x-show="modalState === 'detail'">상세</span>
+            <span x-show="modalTabState === 'add'">등록</span>
+            <span x-show="modalTabState === 'edit'">수정</span>
+            <span x-show="modalTabState === 'detail'">상세</span>
           </h2>
 
           <button
             class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            @click="handleOutsideClick">
+            @click="handleOutsideClick()">
             <ion-icon name="close-outline" size="small"></ion-icon>
           </button>
         </div>
@@ -242,9 +252,10 @@
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
             <app-modal-select id="contact_group_select" name="contact_group" data-label="연락처 그룹" value="" class="mt-2"
               required="true"></app-modal-select>
+            <div class="testWrap"></div>
 
-            <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
-              data-label="연락처 그룹" value="" required="true"></app-modal-input>
+            <!-- <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
+              data-label="연락처 그룹" value="" required="true"></app-modal-input> -->
 
             <app-modal-input type="text" id="full_name" name="full_name" data-label="이름"
               required="true"></app-modal-input>
@@ -254,8 +265,8 @@
 
             <div id="more-button" class="mt-4" x-show="!contactMore">
               <app-button @click="contactMore = true" type="button" role="button" data-iconName="add-circle-outline"
-                data-iconSize="small" class="flex-1">
-                <span slot="label" for="import_file">더 보기</span>
+                data-iconSize="small" class="flex-1 small bg-transparent">
+                <span slot="label" for="import_file">추가 입력</span>
               </app-button>
             </div>
 
@@ -289,14 +300,16 @@
           </div>
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
-            <app-button x-show="modalState === 'add'" id="save_contact_button" type="submit" role="button"
-              data-iconName="save-outline" data-iconSize="small" class="flex-1 primary">
-              <span slot="label" for="import_file">등록</span>
+            <app-button x-show="modalTabState === 'add'" id="save_contact_button" type="submit" role="button"
+              data-iconName="save-outline" data-iconSize="small" data-method="post" class="flex-1 primary"
+              @click="requiredFieldsCheck()">
+              <span slot="label">등록</span>
             </app-button>
 
-            <app-button x-show="modalState === 'edit'" id="update_contact_button" type="submit" role="button"
-              data-iconName="create-outline" data-iconSize="small" class="flex-1 success">
-              <span slot="label" for="import_file">수정</span>
+            <app-button x-show="modalTabState === 'edit'" id="update_contact_button" type="submit" role="button"
+              data-iconName="create-outline" data-iconSize="small" data-method="put"
+              class="update_contact_button flex-1 success">
+              <span slot="label">수정</span>
             </app-button>
           </div>
         </form>
@@ -305,7 +318,7 @@
 
     <!-- 모달 배경 수정된 코드 -->
     <div
-      x-show="modalOpen && ( modalState === 'add' || modalState === 'data' || modalState === 'search' || modalState === 'edit' )"
+      x-show="modalOpen && ( modalTabState === 'add' || modalTabState === 'data' || modalTabState === 'search' || modalTabState === 'edit' )"
       @click="handleOutsideClick"
       class="remove-overflow z-30 fixed top-0 left-0 w-full h-screen bg-black opacity-70 cursor-pointer"
       x-transition:enter="transition" x-transition:enter-start="transform opacity-0"
@@ -315,12 +328,18 @@
   <!-- Script -->
   <script>
 
+    const modalData = {
+      modalOpen: false,
+      modalState: "",
+      modalTabState: "",
+      contactMore: false,
+    }
+
+
     document.addEventListener('alpine:init', () => {
-      Alpine.data('modalData', () => ({
-        modalOpen: false,
-        modalState: '',
-        contactMore: false,
-      }));
+      Alpine.data('modalData', () => (
+        modalData
+      ));
     })
 
     document.addEventListener("detail-modal", function (e) {
@@ -357,7 +376,7 @@
         } else if (property === "href") {
           if (eventData[selector.slice(1)] === undefined || eventData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
-            parentDiv.classList.add("hidden");
+            parentDiv.classList.add("hidden")
           } else {
             element.href = `tel:${eventData[selector.slice(1)]}`;
             element.textContent = eventData[selector.slice(1)];
@@ -367,8 +386,12 @@
       });
 
       // 모달 내부의 버튼에 ID 값을 동적으로 할당
-      const contactButton = document.querySelector(".contact_id");
-      contactButton.setAttribute('id', eventData.contact_id);
+      const contactButtons = document.querySelectorAll(".contact_id");
+
+      contactButtons.forEach(contactButton => {
+        contactButton.setAttribute('id', eventData.contact_id);
+      });
+
 
       const photoUrlElement = modalDetail.querySelector(".photo_url_img");
       const photoUrlBgElement = modalDetail.querySelector(".photo_url_bg");
@@ -382,6 +405,7 @@
       } else if (!eventData.photo_url && eventData.photo_url === "") {
         familyNameElement.textContent = eventData.family_name;
         familyNameElement.classList.remove("hidden");
+        console.log("실행?");
       }
 
     });
@@ -416,6 +440,11 @@
         contactMoreButton.click();
         console.log('fieldCount more <= 3 count!');
       }
+
+      // contact_id
+      let update_contact_button = document.querySelector('.update_contact_button');
+      update_contact_button.setAttribute('id', contactData.contact_id);
+
       // contact_group
       let contactGroup = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
       contactGroup.value = contactData.contact_group;
