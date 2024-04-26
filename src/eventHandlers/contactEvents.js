@@ -20,22 +20,24 @@ export function setupContactEvents() {
 
     saveContactButton.addEventListener("click", (event) => {
       appButton.submitForm(event);
-      console.log('add Button Click!');
+      console.log("add Button Click!");
     });
 
     updateContactButton.addEventListener("click", (event) => {
       appButton.submitForm(event);
-      console.log('update Button Click!');
+      console.log("update Button Click!");
     });
   }
 
   // formDataCallback 설정
   setFormDataCallback((formData) => {
-    const selectElement = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
-    
+    const selectElement = document
+      .getElementById("contact_group_select")
+      .shadowRoot.querySelector("#contact_group_select");
+
     if (selectElement) {
       const selectValue = selectElement.value;
-      
+
       // 셀렉트 값이 선택되었는지 확인
       if (selectValue === "" || selectValue === "연락처 그룹 선택") {
         // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
@@ -121,8 +123,7 @@ export async function listContact() {
   if (contacts.length === 0) {
     document.getElementById("contact-list").classList.add("h-full");
     const emptyMessageWrap = document.createElement("div");
-    emptyMessageWrap.className =
-      "w-full h-full bg-slate-50";
+    emptyMessageWrap.className = "w-full h-full bg-slate-50";
     emptyMessageWrap.innerHTML = `<div class="noData"><p>연락처를 등록해주세요.</p></div>`;
     contactList.appendChild(emptyMessageWrap);
   } else if (contacts.length > 0) {
@@ -154,10 +155,10 @@ async function saveContact(submittedFormData, contactId = null) {
     "extension_number",
     "contact_group",
     "photo_url",
-    "email_address"
+    "email_address",
   ];
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const value = submittedFormData.get(key);
     if (!value) {
       submittedFormData.set(key, "");
@@ -171,20 +172,16 @@ async function saveContact(submittedFormData, contactId = null) {
     plainObject[key] = value;
   }
 
-  console.log('plainObject', plainObject);
+  console.log("plainObject", plainObject);
 
   try {
-    
     if (contactId) {
-
       await updateContact(contactId, plainObject);
       alert("연락처가 성공적으로 수정되었습니다!");
-
     } else {
-      
       await database.contacts.add(plainObject);
       alert("연락처가 성공적으로 추가되었습니다!");
-
+      triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
     }
 
     document.getElementById("contact-form").reset();

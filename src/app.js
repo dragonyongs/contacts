@@ -1,5 +1,11 @@
-import { setupContactEvents, listContact } from "./eventHandlers/contactEvents.js";
-import { deleteContact } from "../src/eventHandlers/contactFunction.js";
+import {
+  setupContactEvents,
+  listContact,
+} from "./eventHandlers/contactEvents.js";
+// import {
+//   deleteContact,
+//   saveContact,
+// } from "../src/eventHandlers/contactFunction.js";
 import { setupExcelService } from "./services/excelService.js";
 import { getDataDB } from "./services/dataDB.js";
 
@@ -8,10 +14,10 @@ export async function initializeApp() {
   const database = await getDataDB(); // 데이터베이스 초기화
   setupContactEvents(); // 연락처 이벤트 설정
   setupExcelService(database); // Excel 서비스 설정
-  deleteContact(); // 삭제 함수
+  // saveContact();
+  // deleteContact(); // 삭제 함수
   listContact();
   //전역 데이터 호출
-  
 }
 
 if ("serviceWorker" in navigator) {
@@ -33,11 +39,13 @@ if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
 }
 
 const detailColor = "#22326E";
-const contactWrapElement = document.querySelector('.contactWrap');
-contactWrapElement.addEventListener('click', function () {
+const contactWrapElement = document.querySelector(".contactWrap");
+contactWrapElement.addEventListener("click", function () {
   changeThemeColor(detailColor);
 });
 
 function changeThemeColor(color) {
-  document.querySelector('meta[name="theme-color"]').setAttribute('content', color);
+  document
+    .querySelector('meta[name="theme-color"]')
+    .setAttribute("content", color);
 }

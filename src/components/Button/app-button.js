@@ -206,10 +206,15 @@ export class AppButton extends HTMLElement {
     // 입력 필드 초기화
     const modalInputs = document.querySelectorAll("app-modal-input");
 
+    //modalSelect 초기화 해야함
+
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       inputElement.value = "";
     });
+
+    const modalElement = document.querySelector("#addEdit");
+    modalElement.querySelector("button").click();
 
     document.body.classList.remove("overflow-hidden");
     document.body.classList.remove("active");
