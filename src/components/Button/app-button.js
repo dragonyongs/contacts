@@ -65,6 +65,11 @@ export class AppButton extends HTMLElement {
   connectedCallback() {
     this.render();
 
+    // 등록 버튼에 대한 이벤트 리스너 등록
+    if (this.id === "save_contact_button") {
+      this.addEventListener("click", this.handleSaveButtonClick.bind(this));
+    }
+
     // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
     if (this.classList.contains("remove-overflow")) {
       this.addEventListener("click", () => {
@@ -85,6 +90,17 @@ export class AppButton extends HTMLElement {
         document.body.classList.remove("overflow-hidden");
         console.log("overflow-hidden 클래스가 body에서 제거되었습니다.");
       });
+    }
+  }
+
+  // 등록 버튼 클릭 이벤트 핸들러
+  handleSaveButtonClick(event) {
+    event.preventDefault();
+
+    console.log("add Button Click!");
+    const appButton = event.target.closest("app-button");
+    if (appButton) {
+      appButton.dispatchEvent(new Event("submitForm")); // 폼 제출 이벤트 발생
     }
   }
 
@@ -148,12 +164,11 @@ export class AppButton extends HTMLElement {
     console.log("submitForm 실행");
 
     const formData = new FormData();
-    // let firstInvalidInput = null;
+
     let selectValid = true; // 셀렉트 값이 유효한지 여부를 저장할 변수
     const selectElement = document.querySelector("#contact_group_select");
 
     if (selectElement) {
-      // 그룹 전역 상태 값이 필요 > 신규일때 정상 작동 > 그룹이 존재할때 직접 입력시 해당 요소 못찾음...
       const elementSelect = selectElement.shadowRoot.querySelector("select");
 
       if (selectElement && elementSelect) {
@@ -161,14 +176,13 @@ export class AppButton extends HTMLElement {
         formData.append("contact_group", selectElement);
 
         if (!selectValue) {
-          console.log("value: false");
-          // 셀렉트 요소이고 값이 유효하지 않을 경우
           selectValid = false;
         }
       }
     }
 
     let requiredInputsFilled = true; // 필수 입력란이 모두 채워졌는지 여부를 저장할 변수
+
     const modalInputs = document
       .querySelector("#addEdit")
       .querySelectorAll("app-modal-input");
@@ -177,12 +191,6 @@ export class AppButton extends HTMLElement {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
-
-      // if (inputElement.required && !validatedValue) {
-      //   alert(`${inputName} 필수 입력값이 비어있습니다.`);
-      //   requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
-      //   return false; // 제출 막기
-      // }
 
       if (validatedValue) {
         formData.append(inputName, validatedValue);
@@ -205,13 +213,30 @@ export class AppButton extends HTMLElement {
     }
 
     if (formDataCallback) {
-      // formDataCallback이 정의되어 있을 때만 호출
-      const success = formDataCallback(formData); // 외부에서 전달된 콜백 함수 호출
-      if (success) {
-        // 성공했을 때 모달 닫기
-        this.resetModal();
+      // 폼 데이터 수집 및 유효성 검사가 완료된 후 콜백 함수 호출
+      if (selectValid && requiredInputsFilled) {
+        const success = formDataCallback(formData);
+        if (success) {
+          this.resetModal();
+        }
+      } else {
+        // 필수 입력값이 비어있거나 셀렉트 값이 유효하지 않은 경우 알림
+        if (!requiredInputsFilled) {
+          alert("필수 입력값을 채워주세요.");
+        }
+        if (!selectValid) {
+          alert("유효한 연락처 그룹을 선택해주세요.");
+        }
       }
     }
+    // if (formDataCallback) {
+    //   // formDataCallback이 정의되어 있을 때만 호출
+    //   const success = formDataCallback(formData); // 외부에서 전달된 콜백 함수 호출
+    //   if (success) {
+    //     // 성공했을 때 모달 닫기
+    //     this.resetModal();
+    //   }
+    // }
   }
 
   // 폼 수정 함수
