@@ -31,18 +31,22 @@ export function setupContactEvents() {
 
   // formDataCallback 설정
   setFormDataCallback((formData) => {
-    const selectElement = document
-      .getElementById("contact_group_select")
-      .shadowRoot.querySelector("#contact_group_select");
-
+    const selectElement = document.getElementById("contact_group_select");
+    // const inputElement = selectElement.shadowRoot.querySelector(
+    //   "#contact_group_input"
+    // );
     if (selectElement) {
-      const selectValue = selectElement.value;
+      const elementSelect = selectElement.shadowRoot.querySelector("select");
+      if (selectElement && elementSelect) {
+        const selectValue =
+          selectElement.shadowRoot.querySelector("select").value;
 
-      // 셀렉트 값이 선택되었는지 확인
-      if (selectValue === "" || selectValue === "연락처 그룹 선택") {
-        // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
-        alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
-        return false; // 성공 여부를 반환하지 않음
+        // 셀렉트 값이 선택되었는지 확인
+        if (selectValue === "" || selectValue === "연락처 그룹 선택") {
+          // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
+          alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
+          return false; // 성공 여부를 반환하지 않음
+        }
       }
     }
 
@@ -134,14 +138,57 @@ export async function listContact() {
 // 연락처 저장 이벤트 리스너
 async function saveContact(submittedFormData, contactId = null) {
   const database = await getDataDB();
-  const selectElement = document
-    .querySelector("#contact_group_select")
-    .shadowRoot.querySelector("select");
-  const contactGroupElement = document.querySelector("#contact_group_input");
 
-  if (selectElement) {
-    submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+  const customSelect = document.querySelector("app-modal-select");
+  const customInput = document.querySelector("app-modal-input");
+
+  console.log("customInput", customInput);
+
+  if (customSelect) {
+    console.log("customSelect", customSelect);
+
+    const selectElement = customSelect.shadowRoot.querySelector(
+      "#contact_group_select"
+    );
+
+    if (selectElement) {
+      submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+    }
+    console.log("selectElement", selectElement);
   }
+
+  const inputElement = customInput.shadowRoot.querySelector(
+    "#contact_group_input"
+  );
+
+  console.log("inputElement", inputElement);
+
+  // 데이터가 존재하지 않을 때 인풋요소의 데이터를 전달
+
+  // 데이터가 존재할 떄 셀렉트 또는 인풋 데이터 전달
+
+  // 초기 로드 없는 조건
+  // let selectElementInput = selectElement.querySelector("#contact_group_input");
+  // console.log("selectElementInput", selectElementInput);
+
+  // // 직접 선택 후 기존 셀렉트 엘레먼트 삭제시
+  // let insertInputElement = document
+  //   .querySelector("#insertContactGroup")
+  //   .querySelector("#contact_group_input");
+
+  // if (selectElement && !selectElementInput) {
+  //   let selectElementSelect = selectElement.shadowRoot.querySelector("select");
+  //   submittedFormData.append(
+  //     selectElementSelect.name,
+  //     selectElementSelect.value
+  //   ); // 명시적으로 값을 추가
+  // } else if (insertInputElement) {
+  //   // 직접 입력 값을 처리하는 부분 추가
+  //   const inputElement = insertInputElement.shadowRoot.querySelector("input");
+  //   submittedFormData.append("contact_group", inputElement.value);
+  // }
+
+  const contactGroupElement = document.querySelector("#contact_group_input");
 
   const keys = [
     "contact_group",
@@ -153,7 +200,6 @@ async function saveContact(submittedFormData, contactId = null) {
     "personal_phone_number",
     "office_phone_number",
     "extension_number",
-    "contact_group",
     "photo_url",
     "email_address",
   ];
@@ -181,20 +227,19 @@ async function saveContact(submittedFormData, contactId = null) {
     } else {
       await database.contacts.add(plainObject);
       alert("연락처가 성공적으로 추가되었습니다!");
-      triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
     }
 
     document.getElementById("contact-form").reset();
 
     // 연락처 데이터가 업데이트되었을 때 (예: 새 연락처 추가 후)
-    if (
-      (selectElement && selectElement.value !== "") ||
-      (selectElement && selectElement.value !== "연락처 그룹 선택") ||
-      contactGroupElement
-    ) {
-      triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
-    }
-
+    // if (
+    //   (selectElement && selectElement.value !== "") ||
+    //   (selectElement && selectElement.value !== "연락처 그룹 선택") ||
+    //   contactGroupElement
+    // ) {
+    //   triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
+    // }
+    triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
     return true; // 폼 제출 성공
   } catch (error) {
     alert("사용자 추가에 실패했습니다: " + error);

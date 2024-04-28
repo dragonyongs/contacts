@@ -44,7 +44,7 @@ export class AppListCard extends HTMLElement {
       case "출장":
         return { status: status, text: "출장", class: "business" };
       case "퇴사":
-        return { status: status, text: "퇴사" , class: "leave" };
+        return { status: status, text: "퇴사", class: "leave" };
       default:
         return { status: "default", text: "", class: "" };
     }
@@ -106,7 +106,9 @@ export class AppListCard extends HTMLElement {
                                 }
                             </div>
                             <p class="team">${state.division_name} ${
-                              state.division_name && state.team_name ? `/ ${state.division_name}`: `${state.team_name}`
+      state.division_name && state.team_name
+        ? `/ ${state.team_name}`
+        : `${state.division_name}`
     }</p>
                         </div>
                         <div class="icon-wrap">
@@ -123,7 +125,9 @@ export class AppListCard extends HTMLElement {
     // ul 요소에 이벤트 리스너를 추가합니다.
     this.addEventListener("click", (e) => {
       // 클릭한 요소의 ID 값을 가져옵니다.
-      const clickedElementId = e.target.closest("app-list-card").getAttribute("data-contactId");
+      const clickedElementId = e.target
+        .closest("app-list-card")
+        .getAttribute("data-contactId");
       // state.contact_id와 클릭한 요소의 ID 값의 일치 여부를 확인합니다.
       if (this.contact_id === clickedElementId) {
         // 클릭한 요소의 ID 값과 state.contact_id가 일치하는 경우에만 커스텀 이벤트를 생성하고 전달합니다.
@@ -160,7 +164,6 @@ export class AppListCard extends HTMLElement {
           detail: eventData,
         });
         document.dispatchEvent(customEditEvent);
-
 
         // 모달 열리면 body scrool 제한
         document.querySelector("body").classList.add("active");

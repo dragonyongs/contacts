@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- <meta name="viewport"
-    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover" /> -->
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover" />
   <meta name="HandheldFriendly" content="true" />
   <meta name="description" content="Personal My Contacts" />
   <meta name="theme-color" content="#0635c9" />
@@ -252,7 +252,8 @@
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
             <app-modal-select id="contact_group_select" name="contact_group" data-label="연락처 그룹" value="" class="mt-2"
               required="true"></app-modal-select>
-            <div class="testWrap"></div>
+
+            <div id="insertContactGroup"></div>
 
             <!-- <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
               data-label="연락처 그룹" value="" required="true"></app-modal-input> -->

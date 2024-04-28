@@ -31,9 +31,15 @@ export class AppModalSelect extends HTMLElement {
     const optionsHTML = state.groups
       .map(
         (group) =>
-          `<option value="${group || ""}" ${group === state.value ? 'seleted': ''}>${group || "미지정"}</option>`
+          `<option value="${group || ""}" ${
+            group === state.value ? "seleted" : ""
+          }>${group || "미지정"}</option>`
       )
       .join("");
+
+    const inputHTML = `
+            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
+        `;
 
     const selectHTML = `
             <select id="${state.id}" name="${state.name}" ${
@@ -44,29 +50,29 @@ export class AppModalSelect extends HTMLElement {
                 <option value="직접입력">직접 입력</option>
             </select>
         `;
-    const inputHTML = `
-            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
-        `;
 
     return `
             <link rel="stylesheet" href="./src/components/ModalSelect/app-modal-select.css">
             <div class="select-wrap">
-                ${ groupsCount === 0 ? inputHTML : selectHTML}
+                ${groupsCount === 0 ? inputHTML : selectHTML}
             </div>
         `;
   }
 
   selectEvent() {
     const selectElement = this.shadowRoot.querySelector("select");
-    console.log('직접입력 선택 후 실행', selectElement);
-    const testWrap = document.querySelector(".testWrap");
+    const deleteSelectElement = document.querySelector("#contact_group_select");
+    console.log("직접입력 선택 후 실행", deleteSelectElement);
+    const testWrap = document.querySelector("#insertContactGroup");
 
     selectElement.addEventListener("change", function () {
       if (this.value === "직접입력") {
-        selectElement.remove();
-        // inputElement.classList.remove("hidden");
+        deleteSelectElement.remove();
         testWrap.innerHTML = `<app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>`;
-        testWrap.querySelector('app-modal-input').shadowRoot.querySelector('input').focus();
+        testWrap
+          .querySelector("app-modal-input")
+          .shadowRoot.querySelector("input")
+          .focus();
       }
     });
   }
@@ -74,13 +80,18 @@ export class AppModalSelect extends HTMLElement {
   async connectedCallback() {
     // 연락처 그룹 데이터를 가져와서 셀렉트 요소에 추가
     const groups = await getContactGroups();
-    this.render(groups);
-    if (groups.length > 0) {
+
+    if (groups.length === 0) {
+      // 그룹이 없는 경우에는 인풋 요소를 추가
+      this.renderInput();
+    } else {
+      // 그룹이 있는 경우에는 셀렉트 요소를 추가
+      this.renderSelect(groups);
       this.selectEvent();
     }
   }
 
-  render(groups) {
+  renderSelect(groups) {
     this.shadowRoot.innerHTML = this.template({
       id: this.id,
       name: this.name,
@@ -90,6 +101,14 @@ export class AppModalSelect extends HTMLElement {
       value: this.value,
       required: this.required,
     });
+  }
+
+  renderInput() {
+    const inputHTML = `
+      <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
+    `;
+    const insertContactGroup = document.querySelector("#insertContactGroup");
+    insertContactGroup.innerHTML = inputHTML;
   }
 }
 

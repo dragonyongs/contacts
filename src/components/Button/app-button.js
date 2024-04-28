@@ -65,11 +65,6 @@ export class AppButton extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    // if (this.type === "submit" && this.method === "post") {
-    //   this.addEventListener("click", this.submitForm.bind(this));
-    //   console.log( "등록 버튼 실행!" );
-    // }
-
     // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
     if (this.classList.contains("remove-overflow")) {
       this.addEventListener("click", () => {
@@ -109,6 +104,7 @@ export class AppButton extends HTMLElement {
   // 유효성 검사 함수
   validateInput(inputElement) {
     const inputValue = inputElement.value.trim();
+    console.log("inputElement", inputElement.name);
     console.log("inputValue", inputValue);
     if (inputElement.required && !inputValue) {
       inputElement.classList.add("required");
@@ -119,14 +115,30 @@ export class AppButton extends HTMLElement {
   }
 
   validateSelect(selectElement) {
-    const selectValue = selectElement.value;
-    console.log("selectValue", selectValue);
-    if (selectElement.required && !selectValue) {
-      selectElement.classList.add("required");
-      return false; // 유효성 검사 실패
+    const inputElement =
+      selectElement.shadowRoot.querySelector("app-modal-input");
+
+    if (selectElement && !inputElement) {
+      console.log("selectElement", selectElement);
+      console.log("inputElement", inputElement);
+      console.log("inputElement가 존재하는데?");
+      const selectValue =
+        selectElement.shadowRoot.querySelector("select").value;
+      if (selectElement.required && !selectValue) {
+        selectElement.classList.add("required");
+        return false; // 유효성 검사 실패
+      }
+      selectElement.classList.remove("required");
+      return selectValue; // 유효성 검사 통과한 값 반환
+    } else {
+      const inputValue = inputElement.shadowRoot.querySelector("input").value;
+      if (inputElement.required && !inputValue) {
+        inputElement.classList.add("required");
+        return false; // 유효성 검사 실패
+      }
+      inputElement.classList.remove("required");
+      return inputValue; // 유효성 검사 통과한 값 반환
     }
-    selectElement.classList.remove("required");
-    return selectValue; // 유효성 검사 통과한 값 반환
   }
 
   // 폼 제출 함수
@@ -139,28 +151,38 @@ export class AppButton extends HTMLElement {
     // let firstInvalidInput = null;
     let selectValid = true; // 셀렉트 값이 유효한지 여부를 저장할 변수
     const selectElement = document.querySelector("#contact_group_select");
-    const costumSelect = selectElement.shadowRoot.querySelector("select");
-    if (costumSelect) {
-      const selectValue = this.validateSelect(costumSelect);
-      if (!selectValue) {
-        console.log("value: false");
-        // 셀렉트 요소이고 값이 유효하지 않을 경우
-        selectValid = false;
+
+    if (selectElement) {
+      // 그룹 전역 상태 값이 필요 > 신규일때 정상 작동 > 그룹이 존재할때 직접 입력시 해당 요소 못찾음...
+      const elementSelect = selectElement.shadowRoot.querySelector("select");
+
+      if (selectElement && elementSelect) {
+        const selectValue = this.validateSelect(selectElement);
+        formData.append("contact_group", selectElement);
+
+        if (!selectValue) {
+          console.log("value: false");
+          // 셀렉트 요소이고 값이 유효하지 않을 경우
+          selectValid = false;
+        }
       }
     }
 
     let requiredInputsFilled = true; // 필수 입력란이 모두 채워졌는지 여부를 저장할 변수
-    const modalInputs = document.querySelectorAll("app-modal-input");
+    const modalInputs = document
+      .querySelector("#addEdit")
+      .querySelectorAll("app-modal-input");
+
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
 
-      if (inputElement.required && !validatedValue) {
-        alert(`${inputName} 필수 입력값이 비어있습니다.`);
-        requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
-        return false; // 제출 막기
-      }
+      // if (inputElement.required && !validatedValue) {
+      //   alert(`${inputName} 필수 입력값이 비어있습니다.`);
+      //   requiredInputsFilled = false; // 필수 입력값이 비어있음을 표시
+      //   return false; // 제출 막기
+      // }
 
       if (validatedValue) {
         formData.append(inputName, validatedValue);
