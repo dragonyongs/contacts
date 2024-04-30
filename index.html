@@ -26,7 +26,7 @@
       <!-- top -->
       <div class="fixed z-20 top-0 left-0 w-full">
         <div class="text-center py-3 bg-[#0635c9]">
-          <h1 class="text-2xl font-normal text-white">My Contacts</h1>
+          <h1 class="text-2xl font-normal text-white cursor-pointer" onclick="showNotification()">My Contacts</h1>
           <!-- <app-input type="text" id="serachKeyword"
             class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" name="search_keyword"
             data-label="검색" value="" placeholder="이름, 전화번호, 팀 검색"></app-input> -->
@@ -217,8 +217,7 @@
             <input type="text" placeholder="이름, 전화번호, 팀 검색"
               class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
             <button type="submit" role="button"
-              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700"
-              onclick="showNotification()">
+              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700">
               검색
             </button>
           </div>
@@ -340,28 +339,28 @@
           body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다.',
           dir: 'ltr',
           icon: './public/icons/common/img-notification.png',
-          badge: './public/icons/common/icon-badge.png',
-          image: './public/icons/common/icon-notification.png', // 알림에 표시될 아이콘 이미지 URL
-          actions: [
-            {
-              action: 'reply',
-              type: 'text',
-              title: 'Reply',
-              icon: './public/icons/common/icon-notification.png',
-              placeholder: '여기에 작성해주세요.',
-            },
-            {
-              action: 'yes',
-              type: 'button',
-              title: '👍 Yes',
-            },
-            {
-              action: 'no',
-              type: 'text',
-              title: '👎 No (explain why)',
-              placeholder: 'Type your explanation here',
-            },
-          ],
+          // badge: './public/icons/common/icon-badge.png',
+          // image: './public/icons/common/icon-notification.png', // 알림에 표시될 아이콘 이미지 URL
+          // actions: [
+          //   {
+          //     action: 'reply',
+          //     type: 'text',
+          //     title: 'Reply',
+          //     icon: './public/icons/common/icon-notification.png',
+          //     placeholder: '여기에 작성해주세요.',
+          //   },
+          //   {
+          //     action: 'yes',
+          //     type: 'button',
+          //     title: '👍 Yes',
+          //   },
+          //   {
+          //     action: 'no',
+          //     type: 'text',
+          //     title: '👎 No (explain why)',
+          //     placeholder: 'Type your explanation here',
+          //   },
+          // ],
           vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
           data: {
             url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
