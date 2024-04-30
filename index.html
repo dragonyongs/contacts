@@ -25,8 +25,8 @@
     <div class="relative flex-grow bg-white">
       <!-- top -->
       <div class="fixed z-20 top-0 left-0 w-full">
-        <div class="text-center py-3 bg-[#0635c9]">
-          <h1 class="text-2xl font-normal text-white cursor-pointer" onclick="showNotification()">My Contacts</h1>
+        <div class="text-center py-3 bg-[#0635c9]" @click="showNotification">
+          <h1 class="text-2xl font-normal text-white cursor-pointer">My Contacts</h1>
           <!-- <app-input type="text" id="serachKeyword"
             class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" name="search_keyword"
             data-label="검색" value="" placeholder="이름, 전화번호, 팀 검색"></app-input> -->
@@ -336,7 +336,7 @@
         // Check whether notification permissions have already been granted;
         const title = 'StarRich Advisor'
         const options = {
-          body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다.',
+          body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다. 볼링클럽은 앞으로 진행하지 않습니다.',
           dir: 'ltr',
           icon: './public/icons/common/img-notification.png',
           // badge: './public/icons/common/icon-badge.png',
@@ -361,10 +361,10 @@
           //     placeholder: 'Type your explanation here',
           //   },
           // ],
-          vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
-          data: {
-            url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
-          }
+          // vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
+          // data: {
+          //   url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
+          // }
         }
         // if so, create a notification
         const notification = new Notification(title, options);
