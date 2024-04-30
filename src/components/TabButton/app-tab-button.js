@@ -3,6 +3,7 @@ export class AppTabButton extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.vibrate = this.vibrate.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
   get id() {
@@ -19,8 +20,32 @@ export class AppTabButton extends HTMLElement {
 
    // 진동을 발생시키는 멤버 메서드
   vibrate() {
-    console.log('vibrate 실행!');
-    navigator.vibrate([200, 100, 200]);
+    navigator.vibrate([200, 100]);
+  }
+
+  showNotification() {
+    // 사용자에게 보여질 알림의 옵션 설정
+    const options = {
+      body: '스타리치에 새로운 소식이 왔습니다.',
+      icon: '/public/icons/common/icon-notification.png', // 알림에 표시될 아이콘 이미지 URL
+      vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
+      data: {
+        url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
+      }
+    };
+  
+    // 알림 표시 요청
+    if (Notification.permission === 'granted') {
+      // 사용자가 알림을 허용한 경우
+      new Notification('새로운 알림!', options);
+    } else if (Notification.permission !== 'denied') {
+      // 사용자가 알림을 거절하지 않은 경우
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification('새로운 알림!', options);
+        }
+      });
+    }
   }
 
   template(state) {
@@ -75,7 +100,7 @@ export class AppTabButton extends HTMLElement {
           break;
         case "search":
           message(id);
-          this.vibrate();
+          this.showNotification();
           break;
         case "data":
           message(id);

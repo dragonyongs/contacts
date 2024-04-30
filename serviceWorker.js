@@ -40,6 +40,7 @@ const urlsToCache = [
   "./public/fonts/Pretendard/Pretendard-SemiBold.woff",
   "./public/fonts/Pretendard/Pretendard-Thin.woff",
   "./public/fonts/Pretendard/PretendardVariable.woff2",
+  "./public/icons/common/icon-notification.png",
 ];
 
 // 서비스 워커 설치 이벤트
