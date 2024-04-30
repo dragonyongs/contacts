@@ -2,6 +2,7 @@ export class AppTabButton extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.vibrate = this.vibrate.bind(this);
   }
 
   get id() {
@@ -14,6 +15,12 @@ export class AppTabButton extends HTMLElement {
 
   get size() {
     return this.getAttribute("data-size") || "small";
+  }
+
+   // 진동을 발생시키는 멤버 메서드
+  vibrate() {
+    console.log('vibrate 실행!');
+    navigator.vibrate([200, 100, 200]);
   }
 
   template(state) {
@@ -64,23 +71,29 @@ export class AppTabButton extends HTMLElement {
           break;
         case "add":
           message(id);
+          this.vibrate();
           break;
         case "search":
           message(id);
+          this.vibrate();
           break;
         case "data":
           message(id);
+          this.vibrate();
           break;
         case "edit":
-            message(id);
+          this.vibrate();
+          message(id);
           break;
         case "detail":
-            message(id);
+          this.vibrate();
+          message(id);
           break;  
         default:
           console.log("Wrong Action!");
       }
     });
+
   }
 
   render() {
