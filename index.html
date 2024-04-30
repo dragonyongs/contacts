@@ -217,7 +217,8 @@
             <input type="text" placeholder="이름, 전화번호, 팀 검색"
               class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
             <button type="submit" role="button"
-              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700">
+              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700"
+              onclick="showNotification()">
               검색
             </button>
           </div>
@@ -302,7 +303,8 @@
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
             <app-button x-show="modalTabState === 'add'" id="save_contact_button" type="submit" role="button"
-              data-iconName="save-outline" data-iconSize="small" data-method="post" class="flex-1 primary"> <!--  onclick="saveContact" click="requiredFieldsCheck()" -->
+              data-iconName="save-outline" data-iconSize="small" data-method="post" class="flex-1 primary">
+              <!--  onclick="saveContact" click="requiredFieldsCheck()" -->
               <span slot="label">등록</span>
             </app-button>
 
@@ -327,6 +329,59 @@
   </div>
   <!-- Script -->
   <script>
+    function showNotification() {
+      if (!("Notification" in window)) {
+        // Check if the browser supports notifications
+        alert("This browser does not support desktop notification");
+      } else if (Notification.permission === "granted") {
+        // Check whether notification permissions have already been granted;
+        const title = 'StarRich Advisor'
+        const options = {
+          body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다.',
+          dir: 'ltr',
+          icon: './public/icons/common/img-notification.png',
+          badge: './public/icons/common/icon-badge.png',
+          image: './public/icons/common/icon-notification.png', // 알림에 표시될 아이콘 이미지 URL
+          actions: [
+            {
+              action: 'reply',
+              type: 'text',
+              title: 'Reply',
+              icon: './public/icons/common/icon-notification.png',
+              placeholder: '여기에 작성해주세요.',
+            },
+            {
+              action: 'yes',
+              type: 'button',
+              title: '👍 Yes',
+            },
+            {
+              action: 'no',
+              type: 'text',
+              title: '👎 No (explain why)',
+              placeholder: 'Type your explanation here',
+            },
+          ],
+          vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
+          data: {
+            url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
+          }
+        }
+        // if so, create a notification
+        const notification = new Notification(title, options);
+        setTimeout(notification.close.bind(notification), 72000);
+        // …
+      } else if (Notification.permission !== "denied") {
+        // We need to ask the user for permission
+        Notification.requestPermission().then((permission) => {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            const notification = new Notification("Hi there!");
+            // …
+          }
+        });
+      }
+    }
 
     const modalData = {
       modalOpen: false,
