@@ -1,18 +1,25 @@
-import {
-  clearModalContent,
-  resetDetailContent,
-} from "../../eventHandlers/modalEvents.js";
+import { resetDetailContent } from "../../eventHandlers/modalEvents.js";
+import { loadContact } from "../../services/dataService.js";
 
-let formDataCallback; // formDataCallback 함수를 위한 전역 변수 선언
+let formDataCallback;
 
 export function setFormDataCallback(callback) {
-  formDataCallback = callback; // formDataCallback 함수를 설정하는 함수 정의
+  formDataCallback = callback;
 }
 
 export class AppButton extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    this.addEventListener("click", this.handleClick.bind(this));
+  }
+
+  getAttributeOrEmpty(attr) {
+    return this.getAttribute(attr) || "";
   }
 
   get id() {
@@ -65,11 +72,6 @@ export class AppButton extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    // 등록 버튼에 대한 이벤트 리스너 등록
-    if (this.id === "save_contact_button") {
-      this.addEventListener("click", this.handleSaveButtonClick.bind(this));
-    }
-
     // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
     if (this.classList.contains("remove-overflow")) {
       this.addEventListener("click", () => {
@@ -93,15 +95,66 @@ export class AppButton extends HTMLElement {
     }
   }
 
-  // 등록 버튼 클릭 이벤트 핸들러
-  handleSaveButtonClick(event) {
-    event.preventDefault();
+  async handleClick(event) {
+    event.stopPropagation(); // Stop event bubbling
+    const target = event.target;
+    const appButton = target.closest("app-button");
 
-    console.log("add Button Click!");
-    const appButton = event.target.closest("app-button");
-    if (appButton) {
-      appButton.dispatchEvent(new Event("submitForm")); // 폼 제출 이벤트 발생
+    if (target.matches('app-button[type="submit"]')) {
+      const method = target.getAttribute("data-method");
+      if (method === "post") {
+        // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
+        this.handleSaveButtonClick(event);
+      } else if (method === "put") {
+        const loadPerson = await loadContact(event.target.id);
+        console.log('loadPerson', loadPerson);
+        // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
+        this.handleUpdateButtonClick(event);
+      }
     }
+  }
+
+  // 등록 버튼 클릭 이벤트 핸들러
+  async handleSaveButtonClick(event) {
+    const formData = new FormData();
+    await this.processForm(event, formData, formDataCallback);
+    // event.preventDefault();
+    // console.log("add Button Click!");
+
+    // const appButton = event.target.closest("app-button");
+    // if (appButton) {
+    //   appButton.dispatchEvent(new Event("submitForm")); // 폼 제출 이벤트 발생
+    // }
+  }
+
+  // 수정 버튼 클릭 이벤트 핸들러
+  async handleUpdateButtonClick(event) {
+    const formData = new FormData();
+    const idToUpdate = Number(event.target.id);
+    const dataToUpdate = await loadContact(idToUpdate);
+    if (dataToUpdate) {
+      console.log("Loaded data to update:", dataToUpdate);
+      await this.processForm(event, formData, formDataCallback);
+    } else {
+      console.error("Failed to load data to update.");
+    }
+
+    // event.preventDefault();
+    // console.log("update Button Click!");
+  
+    // const appButton = event.target.closest("app-button");
+    // if (appButton) {
+    //   const idToUpdate = Number(event.target.id);
+    //   const dataToUpdate = await loadContact(idToUpdate);
+  
+    //   if (dataToUpdate) {
+    //     console.log("Loaded data to update:", dataToUpdate);
+    //     // 수정 폼 데이터를 불러오고 폼 제출 이벤트를 발생시킵니다.
+    //     this.updateForm(dataToUpdate);
+    //   } else {
+    //     console.error("Failed to load data to update.");
+    //   }
+    // }
   }
 
   render() {
@@ -157,97 +210,73 @@ export class AppButton extends HTMLElement {
     }
   }
 
-  // 폼 제출 함수
-  submitForm(event) {
+  processForm(event, formData) {
     event.preventDefault();
 
-    console.log("submitForm 실행");
+    let selectValid = true;
+    let requiredInputsFilled = true;
 
-    const formData = new FormData();
-
-    let selectValid = true; // 셀렉트 값이 유효한지 여부를 저장할 변수
     const selectElement = document.querySelector("#contact_group_select");
+    const elementSelect = selectElement.shadowRoot.querySelector("select");
 
-    if (selectElement) {
-      const elementSelect = selectElement.shadowRoot.querySelector("select");
-
-      if (selectElement && elementSelect) {
-        const selectValue = this.validateSelect(selectElement);
-        formData.append("contact_group", selectElement);
-
-        if (!selectValue) {
-          selectValid = false;
-        }
+    if (selectElement && elementSelect) {
+      const selectValue = this.validateSelect(selectElement);
+      formData.append("contact_group", selectElement);
+      if (!selectValue) {
+        selectValid = false;
       }
     }
 
-    let requiredInputsFilled = true; // 필수 입력란이 모두 채워졌는지 여부를 저장할 변수
-
-    const modalInputs = document
-      .querySelector("#addEdit")
-      .querySelectorAll("app-modal-input");
+    const modalInputs = document.querySelector("#addEdit").querySelectorAll("app-modal-input");
 
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
+      console.log('validatedValue', validatedValue);
 
       if (validatedValue) {
         formData.append(inputName, validatedValue);
+      } else {
+        requiredInputsFilled = false;
       }
     });
-
-    // 필수 입력값이 비어있으면 제출 막기
-    if (!requiredInputsFilled) {
-      return false;
-    }
-
-    console.log("selectValid", selectValid);
-
-    if (!selectValid) {
-      // 유효하지 않은 입력값이 있거나 셀렉트 값이 선택되지 않은 경우
+    
+    if (!selectValid || !requiredInputsFilled) {
       if (!selectValid) {
-        alert("app-button 유효한 연락처 그룹을 선택해주세요.");
+        alert("유효한 연락처 그룹을 선택해주세요.");
+      }
+      if (!requiredInputsFilled) {
+        alert("필수 입력값을 채워주세요.");
       }
       return false;
     }
-
+  
     if (formDataCallback) {
-      // 폼 데이터 수집 및 유효성 검사가 완료된 후 콜백 함수 호출
-      if (selectValid && requiredInputsFilled) {
-        const success = formDataCallback(formData);
-        if (success) {
-          this.resetModal();
-        }
-      } else {
-        // 필수 입력값이 비어있거나 셀렉트 값이 유효하지 않은 경우 알림
-        if (!requiredInputsFilled) {
-          alert("필수 입력값을 채워주세요.");
-        }
-        if (!selectValid) {
-          alert("유효한 연락처 그룹을 선택해주세요.");
-        }
+      const success = formDataCallback(formData);
+      if (success) {
+        this.resetModal();
       }
     }
-    // if (formDataCallback) {
-    //   // formDataCallback이 정의되어 있을 때만 호출
-    //   const success = formDataCallback(formData); // 외부에서 전달된 콜백 함수 호출
-    //   if (success) {
-    //     // 성공했을 때 모달 닫기
-    //     this.resetModal();
-    //   }
-    // }
   }
 
-  // 폼 수정 함수
-  updateForm(event) {
-    event.preventDefault();
+  // 폼 제출 함수
+  // submitForm(event) {
+  //   event.preventDefault();
+  //   console.log("submitForm 실행");
 
-    // 여기에 수정 폼과 관련된 로직을 추가하세요.
-    console.log("updateForm 실행");
+  //   const formData = new FormData();
+  //   this.processForm(formData);
+  // }
 
-    // 수정 폼과 관련된 로직을 추가하세요.
-  }
+  // 업데이트 폼 제출 함수
+  // updateForm(event) {
+  //   event.preventDefault();
+  //   console.log("updateForm 실행", event.target.id);
+    
+  //   const formData = new FormData();
+  //   this.processForm(formData);
+  // }
 
   resetModal() {
     // 입력 필드 초기화
@@ -268,34 +297,14 @@ export class AppButton extends HTMLElement {
   }
 }
 
-
-
 customElements.define("app-button", AppButton);
 
 document.addEventListener("click", (event) => {
-  event.stopPropagation(); // 이벤트 버블링 중지
-
   const target = event.target;
-
   if (target.matches('app-button[type="submit"]')) {
-    const method = target.getAttribute("data-method");
-
-    if (method === "post") {
-      console.log("등록 버튼 실행!");
-      const appButton = target.closest("app-button");
-      if (appButton) {
-        appButton.submitForm.call(appButton, event); // submitForm 메서드 호출
-      }
-    } else if (method === "put") {
-      console.log("수정 버튼 실행!", event.target.id);
-      // 수정 버튼 실행시 수정 로직 추가
-      const appButton = target.closest("app-button");
-      if (appButton) {
-        appButton.updateForm.call(appButton, event); // updateForm 메서드 호출
-      }
-
-      const modalElement = document.querySelector("#addEdit");
-      modalElement.querySelector("button").click();
+    const appButton = target.closest("app-button");
+    if (appButton) {
+      appButton.handleClick(event);
     }
   }
 });

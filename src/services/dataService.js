@@ -1,6 +1,7 @@
 import { getDataDB } from "./dataDB.js";
 
 let databaseInstance = null;
+const database = await getDataDB();
 
 export async function getDatabase() {
   if (!databaseInstance) {
@@ -10,7 +11,6 @@ export async function getDatabase() {
 }
 
 export async function getContactsData() {
-  const database = await getDatabase();
   try {
     const contacts = await database.contacts.toArray();
     return contacts;
@@ -22,7 +22,6 @@ export async function getContactsData() {
 
 export async function getContactGroups() {
   try {
-    const database = await getDataDB();
     const contacts = await database.contacts.toArray();
     const groups = new Set(contacts.map((contact) => contact.contact_group));
     return Array.from(groups);
@@ -34,11 +33,21 @@ export async function getContactGroups() {
 
 export async function getContactAll() {
   try {
-    const database = await getDataDB();
     const contacts = await database.contacts.toArray();
     return Array.from(contacts);
   } catch (error) {
     console.error("Failed to retrieve contacts data: ", error);
     return [];
   }
+}
+
+export async function loadContact(id) {
+  const contactId = Number(id);
+  const result = await database.contacts.get(contactId);
+  return result;
+}
+
+export async function updateContact(id, newData) {
+  const contactId = Number(id);
+  await database.contacts.update(contactId, newData);
 }
