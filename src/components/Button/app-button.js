@@ -174,7 +174,7 @@ export class AppButton extends HTMLElement {
   validateInput(inputElement) {
     const inputValue = inputElement.value.trim();
     console.log("inputElement", inputElement.name);
-    console.log("inputValue", inputValue);
+    console.log("inputElement.required", inputElement.required);
     if (inputElement.required && !inputValue) {
       inputElement.classList.add("required");
       return false; // 유효성 검사 실패
@@ -184,29 +184,18 @@ export class AppButton extends HTMLElement {
   }
 
   validateSelect(selectElement) {
-    const inputElement =
-      selectElement.shadowRoot.querySelector("app-modal-input");
-
-    if (selectElement && !inputElement) {
-      console.log("selectElement", selectElement);
-      console.log("inputElement", inputElement);
-      console.log("inputElement가 존재하는데?");
+    if (selectElement) {
       const selectValue =
         selectElement.shadowRoot.querySelector("select").value;
+      console.log("----- selectValue", selectValue);
+
       if (selectElement.required && !selectValue) {
         selectElement.classList.add("required");
         return false; // 유효성 검사 실패
       }
+
       selectElement.classList.remove("required");
       return selectValue; // 유효성 검사 통과한 값 반환
-    } else {
-      const inputValue = inputElement.shadowRoot.querySelector("input").value;
-      if (inputElement.required && !inputValue) {
-        inputElement.classList.add("required");
-        return false; // 유효성 검사 실패
-      }
-      inputElement.classList.remove("required");
-      return inputValue; // 유효성 검사 통과한 값 반환
     }
   }
 
@@ -217,11 +206,14 @@ export class AppButton extends HTMLElement {
     let requiredInputsFilled = true;
 
     const selectElement = document.querySelector("#contact_group_select");
+    
     const elementSelect = selectElement.shadowRoot.querySelector("select");
+    console.log('----- selectElement', selectElement);
+    console.log('----- elementSelect', elementSelect);
 
     if (selectElement && elementSelect) {
       const selectValue = this.validateSelect(selectElement);
-      formData.append("contact_group", selectElement);
+      formData.append("contact_group", elementSelect);
       if (!selectValue) {
         selectValid = false;
       }
@@ -233,19 +225,22 @@ export class AppButton extends HTMLElement {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
-      console.log('validatedValue', validatedValue);
+      console.log('validatedValue', inputName + '/' + validatedValue);
 
-      if (validatedValue) {
+      if (requiredInputsFilled) {
         formData.append(inputName, validatedValue);
       } else {
         requiredInputsFilled = false;
       }
+      
     });
     
     if (!selectValid || !requiredInputsFilled) {
       if (!selectValid) {
         alert("유효한 연락처 그룹을 선택해주세요.");
       }
+
+      console.log('------ requiredInputsFilled ', requiredInputsFilled);
       if (!requiredInputsFilled) {
         alert("필수 입력값을 채워주세요.");
       }
