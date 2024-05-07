@@ -1,5 +1,5 @@
 import { resetDetailContent } from "../../eventHandlers/modalEvents.js";
-import { loadContact } from "../../services/dataService.js";
+import { loadContact, addContactToIndexedDB, updateContactInIndexedDB } from "../../services/dataService.js";
 
 let formDataCallback;
 
@@ -75,8 +75,6 @@ export class AppButton extends HTMLElement {
     // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
     if (this.classList.contains("remove-overflow")) {
       this.addEventListener("click", () => {
-        console.log("close");
-
         // 모달 내의 요소들을 초기화하는 함수 호출
         resetDetailContent();
 
@@ -84,13 +82,11 @@ export class AppButton extends HTMLElement {
 
         // 'active' 클래스가 있으면 제거합니다.
         if (isActive) {
-          console.log("active 제거");
           document.body.classList.remove("active");
         }
 
         // 'overflow-hidden' 클래스를 제거합니다.
         document.body.classList.remove("overflow-hidden");
-        console.log("overflow-hidden 클래스가 body에서 제거되었습니다.");
       });
     }
   }
@@ -98,15 +94,19 @@ export class AppButton extends HTMLElement {
   async handleClick(event) {
     event.stopPropagation(); // Stop event bubbling
     const target = event.target;
-    const appButton = target.closest("app-button");
+    // const appButton = target.closest("app-button");
 
     if (target.matches('app-button[type="submit"]')) {
       const method = target.getAttribute("data-method");
+      console.log('method', method);
+      
       if (method === "post") {
+        console.log('in-method', method);
         // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
         this.handleSaveButtonClick(event);
       } else if (method === "put") {
-        const loadPerson = await loadContact(event.target.id);
+        console.log('in-method', method);
+        const loadPerson = await loadContact(Number(event.target.id));
         console.log('loadPerson', loadPerson);
         // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
         this.handleUpdateButtonClick(event);
@@ -117,14 +117,7 @@ export class AppButton extends HTMLElement {
   // 등록 버튼 클릭 이벤트 핸들러
   async handleSaveButtonClick(event) {
     const formData = new FormData();
-    await this.processForm(event, formData, formDataCallback);
-    // event.preventDefault();
-    // console.log("add Button Click!");
-
-    // const appButton = event.target.closest("app-button");
-    // if (appButton) {
-    //   appButton.dispatchEvent(new Event("submitForm")); // 폼 제출 이벤트 발생
-    // }
+    await this.processForm(event, formData, true);
   }
 
   // 수정 버튼 클릭 이벤트 핸들러
@@ -134,27 +127,26 @@ export class AppButton extends HTMLElement {
     const dataToUpdate = await loadContact(idToUpdate);
     if (dataToUpdate) {
       console.log("Loaded data to update:", dataToUpdate);
-      await this.processForm(event, formData, formDataCallback);
+  
+      // 폼 내의 인풋 요소들에 접근하여 값을 FormData에 추가
+      const form = event.target.closest('form');
+      if (form) {
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+          formData.append(input.name, input.value);
+        });
+
+        console.log('form',form);
+      } else {
+        console.error("Form not found.");
+      }
+
+      // FormData를 처리하는 메서드 호출
+      await this.processForm(event, formData, false);
+      
     } else {
       console.error("Failed to load data to update.");
     }
-
-    // event.preventDefault();
-    // console.log("update Button Click!");
-  
-    // const appButton = event.target.closest("app-button");
-    // if (appButton) {
-    //   const idToUpdate = Number(event.target.id);
-    //   const dataToUpdate = await loadContact(idToUpdate);
-  
-    //   if (dataToUpdate) {
-    //     console.log("Loaded data to update:", dataToUpdate);
-    //     // 수정 폼 데이터를 불러오고 폼 제출 이벤트를 발생시킵니다.
-    //     this.updateForm(dataToUpdate);
-    //   } else {
-    //     console.error("Failed to load data to update.");
-    //   }
-    // }
   }
 
   render() {
@@ -199,7 +191,8 @@ export class AppButton extends HTMLElement {
     }
   }
 
-  processForm(event, formData) {
+  // processForm 함수 수정
+  async processForm(event, formData, isNew) {
     event.preventDefault();
 
     let selectValid = true;
@@ -208,12 +201,10 @@ export class AppButton extends HTMLElement {
     const selectElement = document.querySelector("#contact_group_select");
     
     const elementSelect = selectElement.shadowRoot.querySelector("select");
-    console.log('----- selectElement', selectElement);
-    console.log('----- elementSelect', elementSelect);
 
     if (selectElement && elementSelect) {
       const selectValue = this.validateSelect(selectElement);
-      formData.append("contact_group", elementSelect);
+      formData.append("contact_group", elementSelect.value);
       if (!selectValue) {
         selectValid = false;
       }
@@ -246,32 +237,23 @@ export class AppButton extends HTMLElement {
       }
       return false;
     }
-  
-    if (formDataCallback) {
-      const success = formDataCallback(formData);
-      if (success) {
-        this.resetModal();
-      }
+
+    // isNew 값에 따라 등록 또는 수정 동작 수행
+    if (isNew) {
+      // 새 데이터 추가
+      await addContactToIndexedDB(formData);
+      // 성공 메시지 표시
+      alert("데이터가 추가되었습니다.");
+    } else {
+      // 기존 데이터 수정
+      await updateContactInIndexedDB(event, formData);
+      // 성공 메시지 표시
+      alert("데이터가 업데이트되었습니다.");
     }
-  }
-
-  // 폼 제출 함수
-  // submitForm(event) {
-  //   event.preventDefault();
-  //   console.log("submitForm 실행");
-
-  //   const formData = new FormData();
-  //   this.processForm(formData);
-  // }
-
-  // 업데이트 폼 제출 함수
-  // updateForm(event) {
-  //   event.preventDefault();
-  //   console.log("updateForm 실행", event.target.id);
     
-  //   const formData = new FormData();
-  //   this.processForm(formData);
-  // }
+    // 처리 후에는 모달을 초기화
+    this.resetModal();
+  }
 
   resetModal() {
     // 입력 필드 초기화

@@ -62,7 +62,6 @@ export class AppModalSelect extends HTMLElement {
   selectEvent() {
     const selectElement = this.shadowRoot.querySelector("select");
     const deleteSelectElement = document.querySelector("#contact_group_select");
-    console.log("직접입력 선택 후 실행", deleteSelectElement);
     const testWrap = document.querySelector("#insertContactGroup");
 
     selectElement.addEventListener("change", function () {

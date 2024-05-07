@@ -1,19 +1,6 @@
 import { getDataDB } from "../services/dataDB.js";
 import { triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
 
-// 새로운 연락처를 저장하는 함수
-// export async function saveContact(formData) {
-//   try {
-//     const event = new CustomEvent("saveContact", { detail: formData });
-//     document.dispatchEvent(event);
-//     triggerContactUpdateEvent(); // 커스텀 이벤트 발생시키기
-//     console.log("saveContact 실행");
-//   } catch (error) {
-//     alert("연락처 저장에 실패했습니다: " + error);
-//     console.log(error);
-//   }
-// }
-
 // 연락처 삭제 함수
 export async function deleteContact(contactId) {
   const database = await getDataDB();
@@ -37,5 +24,4 @@ export async function deleteContact(contactId) {
   }
 }
 
-// window.saveContact = saveContact;
 window.deleteContact = deleteContact;

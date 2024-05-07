@@ -255,9 +255,6 @@
 
             <div id="insertContactGroup"></div>
 
-            <!-- <app-modal-input type="text" id="contact_group_input" class="hidden" name="contact_group"
-              data-label="연락처 그룹" value="" required="true"></app-modal-input> -->
-
             <app-modal-input type="text" id="full_name" name="full_name" data-label="이름"
               required="true"></app-modal-input>
 
@@ -302,14 +299,14 @@
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
             <app-button x-show="modalTabState === 'add'" id="save_contact_button" type="submit" role="button"
-              data-iconName="save-outline" data-iconSize="small" data-method="post" class="flex-1 primary">
-              <!--  onclick="saveContact" click="requiredFieldsCheck()" -->
+              data-iconName="save-outline" data-iconSize="small" data-method="post" class="flex-1 primary"
+              @click="handleOutsideClick">
               <span slot="label">등록</span>
             </app-button>
 
             <app-button x-show="modalTabState === 'edit'" id="update_contact_button" type="submit" role="button"
               data-iconName="create-outline" data-iconSize="small" data-method="put"
-              class="update_contact_button flex-1 success">
+              class="update_contact_button flex-1 success" @click="handleOutsideClick">
               <span slot="label">수정</span>
             </app-button>
           </div>
@@ -552,7 +549,6 @@
 
 
   </script>
-
   <script type="module" src="./src/components/Button/app-button.js"></script>
   <script type="module" src="./src/components/TabButton/app-tab-button.js"></script>
   <script type="module" src="./src/components/ListCard/app-list-card.js"></script>
@@ -561,6 +557,7 @@
   <script type="module" src="./src/services/excelService.js"></script>
   <script type="module" src="./src/eventHandlers/contactFunction.js"></script>
   <script type="module" src="./src/main.js"></script>
+
   <script src="./src/utils/modalUtils.js"></script>
 
   <script src="./src/assets/tailwindcss.js"></script>
