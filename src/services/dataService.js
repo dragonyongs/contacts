@@ -1,7 +1,6 @@
 import { getDataDB } from "./dataDB.js";
 import { triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
 
-
 let databaseInstance = null;
 
 export async function getDatabase() {
@@ -16,7 +15,6 @@ export async function getContactsData() {
     const database = await getDataDB();
     const contacts = await database.contacts.toArray();
     console.log('getContactsData-length: ', contacts.length);
-
     return contacts;
   } catch (error) {
     console.error("Failed to retrieve contacts data: ", error);
@@ -38,6 +36,7 @@ export async function getContactGroups() {
 
 export async function getContactAll() {
   try {
+    const database = await getDataDB();
     const contacts = await database.contacts.toArray();
     return Array.from(contacts);
   } catch (error) {
@@ -47,26 +46,33 @@ export async function getContactAll() {
 }
 
 export async function loadContact(id) {
-  const contactId = Number(id);
-  const result = await database.contacts.get(contactId);
-  return result;
+  try {
+    const database = await getDataDB();
+    const contactId = Number(id);
+    const result = await database.contacts.get(contactId);
+    return result;
+  } catch (error) {
+    console.error("Failed to load contact: ", error);
+    return null;
+  }
 }
 
 export async function updateContact(id, newData) {
-  const contactId = Number(id);
-  await database.contacts.update(contactId, newData);
+  try {
+    const database = await getDataDB();
+    const contactId = Number(id);
+    await database.contacts.update(contactId, newData);
+    return true;
+  } catch (error) {
+    console.error("Failed to update contact: ", error);
+    return false;
+  }
 }
 
-// 새로운 연락처 추가 함수
 export async function addContactToIndexedDB(formData) {
   try {
-    // 폼 데이터를 객체로 변환
-    const contact = {};
-    for (const [key, value] of formData.entries()) {
-      contact[key] = value;
-    }
-
-    // 데이터베이스에 연락처 추가
+    const database = await getDataDB();
+    const contact = Object.fromEntries(formData.entries());
     await database.contacts.add(contact);
     triggerContactUpdateEvent(contact);
     console.log("New contact added to IndexedDB:", contact);
@@ -77,20 +83,12 @@ export async function addContactToIndexedDB(formData) {
   }
 }
 
-// 기존 연락처 업데이트 함수
 export async function updateContactInIndexedDB(event, formData) {
   try {
-    // 폼 데이터를 객체로 변환
-    const contact = {};
-    for (const [key, value] of formData.entries()) {
-      contact[key] = value;
-    }
-
-    // 데이터베이스에서 기존 연락처 찾아 업데이트
+    const database = await getDataDB();
+    const contact = Object.fromEntries(formData.entries());
     const id = Number(event.target.id);
-    // console.log('updateContactInIndexedDB---contact', contact);
-
-    delete contact.id; // id는 수정할 필드가 아니므로 삭제
+    delete contact.id;
     await database.contacts.update(id, contact);
     triggerContactUpdateEvent(contact);
     console.log("Contact updated in IndexedDB:", contact);
