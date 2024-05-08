@@ -3,17 +3,19 @@ import { listContact } from "../eventHandlers/contactEvents.js";
 
 let globalJsonData = null;
 
-const contactsData = await getContactsData();
-const contactsConunt = contactsData.length;
-console.log('excelService 실행!');
 
-if (contactsConunt === 0) {
-  const exportButton = document.getElementById("export_button");
-  exportButton.classList.add('hidden');  
-}
+export async function setupExcelService(database) {
+  console.log('setupExcelService-getContactsData');
+  const contactsData = getContactsData();
+  const contactsConunt = contactsData.length;
+  console.log('contactsConunt 실행!', contactsConunt);
 
-export function setupExcelService(database) {
-  console.log("setupExcelService 실행!");
+  if (contactsConunt === 0) {
+    const exportButton = document.getElementById("export_button");
+    exportButton.classList.add('hidden');  
+  }
+
+
   const importFileInput = document
     .querySelector("app-modal-input")
     .shadowRoot.getElementById("import_file");
@@ -84,7 +86,8 @@ export async function importContactsFromExcel() {
 }
 
 export async function exportContactsToExcel() {
-  const contacts = await getContactsData();
+  // console.log('exportContactsToExcel-getContactsData');
+  // const contacts = await getContactsData();
 
   const fieldMapping = {
     contact_group: "연락처 그룹",
@@ -120,7 +123,7 @@ export async function exportContactsToExcel() {
   ];
 
   // 헤더를 한국어로 변환하고 정의된 순서대로 데이터를 정렬
-  const koreanHeadersData = contacts.map((contact) => {
+  const koreanHeadersData = contactsData.map((contact) => {
     return headers.reduce((acc, key) => {
       acc[fieldMapping[key] || key] = contact[key];
       return acc;
@@ -156,9 +159,10 @@ export async function exportContactsToExcel() {
 // 연락처 목록을 엑셀 파일로 내보내기
 export async function handleExportToExcel(database) {
   try {
-    const contacts = await getContactsData(database);
+    // console.log('handleExportToExcel-getContactsData');
+    // const contacts = await getContactsData(database);
     // 엑셀 파일 생성 및 내보내기
-    exportContactsToExcel(contacts);
+    exportContactsToExcel(contactsData);
   } catch (error) {
     console.error("Failed to export contacts to Excel: ", error);
     alert("엑셀 파일을 내보내는 중에 오류가 발생했습니다.");

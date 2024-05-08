@@ -1,4 +1,6 @@
 import {clearModalContent} from "../../eventHandlers/modalEvents.js";
+import { setupExcelService } from "../../services/excelService.js";
+import { getDataDB } from "../../services/dataDB.js";
 
 export class AppTabButton extends HTMLElement {
   constructor() {
@@ -59,7 +61,7 @@ export class AppTabButton extends HTMLElement {
       });
     }
 
-    this.addEventListener("click", function (e) {
+    this.addEventListener("click", async function (e) {
       let id = this.id.trim();
       const message = (id) => {
         // return alert(id.toUpperCase() + ' : PWA 전환 후 작업 예정');
@@ -82,6 +84,8 @@ export class AppTabButton extends HTMLElement {
           // this.showNotification();
           break;
         case "data":
+          const database = await getDataDB();
+          setupExcelService(database); // Excel 서비스 설정
           message(id);
           this.vibrate();
           break;

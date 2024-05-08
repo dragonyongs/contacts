@@ -7,6 +7,8 @@ import {
 } from "../components/Button/app-button.js";
 
 export function setupContactEvents() {
+  listContact();
+
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
   document
     .getElementById("export_button")
@@ -55,9 +57,9 @@ export function setupContactEvents() {
     return success;
   });
 
-  window.onload = async function () {
-    await listContact();
-  };
+//   window.onload = async function () {
+//     await listContact();
+//   };
 }
 
 // 커스텀 이벤트 생성 및 발생시키기
@@ -78,6 +80,7 @@ window.addEventListener("contactUpdate", async (e) => {
 
 // listContact 함수 내에서 연락처 데이터를 가져와서 DOM에 반영
 export async function listContact() {
+  console.log('listContact-getContactsData');
   const contacts = await getContactsData();
   const contactList = document.getElementById("contact-list");
   contactList.innerHTML = ""; // 기존 목록 초기화

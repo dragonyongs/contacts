@@ -3,7 +3,6 @@ import { triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
 
 
 let databaseInstance = null;
-const database = await getDataDB();
 
 export async function getDatabase() {
   if (!databaseInstance) {
@@ -14,7 +13,10 @@ export async function getDatabase() {
 
 export async function getContactsData() {
   try {
+    const database = await getDataDB();
     const contacts = await database.contacts.toArray();
+    console.log('getContactsData: ', contacts);
+
     return contacts;
   } catch (error) {
     console.error("Failed to retrieve contacts data: ", error);
@@ -24,6 +26,7 @@ export async function getContactsData() {
 
 export async function getContactGroups() {
   try {
+    const database = await getDataDB();
     const contacts = await database.contacts.toArray();
     const groups = new Set(contacts.map((contact) => contact.contact_group));
     return Array.from(groups);
