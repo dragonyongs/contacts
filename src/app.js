@@ -1,22 +1,16 @@
-import {
-  setupContactEvents,
-  listContact,
-} from "./eventHandlers/contactEvents.js";
-// import {
-//   deleteContact,
-//   saveContact,
-// } from "../src/eventHandlers/contactFunction.js";
+import { setupContactEvents } from "./eventHandlers/contactEvents.js";
 import { getDataDB } from "./services/dataDB.js";
 import { setupExcelService } from "./services/excelService.js";
+import { handleSearchInput } from './eventHandlers/searchEventHandler.js';
+
+const searchInput = document.getElementById('searchForm');
+searchInput.addEventListener('input', handleSearchInput);
 
 export async function initializeApp() {
   console.log("app.js initializeApp 실행!");
   const database = await getDataDB(); // 데이터베이스 초기화
   setupContactEvents(); // 연락처 이벤트 설정
   setupExcelService(database);
-  // saveContact();
-  // deleteContact(); // 삭제 함수
-  //전역 데이터 호출
 }
 
 if ("serviceWorker" in navigator) {
@@ -33,7 +27,6 @@ if ("serviceWorker" in navigator) {
 }
 
 if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-  // 아이폰, 아이패드, 아이팟 사용자를 위한 CSS 적용
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
 

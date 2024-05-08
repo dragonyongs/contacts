@@ -27,24 +27,24 @@
       <div class="fixed z-20 top-0 left-0 w-full">
         <div class="text-center py-3 bg-[#0635c9]" @click="showNotification">
           <h1 class="text-2xl font-normal text-white cursor-pointer">My Contacts</h1>
-          <!-- <app-input type="text" id="serachKeyword"
-            class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" name="search_keyword"
-            data-label="검색" value="" placeholder="이름, 전화번호, 팀 검색"></app-input> -->
         </div>
-
       </div>
 
       <div class="contactWrap">
 
         <!-- scroll-shadows -->
         <div class="w-full h-full">
+          <!-- <div id="searchForm" class="flex gap-x-2 w-full mt-14">
+            <input type="text" placeholder="이름, 전화번호, 팀 검색"
+              class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
+          </div> -->
           <div id="contact-list">
           </div>
         </div>
 
       </div>
 
-      <!-- Button -->
+      <!-- Tab Button -->
       <div
         class="button-tap z-50 fixed bottom-0 lelf-0 flex justify-center items-center gap-x-2 md:gap-x-8 w-full h-auto pt-1 pb-3 bg-white border-t border-gray-100">
         <app-tab-button id="list" data-icon="list-outline">
@@ -212,16 +212,10 @@
           </button>
           </app-button>
         </div>
-        <form action="" class="w-full" autocomplete="off">
-          <div class="flex gap-x-2 w-full">
-            <input type="text" placeholder="이름, 전화번호, 팀 검색"
-              class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
-            <button type="submit" role="button"
-              class="py-2 px-4 w-2/6 font-semibold text-sm text-white rounded-md bg-slate-700">
-              검색
-            </button>
-          </div>
-        </form>
+        <div id="searchForm" class="flex gap-x-2 w-full">
+          <input type="text" placeholder="이름, 전화번호, 팀 검색"
+            class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
+        </div>
       </div>
     </div>
 
@@ -315,7 +309,7 @@
     </div>
 
     <!-- 모달 배경 수정된 코드 -->
-    <div
+    <div id="modalBackground"
       x-show="modalOpen && ( modalTabState === 'add' || modalTabState === 'data' || modalTabState === 'search' || modalTabState === 'edit' )"
       @click="handleOutsideClick"
       class="remove-overflow z-30 fixed top-0 left-0 w-full h-screen bg-black opacity-70 cursor-pointer"

@@ -1,6 +1,7 @@
-import {clearModalContent} from "../../eventHandlers/modalEvents.js";
+import { clearModalContent } from "../../eventHandlers/modalEvents.js";
 import { setupExcelService } from "../../services/excelService.js";
 import { getDataDB } from "../../services/dataDB.js";
+import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
 
 export class AppTabButton extends HTMLElement {
   constructor() {
@@ -71,7 +72,7 @@ export class AppTabButton extends HTMLElement {
       switch (id) {
         case "list":
           message(id);
-          window.location.href = "./";
+          triggerContactUpdateEvent();
           break;
         case "add":
           message(id);

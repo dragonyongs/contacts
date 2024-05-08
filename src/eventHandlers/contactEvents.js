@@ -7,6 +7,7 @@ import {
 } from "../components/Button/app-button.js";
 
 export function setupContactEvents() {
+
   listContact();
 
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
