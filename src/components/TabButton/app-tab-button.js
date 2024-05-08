@@ -71,28 +71,29 @@ export class AppTabButton extends HTMLElement {
 
       switch (id) {
         case "list":
+          this.vibrate();
           message(id);
           triggerContactUpdateEvent();
           break;
         case "add":
+          this.vibrate();
           message(id);
           clearModalContent();
-          this.vibrate();
           break;
         case "search":
-          message(id);
           this.vibrate();
+          message(id);
           // this.showNotification();
           break;
         case "data":
+          this.vibrate();
           const database = await getDataDB();
           setupExcelService(database); // Excel 서비스 설정
           message(id);
-          this.vibrate();
           break;
         case "edit":
-          message(id);
           this.vibrate();
+          message(id);
           break;
         case "detail":
           this.vibrate();
