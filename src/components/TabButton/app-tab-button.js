@@ -1,5 +1,5 @@
 import { clearModalContent } from "../../eventHandlers/modalEvents.js";
-import { setupExcelService } from "../../services/excelService.js";
+// import { setupExcelService } from "../../services/excelService.js";
 import { getDataDB } from "../../services/dataDB.js";
 import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
 
@@ -88,7 +88,7 @@ export class AppTabButton extends HTMLElement {
         case "data":
           this.vibrate();
           const database = await getDataDB();
-          setupExcelService(database); // Excel 서비스 설정
+          // setupExcelService(database); // Excel 서비스 설정
           message(id);
           break;
         case "edit":

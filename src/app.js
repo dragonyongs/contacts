@@ -8,9 +8,9 @@ searchInput.addEventListener('input', handleSearchInput);
 
 export async function initializeApp() {
   console.log("app.js initializeApp 실행!");
-  // const database = await getDataDB(); // 데이터베이스 초기화
+  const database = await getDataDB(); // 데이터베이스 초기화
   setupContactEvents(); // 연락처 이벤트 설정
-  // setupExcelService(database);
+  setupExcelService(database);
 }
 
 if ("serviceWorker" in navigator) {

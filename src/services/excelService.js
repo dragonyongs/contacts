@@ -3,18 +3,16 @@ import { listContact } from "../eventHandlers/contactEvents.js";
 
 let globalJsonData = null;
 
-
 export async function setupExcelService(database) {
   console.log('setupExcelService-getContactsData');
   const contactsData = await getContactsData();
   const contactsConunt = contactsData.length;
   console.log('contactsConunt 실행!', contactsConunt);
-
+  
   if (contactsConunt === 0) {
     const exportButton = document.getElementById("export_button");
     exportButton.classList.add('hidden');  
   }
-
 
   const importFileInput = document
     .querySelector("app-modal-input")
@@ -86,9 +84,6 @@ export async function importContactsFromExcel() {
 }
 
 export async function exportContactsToExcel() {
-  // console.log('exportContactsToExcel-getContactsData');
-  // const contacts = await getContactsData();
-
   const fieldMapping = {
     contact_group: "연락처 그룹",
     full_name: "전체 이름",
@@ -159,8 +154,6 @@ export async function exportContactsToExcel() {
 // 연락처 목록을 엑셀 파일로 내보내기
 export async function handleExportToExcel(database) {
   try {
-    // console.log('handleExportToExcel-getContactsData');
-    // const contacts = await getContactsData(database);
     // 엑셀 파일 생성 및 내보내기
     exportContactsToExcel(contactsData);
   } catch (error) {
