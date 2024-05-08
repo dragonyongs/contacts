@@ -6,7 +6,7 @@ let globalJsonData = null;
 
 export async function setupExcelService(database) {
   console.log('setupExcelService-getContactsData');
-  const contactsData = getContactsData();
+  const contactsData = await getContactsData();
   const contactsConunt = contactsData.length;
   console.log('contactsConunt 실행!', contactsConunt);
 
