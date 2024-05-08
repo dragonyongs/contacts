@@ -7,11 +7,13 @@ import {
 //   saveContact,
 // } from "../src/eventHandlers/contactFunction.js";
 import { getDataDB } from "./services/dataDB.js";
+import { setupExcelService } from "./services/excelService.js";
 
 export async function initializeApp() {
   console.log("app.js initializeApp 실행!");
   const database = await getDataDB(); // 데이터베이스 초기화
   setupContactEvents(); // 연락처 이벤트 설정
+  setupExcelService(database);
   // saveContact();
   // deleteContact(); // 삭제 함수
   //전역 데이터 호출
