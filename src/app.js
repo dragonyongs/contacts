@@ -26,9 +26,25 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+// if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+//   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
+// }
+
+// iOS 기기인지 여부를 확인하는 함수
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+// PWA로 추가된 경우 상단 및 하단 브라우저 요소가 없는지 확인하는 함수
+function isPWAWithoutBrowserUI() {
+  return window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
+}
+
+// iOS 기기에서 PWA를 홈 화면에 추가한 경우에만 CSS를 적용
+if (isIOS() && isPWAWithoutBrowserUI()) {
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
+
 
 const detailColor = "#22326E";
 const contactWrapElement = document.querySelector(".contactWrap");
