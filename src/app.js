@@ -32,16 +32,19 @@ if ("serviceWorker" in navigator) {
 
 // iOS 기기인지 여부를 확인하는 함수
 function isIOS() {
+  console.log('iOS 조건');
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
 // PWA로 추가된 경우 상단 및 하단 브라우저 요소가 없는지 확인하는 함수
 function isPWAWithoutBrowserUI() {
+  console.log('PWA 조건');
   return window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
 }
 
 // iOS 기기에서 PWA를 홈 화면에 추가한 경우에만 CSS를 적용
 if (isIOS() && isPWAWithoutBrowserUI()) {
+  alert('iOS & PWA 조건 확인');
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
 
