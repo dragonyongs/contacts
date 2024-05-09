@@ -382,7 +382,8 @@
       modalState: "",
       modalTabState: "",
       contactMore: false,
-      contactData: "",
+      contactsData: "",
+      selectContact: "",
     }
 
     document.addEventListener('alpine:init', () => {
@@ -393,7 +394,8 @@
 
     document.addEventListener("detail-modal", function (e) {
       const modalDetail = document.querySelector(".modalDetail");
-      modalData.contactData = e.detail;
+      modalData.selectContact = e.detail;
+      const selectData = modalData.selectContact;
 
       const dataMapping = {
         ".full_name": "textContent",
@@ -416,27 +418,27 @@
         parentDiv.classList.remove("hidden");
 
         if (property === "textContent") {
-          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
+          if (selectData[selector.slice(1)] === undefined || selectData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden");
           } else {
-            element.textContent = modalData.contactData[selector.slice(1)];
+            element.textContent = selectData[selector.slice(1)];
             element.classList.remove("hidden");
           }
         } else if (property === "href") {
-          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
+          if (selectData[selector.slice(1)] === undefined || selectData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden")
           } else {
-            element.href = `tel:${modalData.contactData[selector.slice(1)]}`;
-            element.textContent = modalData.contactData[selector.slice(1)];
+            element.href = `tel:${selectData[selector.slice(1)]}`;
+            element.textContent = selectData[selector.slice(1)];
             parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
           }
         } else if (property === "text") {
-          if (modalData.contactData[selector.slice(1)].text === undefined || modalData.contactData[selector.slice(1)].text === "") {
+          if (selectData[selector.slice(1)].text === undefined || selectData[selector.slice(1)].text === "") {
             parentDiv.classList.add("hidden")
           } else {
-            element.textContent = modalData.contactData[selector.slice(1)].text;
+            element.textContent = selectData[selector.slice(1)].text;
             parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
           }
         }
@@ -446,7 +448,7 @@
       const contactButtons = document.querySelectorAll(".contact_id");
 
       contactButtons.forEach(contactButton => {
-        contactButton.setAttribute('id', modalData.contactData.contact_id);
+        contactButton.setAttribute('id', selectData.contact_id);
       });
 
 
@@ -454,13 +456,13 @@
       const photoUrlBgElement = modalDetail.querySelector(".photo_url_bg");
       const familyNameElement = modalDetail.querySelector(".family_name");
 
-      if (modalData.contactData.photo_url.length > 0) {
-        photoUrlElement.src = modalData.contactData.photo_url;
-        photoUrlBgElement.style.backgroundImage = `url(${modalData.contactData.photo_url})`;
+      if (selectData.photo_url.length > 0) {
+        photoUrlElement.src = selectData.photo_url;
+        photoUrlBgElement.style.backgroundImage = `url(${selectData.photo_url})`;
         photoUrlElement.classList.remove("hidden");
         photoUrlBgElement.classList.remove("hidden");
-      } else if (!modalData.contactData.photo_url && modalData.contactData.photo_url === "") {
-        familyNameElement.textContent = modalData.contactData.family_name;
+      } else if (!selectData.photo_url && selectData.photo_url === "") {
+        familyNameElement.textContent = selectData.family_name;
         familyNameElement.classList.remove("hidden");
       }
 
@@ -472,13 +474,14 @@
     // });
 
     document.getElementById('openEditModal').addEventListener("click", function (e) {
+      const selectData = modalData.selectContact;
 
       function countNonEmptyFields() {
         console.log();
         let nonEmptyCount = 0;
 
-        for (const key of Object.keys(modalData.contactData)) {
-          if (modalData.contactData[key] === '') {
+        for (const key of Object.keys(selectData)) {
+          if (selectData[key] === '') {
             nonEmptyCount++;
           }
         }
@@ -487,7 +490,7 @@
         return nonEmptyCount;
       }
 
-      const fieldCount = countNonEmptyFields(modalData.contactData);
+      const fieldCount = countNonEmptyFields(selectData);
       const contactMoreButton = document.querySelector('#more-button app-button');
       const contactMoreContents = document.querySelector('#optional-field')
 
@@ -497,55 +500,55 @@
 
       // contact_id
       let update_contact_button = document.querySelector('.update_contact_button');
-      update_contact_button.setAttribute('id', modalData.contactData.contact_id);
+      update_contact_button.setAttribute('id', selectData.contact_id);
 
       // contact_group
       let contactGroup = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
-      contactGroup.value = modalData.contactData.contact_group;
+      contactGroup.value = selectData.contact_group;
 
       // fullName
       let fullName = document.getElementById('full_name').shadowRoot.querySelector('#full_name');
-      fullName.value = modalData.contactData.full_name;
+      fullName.value = selectData.full_name;
 
       // rank
       let rank = document.getElementById('rank').shadowRoot.querySelector('#rank');
-      rank.value = modalData.contactData.rank;
+      rank.value = selectData.rank;
 
       // position
       let position = document.getElementById('position').shadowRoot.querySelector('#position');
-      position.value = modalData.contactData.position;
+      position.value = selectData.position;
 
       // division_name
       let divisionName = document.getElementById('division_name').shadowRoot.querySelector('#division_name');
-      divisionName.value = modalData.contactData.division_name;
+      divisionName.value = selectData.division_name;
 
       // team_name
       let teamName = document.getElementById('team_name').shadowRoot.querySelector('#team_name');
-      teamName.value = modalData.contactData.team_name;
+      teamName.value = selectData.team_name;
 
       // photo_url
       let photoUrl = document.getElementById('photo_url').shadowRoot.querySelector('#photo_url');
-      photoUrl.value = modalData.contactData.photo_url;
+      photoUrl.value = selectData.photo_url;
 
       // personal_phone_number
       let personalPhoneNumber = document.getElementById('personal_phone_number').shadowRoot.querySelector('#personal_phone_number');
-      personalPhoneNumber.value = modalData.contactData.personal_phone_number;
+      personalPhoneNumber.value = selectData.personal_phone_number;
 
       // office_phone_number
       let officePhoneNumber = document.getElementById('office_phone_number').shadowRoot.querySelector('#office_phone_number');
-      officePhoneNumber.value = modalData.contactData.office_phone_number;
+      officePhoneNumber.value = selectData.office_phone_number;
 
       // extension_number
       let extensionNumber = document.getElementById('extension_number').shadowRoot.querySelector('#extension_number');
-      extensionNumber.value = modalData.contactData.extension_number;
+      extensionNumber.value = selectData.extension_number;
 
       // status
       let status = document.getElementById('status').shadowRoot.querySelector('#status');
-      status.value = modalData.contactData.status.text;
+      status.value = selectData.status.text;
 
       // email_address
       let emailAddress = document.getElementById('email_address').shadowRoot.querySelector('#email_address');
-      emailAddress.value = modalData.contactData.email_address;
+      emailAddress.value = selectData.email_address;
 
     });
 

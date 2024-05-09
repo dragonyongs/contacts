@@ -7,7 +7,6 @@ import {
 } from "../components/Button/app-button.js";
 
 export async function setupContactEvents() {
-
   const contactsData = await getContactsData();
   listContact(contactsData);
 
@@ -72,20 +71,20 @@ export function triggerContactUpdateEvent(updatedContacts) {
     });
   
     console.log('triggerContactUpdateEvent', event);
-  
     window.dispatchEvent(event);
 }
 
 // 이벤트 리스너 추가
 window.addEventListener("contactUpdate", async (e) => {
   const updatedContacts = e.detail.updatedContacts;
-  console.log('updatedContacts-e.detail', updatedContacts);
+  modalData.contactsData = updatedContacts;
   await listContact(); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
 });
 
 // listContact 함수 내에서 연락처 데이터를 가져와서 DOM에 반영
 export async function listContact() {
   const contacts = await getContactsData();
+  modalData.contactsData = contacts;
   const contactList = document.getElementById("contact-list");
   contactList.innerHTML = ""; // 기존 목록 초기화
 

@@ -13,6 +13,8 @@ function handleOutsideClick() {
     this.modalOpen = false;
     this.modalState = "";
     this.modalTabState = "";
+    this.contactMore = false;
+    this.selectContact = "";
     document.body.classList.remove("active", "overflow-hidden");
     document.getElementById("modalBackground").classList.remove("hidden");
   }
