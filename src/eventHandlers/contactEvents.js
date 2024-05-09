@@ -6,9 +6,10 @@ import {
   setFormDataCallback,
 } from "../components/Button/app-button.js";
 
-export function setupContactEvents() {
+export async function setupContactEvents() {
 
-  listContact();
+  const contactsData = await getContactsData();
+  listContact(contactsData);
 
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
   document
@@ -65,23 +66,25 @@ export function setupContactEvents() {
 
 // 커스텀 이벤트 생성 및 발생시키기
 export function triggerContactUpdateEvent(updatedContacts) {
-  console.log("triggerContactUpdateEvent 실행");
-  const event = new CustomEvent("contactUpdate", {
-    detail: { updatedContacts },
-  });
-
-  window.dispatchEvent(event);
+    console.log("triggerContactUpdateEvent 실행", updatedContacts);
+    const event = new CustomEvent("contactUpdate", {
+      detail: { updatedContacts },
+    });
+  
+    console.log('triggerContactUpdateEvent', event);
+  
+    window.dispatchEvent(event);
 }
 
 // 이벤트 리스너 추가
 window.addEventListener("contactUpdate", async (e) => {
-  const updatedContacts = e.detail;
-  await listContact(updatedContacts); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
+  const updatedContacts = e.detail.updatedContacts;
+  console.log('updatedContacts-e.detail', updatedContacts);
+  await listContact(); // 연락처 목록을 새로 로드하고 DOM에 반영하는 함수
 });
 
 // listContact 함수 내에서 연락처 데이터를 가져와서 DOM에 반영
 export async function listContact() {
-  console.log('listContact-getContactsData');
   const contacts = await getContactsData();
   const contactList = document.getElementById("contact-list");
   contactList.innerHTML = ""; // 기존 목록 초기화

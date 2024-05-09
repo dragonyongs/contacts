@@ -4,10 +4,8 @@ import { listContact } from "../eventHandlers/contactEvents.js";
 let globalJsonData = null;
 
 export async function setupExcelService(database) {
-  console.log('setupExcelService-getContactsData');
   const contactsData = await getContactsData();
   const contactsConunt = contactsData.length;
-  console.log('contactsConunt 실행!', contactsConunt);
   
   if (contactsConunt === 0) {
     const exportButton = document.getElementById("export_button");
@@ -190,6 +188,8 @@ async function handleApply(database) {
 
 async function applyChangesToDatabase(database) {
   try {
+    const contactsData = await getContactsData();
+
     if (!database) {
       alert("데이터베이스가 준비되지 않았습니다.");
       return;

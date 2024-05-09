@@ -14,7 +14,6 @@ export async function getContactsData() {
   try {
     const database = await getDataDB();
     const contacts = await database.contacts.toArray();
-    console.log('getContactsData-length: ', contacts.length);
     return contacts;
   } catch (error) {
     console.error("Failed to retrieve contacts data: ", error);

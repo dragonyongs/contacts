@@ -1,5 +1,4 @@
 import { initializeApp } from "./app.js";
-console.log("initializeApp 실행!");
 
 initializeApp();
 

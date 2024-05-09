@@ -449,7 +449,6 @@
       } else if (!eventData.photo_url && eventData.photo_url === "") {
         familyNameElement.textContent = eventData.family_name;
         familyNameElement.classList.remove("hidden");
-        console.log("실행?");
       }
 
     });
@@ -457,7 +456,6 @@
     let contactData;
 
     document.addEventListener("edit-modal", function (e) {
-      console.log('e.detail: ', e.detail);
       contactData = e.detail;
     });
 
@@ -477,13 +475,11 @@
       }
 
       const fieldCount = countNonEmptyFields(contactData);
-      console.log('fieldCount', fieldCount);
       const contactMoreButton = document.querySelector('#more-button app-button');
       const contactMoreContents = document.querySelector('#optional-field')
 
       if (fieldCount <= 3) {
         contactMoreButton.click();
-        console.log('fieldCount more <= 3 count!');
       }
 
       // contact_id
@@ -493,7 +489,6 @@
       // contact_group
       let contactGroup = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
       contactGroup.value = contactData.contact_group;
-      console.log(contactData.contact_group)
 
       // fullName
       let fullName = document.getElementById('full_name').shadowRoot.querySelector('#full_name');

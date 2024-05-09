@@ -98,17 +98,10 @@ export class AppButton extends HTMLElement {
 
     if (target.matches('app-button[type="submit"]')) {
       const method = target.getAttribute("data-method");
-      console.log('method', method);
       
       if (method === "post") {
-        console.log('in-method', method);
-        // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
         this.handleSaveButtonClick(event);
       } else if (method === "put") {
-        console.log('in-method', method);
-        const loadPerson = await loadContact(Number(event.target.id));
-        console.log('loadPerson', loadPerson);
-        // appButton.processForm.call(appButton, event); // submitForm 메서드 호출
         this.handleUpdateButtonClick(event);
       }
     }
@@ -136,7 +129,6 @@ export class AppButton extends HTMLElement {
           formData.append(input.name, input.value);
         });
 
-        console.log('form',form);
       } else {
         console.error("Form not found.");
       }
@@ -165,8 +157,6 @@ export class AppButton extends HTMLElement {
   // 유효성 검사 함수
   validateInput(inputElement) {
     const inputValue = inputElement.value.trim();
-    console.log("inputElement", inputElement.name);
-    console.log("inputElement.required", inputElement.required);
     if (inputElement.required && !inputValue) {
       inputElement.classList.add("required");
       return false; // 유효성 검사 실패
@@ -179,7 +169,6 @@ export class AppButton extends HTMLElement {
     if (selectElement) {
       const selectValue =
         selectElement.shadowRoot.querySelector("select").value;
-      console.log("----- selectValue", selectValue);
 
       if (selectElement.required && !selectValue) {
         selectElement.classList.add("required");
@@ -199,15 +188,16 @@ export class AppButton extends HTMLElement {
     let requiredInputsFilled = true;
 
     const selectElement = document.querySelector("#contact_group_select");
-    
-    const elementSelect = selectElement.shadowRoot.querySelector("select");
 
-    if (selectElement && elementSelect) {
+    if (selectElement) {
+      const elementSelect = selectElement.shadowRoot.querySelector("select");
+
       const selectValue = this.validateSelect(selectElement);
       formData.append("contact_group", elementSelect.value);
       if (!selectValue) {
         selectValid = false;
       }
+
     }
 
     const modalInputs = document.querySelector("#addEdit").querySelectorAll("app-modal-input");
@@ -216,7 +206,6 @@ export class AppButton extends HTMLElement {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       const inputName = inputElement.getAttribute("name");
       const validatedValue = this.validateInput(inputElement);
-      console.log('validatedValue', inputName + '/' + validatedValue);
 
       if (requiredInputsFilled) {
         formData.append(inputName, validatedValue);
@@ -231,7 +220,6 @@ export class AppButton extends HTMLElement {
         alert("유효한 연락처 그룹을 선택해주세요.");
       }
 
-      console.log('------ requiredInputsFilled ', requiredInputsFilled);
       if (!requiredInputsFilled) {
         alert("필수 입력값을 채워주세요.");
       }

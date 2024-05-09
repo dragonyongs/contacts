@@ -1,47 +1,25 @@
 import { searchDatabase } from '../services/searchService.js';
 import { clearList } from '../utils/helpers.js';
 import { listContact } from "../eventHandlers/contactEvents.js";
-
-// export function handleSearchInput(event) {
-//     const modalBackground = document.getElementById('modalBackground');
-//     const searchText = event.target.value.toLowerCase();
-//     if (searchText === '') {
-//         clearList('contact-list');
-//         listContact();
-//         modalBackground.classList.remove('hidden');
-//         return;
-//     }
-
-//     modalBackground.classList.add('hidden');
-//     document.body.classList.remove("active", "overflow-hidden");
-
-//     searchDatabase(searchText)
-//         .then(results => {
-//             updateList(results);
-//         })
-//         .catch(error => {
-//             console.error('Error searching:', error);
-//         });
-// }
+import { getContactsData } from "../services/dataService.js";
 
 export function handleSearchInput(event) {
+    const contactData = getContactsData();
     const modalBackground = document.getElementById('modalBackground');
     const searchText = event.target.value.toLowerCase();
+
     if (searchText === '') {
-        clearList('contact-list');
         modalBackground.classList.remove('hidden');
         document.body.classList.add("active", "overflow-hidden");
-        return;
+    } else {
+            modalBackground.classList.add('hidden');
+            document.body.classList.remove("active", "overflow-hidden");
     }
-
-    modalBackground.classList.add('hidden');
-    document.body.classList.remove("active", "overflow-hidden");
 
     searchDatabase(searchText)
         .then(results => {
             if (results.length === 0) {
-                clearList('contact-list');
-                listContact(); // 검색 결과가 없으면 전체 연락처 목록을 다시 불러옴
+                listContact(contactData);
             } else {
                 updateList(results);
             }
@@ -95,4 +73,8 @@ export function updateList(results) {
         });
         contactList.appendChild(groupList);
     });
+    
+    if (!results) {
+        console.log('값이 존재하지 않습니다.');
+    }
 }

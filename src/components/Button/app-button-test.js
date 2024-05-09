@@ -60,15 +60,9 @@ export class AppButton extends HTMLElement {
   connectedCallback() {
     this.render();
 
-    // if (this.type === "submit" && this.method === "post") {
-    //   this.addEventListener("click", this.submitForm.bind(this));
-    //   console.log( "등록 버튼 실행!" );
-    // }
-
     // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
     if (this.classList.contains("remove-overflow")) {
       this.addEventListener("click", () => {
-        console.log("close");
 
         // 모달 내의 요소들을 초기화하는 함수 호출
         resetDetailContent();
@@ -77,13 +71,11 @@ export class AppButton extends HTMLElement {
 
         // 'active' 클래스가 있으면 제거합니다.
         if (isActive) {
-          console.log("active 제거");
           document.body.classList.remove("active");
         }
 
         // 'overflow-hidden' 클래스를 제거합니다.
         document.body.classList.remove("overflow-hidden");
-        console.log("overflow-hidden 클래스가 body에서 제거되었습니다.");
       });
     }
   }
@@ -116,8 +108,6 @@ export class AppButton extends HTMLElement {
   submitForm(event) {
     event.preventDefault();
 
-    console.log("submitForm 실행");
-
     const formData = new FormData();
 
     // 셀렉트 값이 유효한지 확인
@@ -127,7 +117,6 @@ export class AppButton extends HTMLElement {
     if (costumSelect) {
       const selectValue = costumSelect.value;
       if (!selectValue) {
-        console.log("value: false");
         selectValid = false;
       }
     }
@@ -155,7 +144,6 @@ export class AppButton extends HTMLElement {
     event.preventDefault();
 
     // 여기에 수정 폼과 관련된 로직을 추가하세요.
-    console.log("updateForm 실행");
 
     // 수정 폼과 관련된 로직을 추가하세요.
   }
@@ -184,13 +172,11 @@ document.addEventListener("click", (event) => {
   if (target.matches('app-button[type="submit"]')) {
     const method = target.getAttribute("data-method");
     if (method === "post") {
-      console.log("등록 버튼 실행!");
       const appButton = target.closest('app-button');
       if (appButton) {
         appButton.submitForm.call(appButton, event); // submitForm 메서드 호출
       }
     } else if (method === "put") {
-      console.log("수정 버튼 실행!", event.target.id);
       // 수정 버튼 실행시 수정 로직 추가
       const appButton = target.closest('app-button');
       if (appButton) {

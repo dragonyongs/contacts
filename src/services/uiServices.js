@@ -20,6 +20,5 @@ export function setupUI() {
 
   importButton.addEventListener("click", () => importFileInput.click());
 
-  console.log("setupUI 실행!");
   // 다른 UI 이벤트 처리 코드 추가
 }
