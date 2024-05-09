@@ -176,6 +176,7 @@ async function saveContact(submittedFormData, contactId = null) {
     "extension_number",
     "photo_url",
     "email_address",
+    "status",
   ];
 
   keys.forEach((key) => {

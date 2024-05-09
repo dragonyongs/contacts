@@ -14,6 +14,7 @@ function handleOutsideClick() {
     this.modalState = "";
     this.modalTabState = "";
     document.body.classList.remove("active", "overflow-hidden");
+    document.getElementById("modalBackground").classList.remove("hidden");
   }
 
 }

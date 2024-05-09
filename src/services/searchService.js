@@ -7,7 +7,8 @@ export async function searchDatabase(searchText) {
         .filter(contact =>
             contact.full_name.toLowerCase().includes(searchText.toLowerCase()) ||
             contact.personal_phone_number.toLowerCase().includes(searchText.toLowerCase()) ||
-            contact.team_name.toLowerCase().includes(searchText.toLowerCase())
+            contact.team_name.toLowerCase().includes(searchText.toLowerCase()) ||
+            contact.status.toLowerCase().includes(searchText.toLowerCase())
         )
         .toArray();
 }

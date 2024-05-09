@@ -145,6 +145,10 @@
             <span class="inline-block w-20 font-semibold">이메일</span>
             <span class="email_address">-</span>
           </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-20 font-semibold">상태</span>
+            <span class="status">-</span>
+          </div>
           <div class="p-4 bg-white flex items-center">
             <span class="inline-block w-20 font-semibold">사진 URL</span>
             <span
@@ -200,7 +204,8 @@
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl"
+      @click.outside="modalTabState = ''">
       <div class="flex justify-start items-center flex-col p-4 gap-y-2">
         <div class="w-full text-center">
           <h2 class="font-bold text-xl">연락처 검색</h2>
@@ -377,8 +382,8 @@
       modalState: "",
       modalTabState: "",
       contactMore: false,
+      contactData: "",
     }
-
 
     document.addEventListener('alpine:init', () => {
       Alpine.data('modalData', () => (
@@ -388,7 +393,7 @@
 
     document.addEventListener("detail-modal", function (e) {
       const modalDetail = document.querySelector(".modalDetail");
-      const eventData = e.detail;
+      modalData.contactData = e.detail;
 
       const dataMapping = {
         ".full_name": "textContent",
@@ -400,6 +405,7 @@
         ".personal_phone_number": "href",
         ".office_phone_number": "href",
         ".email_address": "textContent",
+        ".status": "text",
         ".photo_url": "textContent",
       };
 
@@ -410,20 +416,27 @@
         parentDiv.classList.remove("hidden");
 
         if (property === "textContent") {
-          if (eventData[selector.slice(1)] === undefined || eventData[selector.slice(1)] === "") {
+          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden");
           } else {
-            element.textContent = eventData[selector.slice(1)];
+            element.textContent = modalData.contactData[selector.slice(1)];
             element.classList.remove("hidden");
           }
         } else if (property === "href") {
-          if (eventData[selector.slice(1)] === undefined || eventData[selector.slice(1)] === "") {
+          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
             // 데이터가 비어있으면 부모 div에 hidden 클래스를 추가합니다.
             parentDiv.classList.add("hidden")
           } else {
-            element.href = `tel:${eventData[selector.slice(1)]}`;
-            element.textContent = eventData[selector.slice(1)];
+            element.href = `tel:${modalData.contactData[selector.slice(1)]}`;
+            element.textContent = modalData.contactData[selector.slice(1)];
+            parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
+          }
+        } else if (property === "text") {
+          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
+            parentDiv.classList.add("hidden")
+          } else {
+            element.textContent = modalData.contactData[selector.slice(1)].text;
             parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
           }
         }
@@ -433,7 +446,7 @@
       const contactButtons = document.querySelectorAll(".contact_id");
 
       contactButtons.forEach(contactButton => {
-        contactButton.setAttribute('id', eventData.contact_id);
+        contactButton.setAttribute('id', modalData.contactData.contact_id);
       });
 
 
@@ -441,31 +454,31 @@
       const photoUrlBgElement = modalDetail.querySelector(".photo_url_bg");
       const familyNameElement = modalDetail.querySelector(".family_name");
 
-      if (eventData.photo_url.length > 0) {
-        photoUrlElement.src = eventData.photo_url;
-        photoUrlBgElement.style.backgroundImage = `url(${eventData.photo_url})`;
+      if (modalData.contactData.photo_url.length > 0) {
+        photoUrlElement.src = modalData.contactData.photo_url;
+        photoUrlBgElement.style.backgroundImage = `url(${modalData.contactData.photo_url})`;
         photoUrlElement.classList.remove("hidden");
         photoUrlBgElement.classList.remove("hidden");
-      } else if (!eventData.photo_url && eventData.photo_url === "") {
-        familyNameElement.textContent = eventData.family_name;
+      } else if (!modalData.contactData.photo_url && modalData.contactData.photo_url === "") {
+        familyNameElement.textContent = modalData.contactData.family_name;
         familyNameElement.classList.remove("hidden");
       }
 
     });
 
-    let contactData;
 
-    document.addEventListener("edit-modal", function (e) {
-      contactData = e.detail;
-    });
+    // document.addEventListener("edit-modal", function (e) {
+    //   contactData = e.detail;
+    // });
 
     document.getElementById('openEditModal').addEventListener("click", function (e) {
 
-      function countNonEmptyFields(contactData) {
+      function countNonEmptyFields() {
+        console.log();
         let nonEmptyCount = 0;
 
-        for (const key of Object.keys(contactData)) {
-          if (contactData[key] === '') {
+        for (const key of Object.keys(modalData.contactData)) {
+          if (modalData.contactData[key] === '') {
             nonEmptyCount++;
           }
         }
@@ -474,7 +487,7 @@
         return nonEmptyCount;
       }
 
-      const fieldCount = countNonEmptyFields(contactData);
+      const fieldCount = countNonEmptyFields(modalData.contactData);
       const contactMoreButton = document.querySelector('#more-button app-button');
       const contactMoreContents = document.querySelector('#optional-field')
 
@@ -484,55 +497,55 @@
 
       // contact_id
       let update_contact_button = document.querySelector('.update_contact_button');
-      update_contact_button.setAttribute('id', contactData.contact_id);
+      update_contact_button.setAttribute('id', modalData.contactData.contact_id);
 
       // contact_group
       let contactGroup = document.getElementById('contact_group_select').shadowRoot.querySelector('#contact_group_select');
-      contactGroup.value = contactData.contact_group;
+      contactGroup.value = modalData.contactData.contact_group;
 
       // fullName
       let fullName = document.getElementById('full_name').shadowRoot.querySelector('#full_name');
-      fullName.value = contactData.full_name;
+      fullName.value = modalData.contactData.full_name;
 
       // rank
       let rank = document.getElementById('rank').shadowRoot.querySelector('#rank');
-      rank.value = contactData.rank;
+      rank.value = modalData.contactData.rank;
 
       // position
       let position = document.getElementById('position').shadowRoot.querySelector('#position');
-      position.value = contactData.position;
+      position.value = modalData.contactData.position;
 
       // division_name
       let divisionName = document.getElementById('division_name').shadowRoot.querySelector('#division_name');
-      divisionName.value = contactData.division_name;
+      divisionName.value = modalData.contactData.division_name;
 
       // team_name
       let teamName = document.getElementById('team_name').shadowRoot.querySelector('#team_name');
-      teamName.value = contactData.team_name;
+      teamName.value = modalData.contactData.team_name;
 
       // photo_url
       let photoUrl = document.getElementById('photo_url').shadowRoot.querySelector('#photo_url');
-      photoUrl.value = contactData.photo_url;
+      photoUrl.value = modalData.contactData.photo_url;
 
       // personal_phone_number
       let personalPhoneNumber = document.getElementById('personal_phone_number').shadowRoot.querySelector('#personal_phone_number');
-      personalPhoneNumber.value = contactData.personal_phone_number;
+      personalPhoneNumber.value = modalData.contactData.personal_phone_number;
 
       // office_phone_number
       let officePhoneNumber = document.getElementById('office_phone_number').shadowRoot.querySelector('#office_phone_number');
-      officePhoneNumber.value = contactData.office_phone_number;
+      officePhoneNumber.value = modalData.contactData.office_phone_number;
 
       // extension_number
       let extensionNumber = document.getElementById('extension_number').shadowRoot.querySelector('#extension_number');
-      extensionNumber.value = contactData.extension_number;
+      extensionNumber.value = modalData.contactData.extension_number;
 
       // status
       let status = document.getElementById('status').shadowRoot.querySelector('#status');
-      status.value = contactData.status.text;
+      status.value = modalData.contactData.status.text;
 
       // email_address
       let emailAddress = document.getElementById('email_address').shadowRoot.querySelector('#email_address');
-      emailAddress.value = contactData.email_address;
+      emailAddress.value = modalData.contactData.email_address;
 
     });
 
