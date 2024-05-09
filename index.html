@@ -433,7 +433,7 @@
             parentDiv.classList.remove("hidden"); // 데이터가 있으면 hidden 클래스를 제거합니다.
           }
         } else if (property === "text") {
-          if (modalData.contactData[selector.slice(1)] === undefined || modalData.contactData[selector.slice(1)] === "") {
+          if (modalData.contactData[selector.slice(1)].text === undefined || modalData.contactData[selector.slice(1)].text === "") {
             parentDiv.classList.add("hidden")
           } else {
             element.textContent = modalData.contactData[selector.slice(1)].text;
