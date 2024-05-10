@@ -1,3 +1,5 @@
+import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
+
 export class AppListCard extends HTMLElement {
   constructor() {
     super();
@@ -168,6 +170,10 @@ export class AppListCard extends HTMLElement {
         // 모달 열리면 body scrool 제한
         document.querySelector("body").classList.add("active");
         document.querySelector("body").classList.add("overflow-hidden");
+
+        // 상세 모달 오픈시 검색 인풋 초기화
+        document.getElementById("searchForm").querySelector("input").value = "";
+        triggerContactUpdateEvent();
       }
     });
   }
