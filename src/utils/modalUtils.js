@@ -15,8 +15,8 @@ function handleOutsideClick() {
     this.modalTabState = "";
     this.contactMore = false;
     this.selectContact = "";
+    this.showNotification = false;
     document.body.classList.remove("active", "overflow-hidden");
     document.getElementById("modalBackground").classList.remove("hidden");
   }
-
 }

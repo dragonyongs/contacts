@@ -1,6 +1,7 @@
 import { getDataDB } from "../services/dataDB.js";
 import { getContactsData } from "../services/dataService.js";
 import { triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
+import { notification } from "../services/notificationService.js";
 
 // 연락처 삭제 함수
 export async function deleteContact(contactId) {
@@ -13,8 +14,9 @@ export async function deleteContact(contactId) {
       if (isConfirmed) {
         const contactsData = await getContactsData();
         await database.contacts.delete(Number(contactId));
-        alert("연락처가 성공적으로 삭제되었습니다!");
+        // alert("연락처가 성공적으로 삭제되었습니다!");
         triggerContactUpdateEvent(contactsData); // 커스텀 이벤트 발생시키기
+        notification("연락처 삭제");
       } else {
         // 사용자가 취소를 선택한 경우
         console.log("연락처 삭제가 취소되었습니다.");

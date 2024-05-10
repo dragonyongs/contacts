@@ -1,5 +1,6 @@
 import { getDataDB } from "./dataDB.js";
 import { triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
+import { notification } from "../services/notificationService.js";
 
 let databaseInstance = null;
 
@@ -73,8 +74,9 @@ export async function addContactToIndexedDB(formData) {
     const database = await getDataDB();
     const contact = Object.fromEntries(formData.entries());
     await database.contacts.add(contact);
-    triggerContactUpdateEvent(contact);
+    // triggerContactUpdateEvent(contact, "연락처 등록 완료!");
     console.log("New contact added to IndexedDB:", contact);
+    triggerContactUpdateEvent();
     return true;
   } catch (error) {
     console.error("Error adding contact to IndexedDB:", error);
@@ -89,8 +91,8 @@ export async function updateContactInIndexedDB(event, formData) {
     const id = Number(event.target.id);
     delete contact.id;
     await database.contacts.update(id, contact);
-    triggerContactUpdateEvent(contact);
     console.log("Contact updated in IndexedDB:", contact);
+    triggerContactUpdateEvent();
     return true;
   } catch (error) {
     console.error("Error updating contact in IndexedDB:", error);

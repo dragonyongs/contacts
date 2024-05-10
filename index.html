@@ -17,15 +17,37 @@
 </head>
 
 <body>
-  <div class="flex flex-col h-full" x-data="modalData()" x-init="
+  <div class="flex flex-col h-full" x-data="modalData" x-init="
     window.addEventListener('close-modal', event => { modalOpen = !event.detail.open; });
     window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;});
+    window.addEventListener('show-notification', event => { showNotification = !showNotification;});
     ">
+
+    <!-- notification -->
+    <div id="notificationContainer" x-show="showNotification"></div>
+
+    <!-- <div class="z-50 fixed bottom-20 left-0 w-full h-64 p-8 rounded-tr-3xl rounded-tl-3xl bg-blue-700">
+      <div class="header mb-8">
+        <p class="font-normal text-md text-blue-200">알림</p>
+        <button
+          class="remove-overflow absolute top-6 right-6 bg-white rounded-full shadow-xl w-8 h-8 flex items-center justify-center border focus:bg-gray-100 active:bg-gray-200"
+          @click="handleOutsideClick">
+          <ion-icon name="close-outline" size="large"></ion-icon>
+        </button>
+      </div>
+      <div class="content relative h-full">
+        <p class="font-semibold text-2xl text-white">홍길동님을 등록하였습니다.</p>
+        <div class="absolute bottom-8 right-0 w-28 h-28">
+          <img src="./public/icons/common/icon-animation-notification.gif" alt="" class="mix-blend-color-burn">
+        </div>
+      </div>
+    </div> -->
+
     <!-- middle x-data="{ modalOpen: false, modalTabState: 'detail'}" x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})" -->
     <div class="relative flex-grow bg-white">
-      <!-- top -->
+      <!-- top bg-[#0635c9]-->
       <div class="fixed z-20 top-0 left-0 w-full">
-        <div class="text-center py-3 bg-[#0635c9]" @click="showNotification">
+        <div class="text-center py-3 bg-slate-800" @click="showNotification">
           <h1 class="text-2xl font-normal text-white cursor-pointer">My Contacts</h1>
         </div>
       </div>
@@ -384,6 +406,7 @@
       contactMore: false,
       contactsData: "",
       selectContact: "",
+      showNotification: false,
     }
 
     document.addEventListener('alpine:init', () => {

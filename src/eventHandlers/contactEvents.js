@@ -1,10 +1,11 @@
 import { getContactsData } from "../services/dataService.js";
 import { handleExportToExcel } from "../services/excelService.js";
-import { getDataDB } from "../services/dataDB.js";
+// import { getDataDB } from "../services/dataDB.js";
 import {
   AppButton,
   setFormDataCallback,
 } from "../components/Button/app-button.js";
+// import { notification } from "../services/notificationService.js";
 
 export async function setupContactEvents() {
   const contactsData = await getContactsData();
@@ -54,8 +55,8 @@ export async function setupContactEvents() {
     }
 
     // 셀렉트 값이 선택되었을 때만 데이터를 전달하고 성공을 반환
-    const success = saveContact(formData); // 폼 제출 시 실행될 함수
-    return success;
+    // const success = saveContact(formData); // 폼 제출 시 실행될 함수
+    // return success;
   });
 
 //   window.onload = async function () {
@@ -65,14 +66,19 @@ export async function setupContactEvents() {
 
 // 커스텀 이벤트 생성 및 발생시키기
 export function triggerContactUpdateEvent(updatedContacts) {
-    console.log("triggerContactUpdateEvent 실행", updatedContacts);
-    const event = new CustomEvent("contactUpdate", {
-      detail: { updatedContacts },
-    });
-  
-    console.log('triggerContactUpdateEvent', event);
-    window.dispatchEvent(event);
+    if (updatedContacts) {
+      const event = new CustomEvent("contactUpdate", {
+        detail: { updatedContacts },
+      });
+      window.dispatchEvent(event);
+    }
 }
+
+window.addEventListener('show-notification', () => {
+  console.log('show-notification 이벤트 발생!');
+  modalData.modalOpen = true;
+  modalData.showNotification = true;
+});
 
 // 이벤트 리스너 추가
 window.addEventListener("contactUpdate", async (e) => {
@@ -85,11 +91,16 @@ window.addEventListener("contactUpdate", async (e) => {
 export async function listContact() {
   const contacts = await getContactsData();
   modalData.contactsData = contacts;
+
+  const fetchData = modalData.contactsData;
+
+  console.log('fetchData', fetchData);
+  
   const contactList = document.getElementById("contact-list");
   contactList.innerHTML = ""; // 기존 목록 초기화
 
   // 데이터 그룹화
-  const groupedGroup = contacts.reduce((acc, contact) => {
+  const groupedGroup = fetchData.reduce((acc, contact) => {
     if (!contact.contact_group) {
       contact.contact_group = "미지정";
     }
@@ -142,72 +153,71 @@ export async function listContact() {
 }
 
 // 연락처 저장 이벤트 리스너
-async function saveContact(submittedFormData, contactId = null) {
-  const database = await getDataDB();
+// async function saveContact(submittedFormData, contactId = null) {
+//   const database = await getDataDB();
 
-  const customSelect = document.querySelector("app-modal-select");
-  const customInput = document.querySelector("app-modal-input");
+//   const customSelect = document.querySelector("app-modal-select");
+//   const customInput = document.querySelector("app-modal-input");
 
-  if (customSelect) {
+//   if (customSelect) {
 
-    const selectElement = customSelect.shadowRoot.querySelector(
-      "#contact_group_select"
-    );
+//     const selectElement = customSelect.shadowRoot.querySelector(
+//       "#contact_group_select"
+//     );
 
-    if (selectElement) {
-      submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
-    }
-  }
+//     if (selectElement) {
+//       submittedFormData.append(selectElement.name, selectElement.value); // 명시적으로 값을 추가
+//     }
+//   }
 
-  const inputElement = customInput.shadowRoot.querySelector(
-    "#contact_group_input"
-  );
+//   const inputElement = customInput.shadowRoot.querySelector(
+//     "#contact_group_input"
+//   );
 
-  const keys = [
-    "contact_group",
-    "full_name",
-    "division_name",
-    "team_name",
-    "position",
-    "rank",
-    "personal_phone_number",
-    "office_phone_number",
-    "extension_number",
-    "photo_url",
-    "email_address",
-    "status",
-  ];
+//   const keys = [
+//     "contact_group",
+//     "full_name",
+//     "division_name",
+//     "team_name",
+//     "position",
+//     "rank",
+//     "personal_phone_number",
+//     "office_phone_number",
+//     "extension_number",
+//     "photo_url",
+//     "email_address",
+//     "status",
+//   ];
 
-  keys.forEach((key) => {
-    const value = submittedFormData.get(key);
-    if (!value) {
-      submittedFormData.set(key, "");
-    }
-  });
+//   keys.forEach((key) => {
+//     const value = submittedFormData.get(key);
+//     if (!value) {
+//       submittedFormData.set(key, "");
+//     }
+//   });
 
-  const plainObject = {};
+//   const plainObject = {};
 
-  // FormData를 일반 객체로 변환
-  for (let [key, value] of submittedFormData.entries()) {
-    plainObject[key] = value;
-  }
+//   // FormData를 일반 객체로 변환
+//   for (let [key, value] of submittedFormData.entries()) {
+//     plainObject[key] = value;
+//   }
 
-  try {
-    if (contactId) {
-      await updateContact(contactId, plainObject);
-      alert("연락처가 성공적으로 수정되었습니다!");
-    } else {
-      await database.contacts.add(plainObject);
-      alert("연락처가 성공적으로 추가되었습니다!");
-    }
+//   // try {
+//   //   if (contactId) {
+//   //     console.log('update?', contactId);
+//   //     await updateContact(contactId, plainObject);
+//   //   } else {
+//   //     console.log('add?', contactId);
+//   //     await database.contacts.add(plainObject);
+//   //   }
 
-    document.getElementById("contact-form").reset();
+//   //   document.getElementById("contact-form").reset();
 
-    triggerContactUpdateEvent(plainObject); // 커스텀 이벤트 발생시키기
-    return true; // 폼 제출 성공
-  } catch (error) {
-    alert("사용자 추가에 실패했습니다: " + error);
+//   //   return true; // 폼 제출 성공
+//   // } catch (error) {
+//   //   alert("사용자 추가에 실패했습니다: " + error);
 
-    return false; // 폼 제출 실패
-  }
-}
+//   //   return false; // 폼 제출 실패
+//   // }
+// }
