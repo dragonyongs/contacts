@@ -7,7 +7,7 @@
   "display": "standalone",
   "start_url": "/contacts",
   "short_name": "Contacts",
-  "theme_color": "#0635c9",
+  "theme_color": "#1e293b",
   "description": "스마트폰에 저장하기 곤란한 연락처를 저장하세요.",
   "orientation": "any",
   "background_color": "#FFFFFF",

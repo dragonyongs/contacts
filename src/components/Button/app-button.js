@@ -1,7 +1,5 @@
 import { resetDetailContent } from "../../eventHandlers/modalEvents.js";
 import { loadContact, addContactToIndexedDB, updateContactInIndexedDB } from "../../services/dataService.js";
-import { notification } from "../../services/notificationService.js";
-import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
 
 let formDataCallback;
 
@@ -232,18 +230,9 @@ export class AppButton extends HTMLElement {
     if (isNew) {
       // 새 데이터 추가
       await addContactToIndexedDB(formData);
-      notification("연락처가 추가 되었습니다.");
-
-      // 성공 메시지 표시
-      // alert("데이터가 추가되었습니다.");
-      // triggerContactUpdateEvent(); // 커스텀 이벤트 발생시키기
     } else {
       // 기존 데이터 수정
       await updateContactInIndexedDB(event, formData);
-      notification("111연락처를 수정했습니다.");
-
-      // 성공 메시지 표시
-      // alert("데이터가 업데이트되었습니다.");
     }
     
     // 처리 후에는 모달을 초기화
@@ -260,9 +249,6 @@ export class AppButton extends HTMLElement {
       const inputElement = modalInput.shadowRoot.querySelector("input");
       inputElement.value = "";
     });
-
-    const modalElement = document.querySelector("#addEdit");
-    modalElement.querySelector("button").click();
 
     document.body.classList.remove("overflow-hidden");
     document.body.classList.remove("active");

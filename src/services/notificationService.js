@@ -19,17 +19,14 @@ export function notification(message) {
         </div>
         <div class="content relative h-full">
             <p class="font-semibold text-2xl text-white">${message}</p>
-            <div class="absolute bottom-8 right-0 w-28 h-28">
-                <img src="./public/icons/common/icon-animation-bell.gif" alt="" class="mix-blend-color-burn">
+            <div class="absolute bottom-9 right-0 w-28 h-28 rounded-full bg-white overflow-hidden flex justify-center items-center">
+                <img src="./public/icons/common/icon-animation-bell.gif" class="w-10/12" alt="">
             </div>
         </div>
     `;
     
     // 알림 모달을 컨테이너에 추가
     notificationContainer.appendChild(notificationDiv);
-
-    const noti = new CustomEvent('show-notification');
-    window.dispatchEvent(noti);
 }    
 // 일정 시간이 지난 후에 모달을 제거 (여기서는 3초 후)
 // setTimeout(function() {

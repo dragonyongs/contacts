@@ -8,7 +8,7 @@ export class AppTabButton extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.vibrate = this.vibrate.bind(this);
-    // this.showNotification = this.showNotification.bind(this);
+    // this.notification = this.notification.bind(this);
   }
 
   get id() {
@@ -82,7 +82,7 @@ export class AppTabButton extends HTMLElement {
         case "search":
           this.vibrate();
           message(id);
-          // this.showNotification();
+          // this.notification();
           break;
         case "data":
           this.vibrate();

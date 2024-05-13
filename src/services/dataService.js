@@ -57,26 +57,27 @@ export async function loadContact(id) {
   }
 }
 
-export async function updateContact(id, newData) {
-  try {
-    const database = await getDataDB();
-    const contactId = Number(id);
-    await database.contacts.update(contactId, newData);
-    return true;
-  } catch (error) {
-    console.error("Failed to update contact: ", error);
-    return false;
-  }
-}
+// export async function updateContact(id, newData) {
+//   try {
+//     const database = await getDataDB();
+//     const contactId = Number(id);
+//     await database.contacts.update(contactId, newData);
+//     return true;
+//   } catch (error) {
+//     console.error("Failed to update contact: ", error);
+//     return false;
+//   }
+// }
 
 export async function addContactToIndexedDB(formData) {
   try {
     const database = await getDataDB();
     const contact = Object.fromEntries(formData.entries());
     await database.contacts.add(contact);
-    // triggerContactUpdateEvent(contact, "연락처 등록 완료!");
     console.log("New contact added to IndexedDB:", contact);
-    triggerContactUpdateEvent();
+    triggerContactUpdateEvent(contact);
+    notification(`${contact.full_name}님의 연락처를 추가했습니다.`);
+
     return true;
   } catch (error) {
     console.error("Error adding contact to IndexedDB:", error);
@@ -92,7 +93,9 @@ export async function updateContactInIndexedDB(event, formData) {
     delete contact.id;
     await database.contacts.update(id, contact);
     console.log("Contact updated in IndexedDB:", contact);
-    triggerContactUpdateEvent();
+    triggerContactUpdateEvent(contact);
+    notification(`${contact.full_name}님의 연락처를 수정했습니다.`);
+
     return true;
   } catch (error) {
     console.error("Error updating contact in IndexedDB:", error);
