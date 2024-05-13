@@ -31,11 +31,6 @@ export function resetDetailContent() {
     photoUrlElement.src = "";
     photoUrlBgElement.style.backgroundImage = `url()`;
 
-    // hidden 클래스 제거
-    // setTimeout(() => {
-    //     familyNameElement.classList.remove('hidden');
-    // }, 1000);
-
     // 테마 색상 원복
     const originalColor = "#0635C9";
     document.querySelector('meta[name="theme-color"]').setAttribute('content', originalColor);

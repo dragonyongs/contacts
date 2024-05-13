@@ -82,7 +82,6 @@ export class AppTabButton extends HTMLElement {
         case "search":
           this.vibrate();
           message(id);
-          // this.notification();
           break;
         case "data":
           this.vibrate();

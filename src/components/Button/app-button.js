@@ -243,7 +243,6 @@ export class AppButton extends HTMLElement {
     // 입력 필드 초기화
     const modalInputs = document.querySelectorAll("app-modal-input");
 
-    //modalSelect 초기화 해야함
 
     modalInputs.forEach((modalInput) => {
       const inputElement = modalInput.shadowRoot.querySelector("input");

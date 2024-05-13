@@ -1,10 +1,5 @@
 
-function handleTeatClick() {
-  console.log("실행 여부 ?");
-}
-
 function handleOutsideClick() {
-  console.log("그냥 실행?");
   if (
     this.modalState === "detail" &&
     (this.modalTabState === "add" ||

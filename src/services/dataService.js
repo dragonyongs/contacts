@@ -57,18 +57,6 @@ export async function loadContact(id) {
   }
 }
 
-// export async function updateContact(id, newData) {
-//   try {
-//     const database = await getDataDB();
-//     const contactId = Number(id);
-//     await database.contacts.update(contactId, newData);
-//     return true;
-//   } catch (error) {
-//     console.error("Failed to update contact: ", error);
-//     return false;
-//   }
-// }
-
 export async function addContactToIndexedDB(formData) {
   try {
     const database = await getDataDB();
