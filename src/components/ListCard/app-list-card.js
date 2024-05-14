@@ -6,36 +6,40 @@ export class AppListCard extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
+  get contactData() {
+    return JSON.parse(this.getAttribute("data-contactData"));
+  }
+
   get id() {
     return this.getAttribute("id") || "";
   }
 
-  get contact_id() {
-    return this.getAttribute("data-contactId") || "";
-  }
+  // get contact_id() {
+  //   return this.getAttribute("data-contactId") || "";
+  // }
 
-  get full_name() {
-    return this.getAttribute("data-fullName").trim() || "";
-  }
+  // get full_name() {
+  //   return this.getAttribute("data-fullName").trim() || "";
+  // }
 
-  get position() {
-    return this.getAttribute("data-position").trim() || "";
-  }
+  // get position() {
+  //   return this.getAttribute("data-position").trim() || "";
+  // }
 
-  get rank() {
-    return this.getAttribute("data-rank").trim() || "";
-  }
+  // get rank() {
+  //   return this.getAttribute("data-rank").trim() || "";
+  // }
 
-  get contact_group() {
-    return this.getAttribute("data-contactGroup").trim() || "";
-  }
+  // get contact_group() {
+  //   return this.getAttribute("data-contactGroup").trim() || "";
+  // }
 
-  get division_name() {
-    return this.getAttribute("data-divisionName").trim() || "";
-  }
+  // get division_name() {
+  //   return this.getAttribute("data-divisionName").trim() || "";
+  // }
 
   get statusInfo() {
-    const status = this.getAttribute("data-status").trim() || "";
+    const status = this.contactData.status.trim() || "";
     switch (status) {
       case "연차":
         return { status: status, text: "연차", class: "dayoff" };
@@ -52,31 +56,31 @@ export class AppListCard extends HTMLElement {
     }
   }
 
-  get team_name() {
-    return this.getAttribute("data-teamName").trim() || "";
-  }
+  // get team_name() {
+  //   return this.getAttribute("data-teamName").trim() || "";
+  // }
 
-  get photo_url() {
-    return this.getAttribute("data-photoUrl").trim() || "";
-  }
+  // get photo_url() {
+  //   return this.getAttribute("data-photoUrl").trim() || "";
+  // }
 
-  get personal_phone_number() {
-    return this.getAttribute("data-personalNumber").trim() || "";
-  }
+  // get personal_phone_number() {
+  //   return this.getAttribute("data-personalNumber").trim() || "";
+  // }
 
-  get office_phone_number() {
-    return this.getAttribute("data-officeNumner").trim() || "";
-  }
+  // get office_phone_number() {
+  //   return this.getAttribute("data-officeNumner").trim() || "";
+  // }
 
-  get extension_number() {
-    return this.getAttribute("data-extensionNumber").trim() || "";
-  }
+  // get extension_number() {
+  //   return this.getAttribute("data-extensionNumber").trim() || "";
+  // }
 
-  get email_address() {
-    return this.getAttribute("data-emailAddress").trim() || "";
-  }
+  // get email_address() {
+  //   return this.getAttribute("data-emailAddress").trim() || "";
+  // }
 
-  template(state) {
+template(state) {
     const statusInfo = this.statusInfo;
     // const familyName = state.full_name.charAt(0);
     return `
@@ -126,76 +130,89 @@ export class AppListCard extends HTMLElement {
 
     // ul 요소에 이벤트 리스너를 추가합니다.
     this.addEventListener("click", (e) => {
-      // 클릭한 요소의 ID 값을 가져옵니다.
-      const clickedElementId = e.target
-        .closest("app-list-card")
-        .getAttribute("data-contactId");
-      // state.contact_id와 클릭한 요소의 ID 값의 일치 여부를 확인합니다.
-      if (this.contact_id === clickedElementId) {
-        // 클릭한 요소의 ID 값과 state.contact_id가 일치하는 경우에만 커스텀 이벤트를 생성하고 전달합니다.
-        const family_name = this.full_name.charAt(0);
 
-        const eventData = {
-          id: this.id,
-          contact_id: clickedElementId,
-          contact_group: this.contact_group,
-          family_name: family_name,
-          full_name: this.full_name,
-          rank: this.rank,
-          position: this.position,
-          division_name: this.division_name,
-          team_name: this.team_name,
-          photo_url: this.photo_url,
-          personal_phone_number: this.personal_phone_number,
-          office_phone_number: this.office_phone_number,
-          extension_number: this.extension_number,
-          status: this.statusInfo,
-          email_address: this.email_address,
-        };
+      // 모달 열리면 body scrool 제한
+      document.querySelector("body").classList.add("active");
+      document.querySelector("body").classList.add("overflow-hidden");
+
+      // 상세 모달 오픈시 검색 인풋 초기화
+      document.getElementById("searchForm").querySelector("input").value = "";
+      triggerContactUpdateEvent();
+
+      // 클릭한 요소의 ID 값을 가져옵니다.
+      // const clickedElementId = e.target
+      //   .closest("app-list-card")
+      //   .getAttribute("data-contactId");
+      
+      // const detailContact = this.contactData.contact_id;
+      // console.log(this.contactData.contact_id);
+
+      // state.contact_id와 클릭한 요소의 ID 값의 일치 여부를 확인합니다.
+      // if (this.contact_id === detailContact) {
+        // 클릭한 요소의 ID 값과 state.contact_id가 일치하는 경우에만 커스텀 이벤트를 생성하고 전달합니다.
+        // const family_name = this.full_name.charAt(0);
+
+        // const eventData = {
+          // id: this.id,
+          // contact_id: clickedElementId,
+          // contact_group: this.contact_group,
+          // family_name: family_name,
+          // full_name: this.full_name,
+          // rank: this.rank,
+          // position: this.position,
+          // division_name: this.division_name,
+          // team_name: this.team_name,
+          // photo_url: this.photo_url,
+          // personal_phone_number: this.personal_phone_number,
+          // office_phone_number: this.office_phone_number,
+          // extension_number: this.extension_number,
+          // status: this.statusInfo,
+          // email_address: this.email_address,
+        // };
 
         const customEvent = new CustomEvent("detail-modal", {
           bubbles: true,
           composed: true,
-          detail: eventData,
+          detail: this.contactData,
         });
         document.dispatchEvent(customEvent);
 
         const customEditEvent = new CustomEvent("edit-modal", {
           bubbles: true,
           composed: true,
-          detail: eventData,
+          detail: this.contactData,
         });
         document.dispatchEvent(customEditEvent);
 
         // 모달 열리면 body scrool 제한
-        document.querySelector("body").classList.add("active");
-        document.querySelector("body").classList.add("overflow-hidden");
+      //   document.querySelector("body").classList.add("active");
+      //   document.querySelector("body").classList.add("overflow-hidden");
 
-        // 상세 모달 오픈시 검색 인풋 초기화
-        document.getElementById("searchForm").querySelector("input").value = "";
-        triggerContactUpdateEvent();
-      }
+      //   // 상세 모달 오픈시 검색 인풋 초기화
+      //   document.getElementById("searchForm").querySelector("input").value = "";
+      //   triggerContactUpdateEvent();
+      // }
     });
   }
 
   render() {
-    const family_name = this.full_name.charAt(0);
+    // const family_name = this.contactData.full_name.charAt(0);
     this.shadowRoot.innerHTML = this.template({
       id: this.id,
-      contact_id: this.contact_id,
-      contact_group: this.contact_group,
-      family_name: family_name,
-      full_name: this.full_name,
-      rank: this.rank,
-      position: this.position,
-      division_name: this.division_name,
-      team_name: this.team_name,
-      photo_url: this.photo_url,
-      personal_phone_number: this.personal_phone_number,
-      office_phone_number: this.office_phone_number,
-      extension_number: this.extension_number,
-      status: this.statusInfo,
-      email_address: this.email_address,
+      contact_id: this.contactData.contact_id,
+      contact_group: this.contactData.contact_group,
+      family_name: this.contactData.full_name.charAt(0),
+      full_name: this.contactData.full_name,
+      rank: this.contactData.rank,
+      position: this.contactData.position,
+      division_name: this.contactData.division_name,
+      team_name: this.contactData.team_name,
+      photo_url: this.contactData.photo_url,
+      personal_phone_number: this.contactData.personal_phone_number,
+      office_phone_number: this.contactData.office_phone_number,
+      extension_number: this.contactData.extension_number,
+      status: this.contactData.statusInfo,
+      email_address: this.contactData.email_address,
     });
   }
 }

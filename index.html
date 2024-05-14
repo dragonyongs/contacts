@@ -419,7 +419,7 @@
         ".personal_phone_number": "href",
         ".office_phone_number": "href",
         ".email_address": "textContent",
-        ".status": "text",
+        ".status": "textContent",
         ".photo_url": "textContent",
       };
 
@@ -474,7 +474,7 @@
         photoUrlElement.classList.remove("hidden");
         photoUrlBgElement.classList.remove("hidden");
       } else if (!selectData.photo_url && selectData.photo_url === "") {
-        familyNameElement.textContent = selectData.family_name;
+        familyNameElement.textContent = selectData.full_name.charAt(0);
         familyNameElement.classList.remove("hidden");
       }
 
@@ -489,7 +489,6 @@
       const selectData = modalData.selectContact;
 
       function countNonEmptyFields() {
-        console.log();
         let nonEmptyCount = 0;
 
         for (const key of Object.keys(selectData)) {

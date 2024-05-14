@@ -71,12 +71,11 @@ export function updateList(results) {
             const groupList = document.createElement("ul");
             groupedGroup[contact_group].forEach((contact) => {
                 const contactItem = document.createElement("li");
+                const contactData = JSON.stringify(contact);
                 contactItem.innerHTML = `
-                    <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; }" id="detail" data-contactId="${contact.contact_id}" data-contactGroup="${contact.contact_group}" data-fullName="${contact.full_name}" data-position="${contact.position}" data-rank="${contact.rank}" 
-                    data-teamName="${contact.team_name}" data-status="${contact.status}" data-photoUrl="${contact.photo_url}" data-divisionName="${contact.division_name}"
-                    data-personalNumber="${contact.personal_phone_number}" data-officeNumner="${contact.office_phone_number}" data-extensionNumber="${contact.extension_number}" data-emailAddress="${contact.email_address}">
-                    </app-list-card>
-                `;
+                <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
+                </app-list-card>
+            `;
                 groupList.appendChild(contactItem);
             });
             contactList.appendChild(groupList);

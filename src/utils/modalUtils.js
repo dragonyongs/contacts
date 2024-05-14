@@ -28,7 +28,8 @@ function handleOutsideClick() {
 function handleConfirmClick() {
   console.log('handleConfirmClick 1) this.notification', this.notification);
   this.modalOpen = false;
-  // this.modalState = "";
+  this.modalTabState = "";
+  this.modalState = "";
   this.notification = true;
   document.getElementById("notificationContainer").innerHTML = '';
   console.log('handleConfirmClick 2) this.notification', this.notification);

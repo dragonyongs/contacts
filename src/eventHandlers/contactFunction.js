@@ -20,8 +20,7 @@ export async function deleteContact(contactId) {
         notification(`${deleteContact.full_name}님의 연락처를 삭제했습니다.`);
 
       } else {
-        // 사용자가 취소를 선택한 경우
-        console.log("연락처 삭제가 취소되었습니다.");
+        notification(`${deleteContact.full_name}님의 연락처 삭제가 취소되었습니다.`);
       }
     }
   } catch (error) {

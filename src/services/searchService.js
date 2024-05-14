@@ -1,17 +1,31 @@
 import { getDataDB } from "./dataDB.js";
+import { getContactsData } from "../services/dataService.js";
 
 // 포함된 부분 검색
 export async function searchDatabase(searchText) {
-    const database = await getDataDB();
-    return database.contacts
+    const contactsData = await getContactsData();
+    console.log('contactsData', contactsData);
+    return contactsData
         .filter(contact =>
             contact.full_name.toLowerCase().includes(searchText.toLowerCase()) ||
             contact.personal_phone_number.toLowerCase().includes(searchText.toLowerCase()) ||
             contact.team_name.toLowerCase().includes(searchText.toLowerCase()) ||
             contact.status.toLowerCase().includes(searchText.toLowerCase())
-        )
-        .toArray();
+        );
+        // .toArray();
 }
+
+// export async function searchDatabase(searchText) {
+//     const database = await getDataDB();
+//     return database.contacts
+//         .filter(contact =>
+//             contact.full_name.toLowerCase().includes(searchText.toLowerCase()) ||
+//             contact.personal_phone_number.toLowerCase().includes(searchText.toLowerCase()) ||
+//             contact.team_name.toLowerCase().includes(searchText.toLowerCase()) ||
+//             contact.status.toLowerCase().includes(searchText.toLowerCase())
+//         )
+//         .toArray();
+// }
 
 // 쿼리로만 검색
 // export async function searchDatabase(searchText) {
