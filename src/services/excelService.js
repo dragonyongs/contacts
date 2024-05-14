@@ -5,16 +5,14 @@ let globalJsonData = null;
 
 export async function setupExcelService(database) {
   const contactsData = await getContactsData();
-  const contactsConunt = contactsData.length;
+  const contactsCount = contactsData.length;
   
-  if (contactsConunt === 0) {
+  if (contactsCount === 0) {
     const exportButton = document.getElementById("export_button");
     exportButton.classList.add('hidden');  
   }
 
-  const importFileInput = document
-    .querySelector("app-modal-input")
-    .shadowRoot.getElementById("import_file");
+  const importFileInput = document.getElementById("import_file").shadowRoot.querySelector("input");
   const exportButton = document.getElementById("export_button");
   const importButton = document.getElementById("import_button");
   const applyButton = document.getElementById("apply_button");
@@ -29,9 +27,7 @@ export async function setupExcelService(database) {
 
 export async function importContactsFromExcel() {
   try {
-    const fileInput = document
-      .querySelector("app-modal-input")
-      .shadowRoot.querySelector("#import_file");
+    const fileInput = document.getElementById("import_file").shadowRoot.querySelector("input");
 
     let file = fileInput.files[0];
     var reader = new FileReader();
@@ -66,19 +62,32 @@ export async function importContactsFromExcel() {
       };
 
       // 한국어 헤더를 영어로 변경
-      globalJsonData = jsonData.map((row) => {
-        return Object.keys(row).reduce((acc, key) => {
-          const englishKey = fieldMappingReverse[key] || key;
-          acc[englishKey] = row[key];
-          return acc;
-        }, {});
-      });
+      // globalJsonData = jsonData.map((row) => {
+      //   return Object.keys(row).reduce((acc, key) => {
+      //     const englishKey = fieldMappingReverse[key] || key;
+      //     acc[englishKey] = row[key];
+      //     return acc;
+      //   }, {});
+      // });
+      
+      // 한국어 헤더를 영어 키로 매핑하고 데이터를 변환
+      globalJsonData = mapHeadersFromKoreanToEnglish(jsonData);
     };
     reader.readAsArrayBuffer(file);
   } catch (error) {
     console.error("Failed to import contacts from Excel: ", error);
     alert("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
   }
+}
+
+function mapHeadersFromKoreanToEnglish(jsonData) {
+  return jsonData.map((row) => {
+      return Object.keys(row).reduce((acc, key) => {
+          const englishKey = fieldMappingReverse[key] || key;
+          acc[englishKey] = row[key];
+          return acc;
+      }, {});
+  });
 }
 
 export async function exportContactsToExcel() {

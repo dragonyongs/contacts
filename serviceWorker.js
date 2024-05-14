@@ -41,6 +41,11 @@ const urlsToCache = [
   "./public/fonts/Pretendard/Pretendard-Thin.woff",
   "./public/fonts/Pretendard/PretendardVariable.woff2",
   "./public/icons/common/icon-notification.png",
+  "./public/icons/common/icon-animation-notification.gif",
+  "./public/icons/common/icon-animation-message.gif",
+  "./public/icons/common/icon-animation-bell.gif",
+  "./public/icons/common/icon-badge.png",
+  "./public/icons/common/img-notification.png",
 ];
 
 // 서비스 워커 설치 이벤트

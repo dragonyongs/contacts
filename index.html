@@ -52,24 +52,29 @@
 
       </div>
 
-      <!-- Tab Button -->
+      <!-- Tab Button  else { modalOpen = !modalOpen; modalTabState = ''; }-->
       <div
         class="button-tap z-50 fixed bottom-0 lelf-0 flex justify-center items-center gap-x-2 md:gap-x-8 w-full h-auto pt-1 pb-3 bg-white border-t border-gray-100">
+
         <app-tab-button id="list" data-icon="list-outline" @click="handleOutsideClick">
           <span slot="label">목록</span>
         </app-tab-button>
+
         <app-tab-button id="add" data-icon="add-outline" class="remove-overflow"
-          x-on:click="if (modalTabState !== 'add') { modalOpen = true; modalTabState = 'add'; } else { modalOpen = !modalOpen; modalState = ''; }">
+          x-on:click="modalOpen = true; modalTabState = 'add';">
           <span slot="label">등록</span>
         </app-tab-button>
+
         <app-tab-button id="search" data-icon="search-outline" class="remove-overflow"
-          x-on:click="if (modalTabState !== 'search') { modalOpen = true; modalTabState = 'search'; } else { modalOpen = !modalOpen; modalState = ''; }">
+          x-on:click="modalOpen = true; modalTabState = 'search';">
           <span slot="label">검색</span>
         </app-tab-button>
+
         <app-tab-button id="data" data-icon="server-outline" class="remove-overflow"
-          x-on:click="if (modalTabState !== 'data') { modalOpen = true; modalTabState = 'data'; } else { modalOpen = !modalOpen; modalState = ''; }">
+          x-on:click="modalOpen = true; modalTabState = 'data';">
           <span slot="label">데이터</span>
         </app-tab-button>
+
       </div>
 
     </div>
@@ -167,71 +172,6 @@
       </div>
     </div>
 
-    <!-- Data Modal -->
-    <div x-show="modalOpen && modalTabState === 'data'" x-transition:enter="transition ease-out duration-200"
-      x-transition:enter-start="transform translate-y-20 opacity-0"
-      x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
-      x-transition:leave-start="transform translate-y-0 opacity-100"
-      x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl">
-      <div class="flex justify-start items-center flex-col p-4 gap-y-2">
-        <div class="w-full text-center">
-          <h2 class="font-bold text-xl">연락처 데이터 등록</h2>
-          <button
-            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            @click="handleOutsideClick">
-            <ion-icon name="close-outline" size="small"></ion-icon>
-          </button>
-        </div>
-        <div class="flex gap-x-2 w-full">
-          <div class="py-4 px-5 w-full flex justify-between gap-x-2">
-            <!-- <form id="contact-form" autocomplete="off"> -->
-            <app-modal-input type="file" id="import_file"></app-modal-input>
-
-            <!-- </form> -->
-            <app-button type="button" role="button" data-iconName="cloud-upload-outline" data-iconSize="small"
-              id="import_button" for="import_file" class="flex-1">
-              <span slot="label">업로드</span>
-            </app-button>
-            <app-button type="button" role="button" data-iconName="checkmark-outline" data-iconSize="small"
-              id="apply_button" class="flex-1 primary hidden" @click="handleOutsideClick">
-              <span slot="label">적용하기</span>
-            </app-button>
-            <app-button type="button" role="button" data-iconName="cloud-download-outline" data-iconSize="small"
-              id="export_button" class="flex-1 success">
-              <span slot="label">다운로드</span>
-            </app-button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Search Modal -->
-    <div x-show="modalOpen && modalTabState === 'search'; if(modalTabState === 'search') modalState = ''"
-      x-transition:enter="transition ease-out duration-200"
-      x-transition:enter-start="transform translate-y-20 opacity-0"
-      x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
-      x-transition:leave-start="transform translate-y-0 opacity-100"
-      x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl"
-      @click.outside="modalTabState = ''">
-      <div class="flex justify-start items-center flex-col p-4 gap-y-2">
-        <div class="w-full text-center">
-          <h2 class="font-bold text-xl">연락처 검색</h2>
-          <button
-            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
-            @click="handleOutsideClick">
-            <ion-icon name="close-outline" size="small"></ion-icon>
-          </button>
-          </app-button>
-        </div>
-        <div id="searchForm" class="flex gap-x-2 w-full">
-          <input type="text" placeholder="이름, 전화번호, 팀 검색"
-            class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
-        </div>
-      </div>
-    </div>
-
     <!-- ADD Modal -->
     <div id="addEdit" x-show="modalOpen && (modalTabState === 'add' || modalTabState === 'edit')"
       data-modal-state="addEdit" x-transition:enter="transition ease-out duration-200"
@@ -240,13 +180,12 @@
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0">
       <div
-        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl">
+        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
         <div class="text-center border-b p-4">
           <h2 class="font-semibold text-xl">
             연락처
             <span x-show="modalTabState === 'add'">등록</span>
             <span x-show="modalTabState === 'edit'">수정</span>
-            <span x-show="modalTabState === 'detail'">상세</span>
           </h2>
 
           <button
@@ -269,9 +208,9 @@
               value="" required="true"></app-modal-input>
 
             <div id="more-button" class="mt-4" x-show="!contactMore">
-              <app-button @click="contactMore = true" type="button" role="button" data-iconName="add-circle-outline"
-                data-iconSize="small" class="flex-1 small bg-transparent">
-                <span slot="label" for="import_file">추가 입력</span>
+              <app-button type="button" role="button" data-iconName="add-circle-outline" data-iconSize="small"
+                class="flex-1 small bg-transparent" @click="contactMore = true">
+                <span slot="label">추가 입력</span>
               </app-button>
             </div>
 
@@ -320,6 +259,69 @@
       </div>
     </div>
 
+    <!-- Search Modal -->
+    <div x-show="modalOpen && modalTabState === 'search'" x-transition:enter="transition ease-out duration-200"
+      x-transition:enter-start="transform translate-y-20 opacity-0"
+      x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="transform translate-y-0 opacity-100"
+      x-transition:leave-end="transform translate-y-20 opacity-0"
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      <div class="flex justify-start items-center flex-col p-4 gap-y-2">
+        <div class="w-full text-center">
+          <h2 class="font-bold text-xl">연락처 검색</h2>
+          <button
+            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
+            @click="handleOutsideClick">
+            <ion-icon name="close-outline" size="small"></ion-icon>
+          </button>
+          </app-button>
+        </div>
+        <div id="searchForm" class="flex gap-x-2 w-full">
+          <input type="text" placeholder="이름, 전화번호, 팀 검색"
+            class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Modal -->
+    <div x-show="modalOpen && modalTabState === 'data'" x-transition:enter="transition ease-out duration-200"
+      x-transition:enter-start="transform translate-y-20 opacity-0"
+      x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="transform translate-y-0 opacity-100"
+      x-transition:leave-end="transform translate-y-20 opacity-0"
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      <div class="flex justify-start items-center flex-col p-4 gap-y-2">
+        <div class="w-full text-center">
+          <h2 class="font-bold text-xl">연락처 데이터 등록</h2>
+          <button
+            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
+            @click="handleOutsideClick">
+            <ion-icon name="close-outline" size="small"></ion-icon>
+          </button>
+        </div>
+        <div class="flex gap-x-2 w-full">
+          <div class="py-4 px-5 w-full flex justify-between gap-x-2">
+            <!-- <form id="contact-form" autocomplete="off"> -->
+            <app-modal-input type="file" id="import_file"></app-modal-input>
+
+            <!-- </form> -->
+            <app-button type="button" role="button" data-iconName="cloud-upload-outline" data-iconSize="small"
+              id="import_button" for="import_file" class="flex-1">
+              <span slot="label">업로드</span>
+            </app-button>
+            <app-button type="button" role="button" data-iconName="checkmark-outline" data-iconSize="small"
+              id="apply_button" class="flex-1 primary hidden" @click="handleOutsideClick">
+              <span slot="label">적용하기</span>
+            </app-button>
+            <app-button type="button" role="button" data-iconName="cloud-download-outline" data-iconSize="small"
+              id="export_button" class="flex-1 success">
+              <span slot="label">다운로드</span>
+            </app-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 모달 배경 수정된 코드 -->
     <div id="modalBackground"
       x-show="modalOpen && ( modalTabState === 'add' || modalTabState === 'edit' || modalTabState === 'data' || modalTabState === 'search')"
@@ -328,6 +330,7 @@
       x-transition:enter="transition" x-transition:enter-start="transform opacity-0"
       x-transition:enter-end="transform opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform opacity-100" x-transition:leave-end="transform opacity-0"></div>
+
   </div>
   <!-- Script -->
   <script>

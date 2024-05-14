@@ -1,6 +1,5 @@
 // 모달이 닫힐 때 모달 내의 요소들을 초기화하는 함수
 export function clearModalContent() {
-    console.log('clearModalContent 실행!');
     const contactSelect = document.getElementById('contact_group_select');
     const contactForm = document.getElementById('contact-form');
     const inputElements = contactForm.querySelectorAll('app-modal-input');
@@ -32,6 +31,6 @@ export function resetDetailContent() {
     photoUrlBgElement.style.backgroundImage = `url()`;
 
     // 테마 색상 원복
-    const originalColor = "#0635C9";
+    const originalColor = "#1e293b";
     document.querySelector('meta[name="theme-color"]').setAttribute('content', originalColor);
 }

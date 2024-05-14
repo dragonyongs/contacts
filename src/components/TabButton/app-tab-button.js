@@ -1,6 +1,6 @@
 import { clearModalContent } from "../../eventHandlers/modalEvents.js";
 // import { setupExcelService } from "../../services/excelService.js";
-import { getDataDB } from "../../services/dataDB.js";
+// import { getDataDB } from "../../services/dataDB.js";
 import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
 
 export class AppTabButton extends HTMLElement {
@@ -23,6 +23,10 @@ export class AppTabButton extends HTMLElement {
     return this.getAttribute("data-size") || "small";
   }
 
+  get class() {
+    return this.getAttribute("class") || '';
+  }
+
    // 진동을 발생시키는 멤버 메서드
   vibrate() {
     navigator.vibrate([200, 100]);
@@ -31,86 +35,135 @@ export class AppTabButton extends HTMLElement {
   template(state) {
     return `
             <link rel="stylesheet" href="./src/components/TabButton/app-tab-button.css">
-            <button id="${state.id}" type="button" role="button">
+            <button id="${state.id}" class="${state.class}" type="button" role="button">
                 <ion-icon name="${state.icon}" size="${state.size}"></ion-icon>
                 <slot name="label"></slot>
             </button>
         `;
   }
 
+
   connectedCallback() {
     this.render();
-
-    // 'remove-overflow' 클래스가 버튼에 추가되어 있는 경우에만 처리
+  
     if (this.classList.contains("remove-overflow")) {
-      this.addEventListener("click", () => {
-        const isActive = document.body.classList.contains("active");
-        const isScrollNot = document.body.classList.contains("overflow-hidden");
-
-        if (isActive && isScrollNot) {
-          return;
-        }
-
-        if (!isActive && !isScrollNot) {
-          document.body.classList.add("active");
-          document.body.classList.add("overflow-hidden");
-        } else {
-          document.body.classList.remove("active");
-          document.body.classList.remove("overflow-hidden");
-        }
-      });
+      this.addEventListener("click", this.handleButtonClick);
+      console.log("정상작동");
     }
+  
+    //   this.addEventListener("click", () => {
+ 
 
-    this.addEventListener("click", async function (e) {
-      let id = this.id.trim();
-      const message = (id) => {
-        // return alert(id.toUpperCase() + ' : PWA 전환 후 작업 예정');
-        return console.log(id + " Clicked!");
-      };
+    //     // if (isActive && isScrollNot) {
+    //     //   return;
+    //     // }
 
-      switch (id) {
-        case "list":
-          this.vibrate();
-          message(id);
-          triggerContactUpdateEvent();
-          break;
-        case "add":
-          this.vibrate();
-          message(id);
-          clearModalContent();
-          break;
-        case "search":
-          this.vibrate();
-          message(id);
-          break;
-        case "data":
-          this.vibrate();
-          const database = await getDataDB();
-          // setupExcelService(database); // Excel 서비스 설정
-          message(id);
-          break;
-        case "edit":
-          this.vibrate();
-          message(id);
-          break;
-        case "detail":
-          this.vibrate();
-          message(id);
-          break;  
-        default:
-          console.log("Wrong Action!");
-      }
-    });
+
+    //   });
+      
+    // }
+
+    // this.addEventListener("click", function (e) {
+    //   let id = this.id.trim();
+    //   const message = (id) => {
+    //     // return alert(id.toUpperCase() + ' : PWA 전환 후 작업 예정');
+    //     return console.log(id + " Clicked!");
+    //   };
+
+    //   switch (id) {
+    //     case "list":
+    //       this.vibrate();
+    //       message(id);
+    //       triggerContactUpdateEvent();
+    //       break;
+    //     case "add":
+    //       this.vibrate();
+    //       message(id);
+    //       clearModalContent();
+    //       break;
+    //     case "search":
+    //       this.vibrate();
+    //       message(id);
+    //       break;
+    //     case "data":
+    //       this.vibrate();
+    //       // const database = await getDataDB();
+    //       // setupExcelService(database); // Excel 서비스 설정
+    //       message(id);
+    //       break;
+    //     case "edit":
+    //       this.vibrate();
+    //       message(id);
+    //       break;
+    //     case "detail":
+    //       this.vibrate();
+    //       message(id);
+    //       break;  
+    //     default:
+    //       console.log("Wrong Action!");
+    //   }
+    // });
 
   }
 
   render() {
     this.shadowRoot.innerHTML = this.template({
       id: this.id,
+      class: this.class,
       name: this.name,
       icon: this.icon,
       size: this.size,
     });
+  }
+
+  handleButtonClick(event) {
+    const buttonId = event.target.id;
+    const isActive = document.body.classList.contains("active");
+    const isScrollNot = document.body.classList.contains("overflow-hidden");
+
+    if (!isActive && !isScrollNot) {
+      document.body.classList.add("active");
+      document.body.classList.add("overflow-hidden");
+    }
+
+    switch (buttonId) {
+        case "list":
+            this.handleListButtonClick();
+            break;
+        case "add":
+            this.handleAddButtonClick();
+            break;
+        case "search":
+            this.handleSearchButtonClick();
+            break;
+        case "data":
+            this.handleDataButtonClick();
+            break;
+        default:
+            console.log("Unknown button clicked!");
+    }
+  }
+
+  handleListButtonClick() {
+    this.vibrate();
+    console.log("list Clicked!");
+    triggerContactUpdateEvent();
+  }
+  
+  handleAddButtonClick() {
+      this.vibrate();
+      console.log("add Clicked!", );
+      clearModalContent();
+  }
+  
+  handleSearchButtonClick() {
+      this.vibrate();
+      console.log("search Clicked!");
+  }
+  
+  handleDataButtonClick() {
+      this.vibrate();
+      console.log("data Clicked!");
   }
 }
 

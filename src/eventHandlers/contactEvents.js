@@ -63,8 +63,6 @@ export async function listContact() {
 
   const fetchData = modalData.contactsData;
 
-  console.log('fetchData', fetchData);
-  
   const contactList = document.getElementById("contact-list");
   contactList.innerHTML = ""; // 기존 목록 초기화
 
