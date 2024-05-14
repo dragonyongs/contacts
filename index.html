@@ -23,11 +23,7 @@
     ">
 
     <!-- notification window.addEventListener('show-notification', event => { notification = !notification;}); -->
-    <div id="notificationContainer" x-show="notification" x-transition:enter="transition ease-out duration-200"
-      x-transition:enter-start="transform translate-y-20 opacity-0"
-      x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
-      x-transition:leave-start="transform translate-y-0 opacity-100"
-      x-transition:leave-end="transform translate-y-20 opacity-0"></div>
+    <div id="notificationContainer" x-show="notification"></div>
 
     <!-- middle x-data="{ modalOpen: false, modalTabState: 'detail'}" x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})" -->
     <div class="relative flex-grow bg-white">
@@ -61,17 +57,17 @@
         </app-tab-button>
 
         <app-tab-button id="add" data-icon="add-outline" class="remove-overflow"
-          x-on:click="modalOpen = true; modalTabState = 'add';">
+          x-on:click="if(modalTabState === 'add') return (modalOpen = false, modalTabState = ''); modalOpen = true; modalTabState = 'add';">
           <span slot="label">등록</span>
         </app-tab-button>
 
         <app-tab-button id="search" data-icon="search-outline" class="remove-overflow"
-          x-on:click="modalOpen = true; modalTabState = 'search';">
+          x-on:click="if(modalTabState === 'search') return (modalOpen = false, modalTabState = ''); modalOpen = true; modalTabState = 'search';">
           <span slot="label">검색</span>
         </app-tab-button>
 
         <app-tab-button id="data" data-icon="server-outline" class="remove-overflow"
-          x-on:click="modalOpen = true; modalTabState = 'data';">
+          x-on:click="if(modalTabState === 'data') return (modalOpen = false, modalTabState = ''); modalOpen = true; modalTabState = 'data';">
           <span slot="label">데이터</span>
         </app-tab-button>
 
@@ -555,7 +551,7 @@
 
       // status
       let status = document.getElementById('status').shadowRoot.querySelector('#status');
-      status.value = selectData.status.text;
+      status.value = selectData.status;
 
       // email_address
       let emailAddress = document.getElementById('email_address').shadowRoot.querySelector('#email_address');

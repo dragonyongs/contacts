@@ -2,12 +2,18 @@
 
 export function notification(message) {
     console.log('notification show!');
-    var notificationContainer = document.getElementById('notificationContainer');
-    
-    // 알림 모달 요소 생성
-    var notificationDiv = document.createElement('div');
-    notificationDiv.className = 'z-50 fixed bottom-20 left-1/2 -translate-x-1/2 container h-64 p-8 rounded-tr-3xl rounded-tl-3xl bg-blue-700';
+    let notificationContainer = document.getElementById('notificationContainer');
+    notificationContainer.setAttribute('x-transition:enter', 'transition ease-out duration-200');
+    notificationContainer.setAttribute('x-transition:enter-start', 'transform translate-x-20 opacity-0');
+    notificationContainer.setAttribute('x-transition:enter-end', 'transform translate-x-0 opacity-100');
+    notificationContainer.setAttribute('x-transition:leave', 'transition ease-in duration-300');
+    notificationContainer.setAttribute('x-transition:leave-start', 'transform translate-y-0 opacity-100');
+    notificationContainer.setAttribute('x-transition:leave-end', 'transform translate-y-20 opacity-0');
 
+    // 알림 모달 요소 생성
+    let notificationDiv = document.createElement('div');
+    notificationDiv.className = 'z-50 fixed bottom-20 left-1/2 -translate-x-1/2 container h-64 p-8 rounded-tr-3xl rounded-tl-3xl bg-blue-700';
+    
     // 알림 모달 내부 구성 요소 추가
     notificationDiv.innerHTML = `
         <div class="header mb-8">
