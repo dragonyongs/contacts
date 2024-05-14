@@ -180,7 +180,7 @@
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0">
       <div
-        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
         <div class="text-center border-b p-4">
           <h2 class="font-semibold text-xl">
             연락처
@@ -189,9 +189,9 @@
           </h2>
 
           <button
-            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
+            class="remove-overflow absolute top-3 right-4 bg-transparent rounded-full w-8 h-8 flex items-center justify-center focus:bg-gray-100 active:bg-gray-200"
             @click="handleOutsideClick">
-            <ion-icon name="close-outline" size="small"></ion-icon>
+            <ion-icon name="close-outline" size="large"></ion-icon>
           </button>
         </div>
         <form id="contact-form" autocomplete="off">
@@ -209,7 +209,7 @@
 
             <div id="more-button" class="mt-4" x-show="!contactMore">
               <app-button type="button" role="button" data-iconName="add-circle-outline" data-iconSize="small"
-                class="flex-1 small bg-transparent" @click="contactMore = true">
+                class="w-full small" @click="contactMore = true">
                 <span slot="label">추가 입력</span>
               </app-button>
             </div>
@@ -245,12 +245,12 @@
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
             <app-button x-show="modalTabState === 'add'" type="submit" role="button" data-iconName="save-outline"
-              data-iconSize="small" data-method="post" class="flex-1 primary" @click="handleConfirmClick">
+              data-iconSize="small" data-method="post" class="w-full primary" @click="handleConfirmClick">
               <span slot="label">등록</span>
             </app-button>
 
             <app-button x-show="modalTabState === 'edit'" type="submit" role="button" data-iconName="create-outline"
-              data-iconSize="small" data-method="put" class="update_contact_button flex-1 success"
+              data-iconSize="small" data-method="put" class="update_contact_button w-full success"
               @click="handleConfirmClick">
               <span slot="label">수정</span>
             </app-button>
@@ -265,14 +265,14 @@
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
       <div class="flex justify-start items-center flex-col p-4 gap-y-2">
         <div class="w-full text-center">
           <h2 class="font-bold text-xl">연락처 검색</h2>
           <button
-            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
+            class="remove-overflow absolute top-3 right-4 bg-transparent rounded-full w-8 h-8 flex items-center justify-center focus:bg-gray-100 active:bg-gray-200"
             @click="handleOutsideClick">
-            <ion-icon name="close-outline" size="small"></ion-icon>
+            <ion-icon name="close-outline" size="large"></ion-icon>
           </button>
           </app-button>
         </div>
@@ -289,14 +289,14 @@
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[72px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
       <div class="flex justify-start items-center flex-col p-4 gap-y-2">
         <div class="w-full text-center">
           <h2 class="font-bold text-xl">연락처 데이터 등록</h2>
           <button
-            class="remove-overflow absolute top-4 right-4 bg-white rounded-full shadow-xl w-6 h-6 flex items-center justify-center border border-gray-200 focus:bg-gray-100 active:bg-gray-200"
+            class="remove-overflow absolute top-3 right-4 bg-transparent rounded-full w-8 h-8 flex items-center justify-center focus:bg-gray-100 active:bg-gray-200"
             @click="handleOutsideClick">
-            <ion-icon name="close-outline" size="small"></ion-icon>
+            <ion-icon name="close-outline" size="large"></ion-icon>
           </button>
         </div>
         <div class="flex gap-x-2 w-full">
@@ -306,15 +306,15 @@
 
             <!-- </form> -->
             <app-button type="button" role="button" data-iconName="cloud-upload-outline" data-iconSize="small"
-              id="import_button" for="import_file" class="flex-1">
+              id="import_button" for="import_file" class="w-full">
               <span slot="label">업로드</span>
             </app-button>
             <app-button type="button" role="button" data-iconName="checkmark-outline" data-iconSize="small"
-              id="apply_button" class="flex-1 primary hidden" @click="handleOutsideClick">
+              id="apply_button" class="w-full primary hidden" @click="handleOutsideClick">
               <span slot="label">적용하기</span>
             </app-button>
             <app-button type="button" role="button" data-iconName="cloud-download-outline" data-iconSize="small"
-              id="export_button" class="flex-1 success">
+              id="export_button" class="w-full success">
               <span slot="label">다운로드</span>
             </app-button>
           </div>

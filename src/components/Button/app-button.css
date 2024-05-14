@@ -14,7 +14,6 @@ button {
   justify-content: center;
   align-items: center;
   column-gap: 0.25rem;
-  width: 100%;
   padding: 0.75rem;
   font-weight: 600;
   font-size: 1rem;
@@ -28,12 +27,21 @@ button {
 }
 
 button.small {
-  padding: .375rem;
+  padding: .375rem .875rem;
   font-size: .875rem;
 }
 
+button.w-full {
+  width: 100%;
+}
+
+button.rounded-full {
+  border-radius: 2rem;
+}
+
+
 button:active {
-  transform: scale(0.8);
+  transform: scale(0.90);
 }
 
 button:hover {
