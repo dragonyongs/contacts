@@ -102,20 +102,14 @@ template(state) {
                             <div class="info">
                                 <p class="name">${
                                   state.full_name
-                                } <span class="role">${state.rank} ${
-      state.position ? `/ ${state.position}` : ""
-    }</span></p>
+                                } <span class="role">${state.rank ? state.rank : state.position } ${ state.rank && state.position ? `/ ${state.position}` : ''}</span></p>
                                 ${
                                   statusInfo.status !== "default"
                                     ? `<span class="status">${statusInfo.text}</span>`
                                     : ""
                                 }
                             </div>
-                            <p class="team">${state.division_name} ${
-      state.division_name && state.team_name
-        ? `/ ${state.team_name}`
-        : `${state.division_name}`
-    }</p>
+                            <p class="team">${state.team_name} ${ state.team_name && state.extension_number ? `- 내선 ${state.extension_number}` : `${state.personal_phone_number}` }</p>
                         </div>
                         <div class="icon-wrap">
                             <svg fill="#000000" width="24" height="24" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.489 31.975c-0.271 0-0.549-0.107-0.757-0.316-0.417-0.417-0.417-1.098 0-1.515l14.258-14.264-14.050-14.050c-0.417-0.417-0.417-1.098 0-1.515s1.098-0.417 1.515 0l14.807 14.807c0.417 0.417 0.417 1.098 0 1.515l-15.015 15.022c-0.208 0.208-0.486 0.316-0.757 0.316z"></path> </g></svg>
@@ -124,7 +118,7 @@ template(state) {
                 </li>
             `;
   }
-
+// <p class="team">${state.division_name} ${ state.division_name && state.team_name ? `/ ${state.team_name}` : `${state.division_name}` }</p>
   connectedCallback() {
     this.render();
 

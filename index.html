@@ -9,7 +9,7 @@
   <meta name="HandheldFriendly" content="true" />
   <meta name="description" content="Personal My Contacts" />
   <meta name="theme-color" content="#1e293b" />
-  <title>My Contacts</title>
+  <title>연락처</title>
   <link rel="manifest" href="./public/manifest.json" />
   <link rel="stylesheet" href="./src/styles/main.css" />
   <link rel="icon" type="image/x-icon" href="./public/favicon.ico" />
@@ -30,7 +30,7 @@
       <!-- top bg-[#0635c9]-->
       <div class="fixed z-20 top-0 left-0 w-full">
         <div class="text-center py-3 bg-slate-800" @click="showNotification">
-          <h1 class="text-2xl font-normal text-white cursor-pointer">My Contacts</h1>
+          <h1 class="text-2xl font-normal text-white cursor-pointer">연락처</h1>
         </div>
       </div>
 
@@ -52,7 +52,7 @@
       <div
         class="button-tap z-50 fixed bottom-0 lelf-0 flex justify-center items-center gap-x-2 md:gap-x-8 w-full h-auto pt-1 pb-3 bg-white border-t border-gray-100">
 
-        <app-tab-button id="list" data-icon="list-outline" @click="handleOutsideClick">
+        <app-tab-button id="list" data-icon="list-outline" class="remove-overflow" @click="handleOutsideClick">
           <span slot="label">목록</span>
         </app-tab-button>
 
@@ -90,6 +90,7 @@
       </div>
       <div class="z-40 absolute top-0 right-2 flex items-center">
 
+        <!-- 데이터 전달 방식 수정 예정 -->
         <app-button id="openEditModal" data-iconName="create-outline" data-iconSize="small" class="transparent"
           x-on:click="if (modalTabState !== 'edit') { modalOpen = true; modalTabState = 'edit'; }"
           data-fullName="${eventData.full_name}" data-rank="${eventData.rank}" data-position="${eventData.position}"
@@ -97,7 +98,9 @@
           data-extension_number="${eventData.extension_number}"
           data-personal_phone_number="${eventData.personal_phone_number}"
           data-office_phone_number="${eventData.office_phone_number}" data-email_address="${eventData.email_address}"
-          data-photo_url="${eventData.photo_url}"></app-button>
+          data-photo_url="${eventData.photo_url}" data-work_place="${eventData.work_place}"
+          data-introducer="${eventData.introducer}" data-joining_date="${eventData.joining_date}"
+          data-remarks="${eventData.remarks}"></app-button>
 
         <app-button id="contact_id" data-iconName="trash-outline" data-iconSize="small"
           class="contact_id remove-overflow transparent" onclick="deleteContact(this.id)"
@@ -164,6 +167,22 @@
             <span
               class="photo_url inline-block max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-nowrap">-</span>
           </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-20 font-semibold">근무지</span>
+            <span class="work_place">-</span>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-20 font-semibold">도입자</span>
+            <span class="introducer">-</span>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-20 font-semibold">입사일</span>
+            <span class="joining_date">-</span>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-20 font-semibold">비고</span>
+            <span class="remarks">-</span>
+          </div>
         </div>
       </div>
     </div>
@@ -176,7 +195,7 @@
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0">
       <div
-        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+        class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[82px] bg-gray-50 h-auto rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
         <div class="text-center border-b p-4">
           <h2 class="font-semibold text-xl">
             연락처
@@ -236,6 +255,17 @@
 
               <app-modal-input type="text" id="photo_url" name="photo_url" data-label="사진 URL"
                 value=""></app-modal-input>
+
+              <app-modal-input type="text" id="work_place" name="work_place" data-label="근무지"
+                value=""></app-modal-input>
+
+              <app-modal-input type="text" id="introducer" name="introducer" data-label="도입자"
+                value=""></app-modal-input>
+
+              <app-modal-input type="date" id="joining_date" name="joining_date" data-label="입사일"
+                value=""></app-modal-input>
+
+              <app-modal-input type="text" id="remarks" name="remarks" data-label="비고" value=""></app-modal-input>
             </div>
           </div>
 
@@ -261,7 +291,7 @@
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[82px] h-32 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
       <div class="flex justify-start items-center flex-col p-4 gap-y-2">
         <div class="w-full text-center">
           <h2 class="font-bold text-xl">연락처 검색</h2>
@@ -273,7 +303,7 @@
           </app-button>
         </div>
         <div id="searchForm" class="flex gap-x-2 w-full">
-          <input type="text" placeholder="이름, 전화번호, 팀 검색"
+          <input type="text" placeholder="연락처그룹, 이름, 전화번호, 팀 검색"
             class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
         </div>
       </div>
@@ -285,7 +315,7 @@
       x-transition:enter-end="transform translate-y-0 opacity-100" x-transition:leave="transition ease-in duration-300"
       x-transition:leave-start="transform translate-y-0 opacity-100"
       x-transition:leave-end="transform translate-y-20 opacity-0"
-      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[84px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
+      class="container fixed z-40 left-1/2 -translate-x-1/2 bottom-[82px] h-36 bg-slate-50 rounded-tl-2xl rounded-tr-2xl shadow-slate-600 shadow-2xl">
       <div class="flex justify-start items-center flex-col p-4 gap-y-2">
         <div class="w-full text-center">
           <h2 class="font-bold text-xl">연락처 데이터 등록</h2>
@@ -312,6 +342,9 @@
             <app-button type="button" role="button" data-iconName="cloud-download-outline" data-iconSize="small"
               id="export_button" class="w-full success">
               <span slot="label">다운로드</span>
+            </app-button>
+            <app-button type="button" role="button" data-iconName="trash-bin-outline" data-iconSize="small"
+              id="reset_button" for="reset" class="danger" @click="handleConfirmClick">
             </app-button>
           </div>
         </div>
@@ -403,6 +436,7 @@
     document.addEventListener("detail-modal", function (e) {
       const modalDetail = document.querySelector(".modalDetail");
       modalData.selectContact = e.detail;
+      console.log('e.detail', e.detail);
       const selectData = modalData.selectContact;
 
       const dataMapping = {
@@ -417,6 +451,10 @@
         ".email_address": "textContent",
         ".status": "textContent",
         ".photo_url": "textContent",
+        ".work_place": "textContent",
+        ".introducer": "textContent",
+        ".joining_date": "textContent",
+        ".remarks": "textContent",
       };
 
       Object.keys(dataMapping).forEach(selector => {
@@ -557,6 +595,21 @@
       let emailAddress = document.getElementById('email_address').shadowRoot.querySelector('#email_address');
       emailAddress.value = selectData.email_address;
 
+      // work_place
+      let workPlace = document.getElementById('work_place').shadowRoot.querySelector('#work_place');
+      work_place.value = selectData.work_place;
+
+      // introducer
+      let introducer = document.getElementById('introducer').shadowRoot.querySelector('#introducer');
+      introducer.value = selectData.introducer;
+
+      // joining_date
+      let joiningDate = document.getElementById('joining_date').shadowRoot.querySelector('#joining_date');
+      joining_date.value = selectData.joining_date;
+
+      // remarks
+      let remarks = document.getElementById('remarks').shadowRoot.querySelector('#remarks');
+      remarks.value = selectData.remarks;
     });
 
 

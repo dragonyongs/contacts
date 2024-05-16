@@ -1,7 +1,7 @@
 import { clearModalContent } from "../../eventHandlers/modalEvents.js";
 // import { setupExcelService } from "../../services/excelService.js";
 // import { getDataDB } from "../../services/dataDB.js";
-import { triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
+import { listContact, triggerContactUpdateEvent } from "../../eventHandlers/contactEvents.js";
 
 export class AppTabButton extends HTMLElement {
   constructor() {
@@ -47,8 +47,7 @@ export class AppTabButton extends HTMLElement {
     this.render();
   
     if (this.classList.contains("remove-overflow")) {
-      this.addEventListener("click", this.handleButtonClick);
-      console.log("정상작동");
+      this.addEventListener("click", this.handleButtonClick.bind(this));
     }
   
     //   this.addEventListener("click", () => {
@@ -117,13 +116,12 @@ export class AppTabButton extends HTMLElement {
   }
 
   handleButtonClick(event) {
-    const buttonId = event.target.id;
+    const buttonId = event.target.id || event.currentTarget.id;;
     const isActive = document.body.classList.contains("active");
     const isScrollNot = document.body.classList.contains("overflow-hidden");
 
     if (!isActive && !isScrollNot) {
-      document.body.classList.add("active");
-      document.body.classList.add("overflow-hidden");
+      document.body.classList.add("active", "overflow-hidden");
     }
 
     switch (buttonId) {
@@ -146,8 +144,9 @@ export class AppTabButton extends HTMLElement {
 
   handleListButtonClick() {
     this.vibrate();
-    console.log("list Clicked!");
-    triggerContactUpdateEvent();
+    listContact();
+    document.body.classList.remove("active", "overflow-hidden");
+    document.getElementById("searchForm").querySelector("input").value = "";
   }
   
   handleAddButtonClick() {

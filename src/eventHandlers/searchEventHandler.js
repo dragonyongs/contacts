@@ -22,7 +22,6 @@ export function handleSearchInput(event) {
             if (results.length === 0) {
                 clearList('contact-list'); // 검색 입력값이 없는 경우 목록 초기화
                 // listContact(contactData);
-                console.log("일치하는 값이 없다.");
                 blankMessage('contact-list', '일치하는 결과가 없습니다.');
             } else {
                 updateList(results);
@@ -52,10 +51,9 @@ export function updateList(results) {
         acc[key].push(contact);
         return acc;
     }, {});
-    console.log('results', results);
+
     if (results.length === 0) {
-
-
+        console.log('results 0');
     } else {
         // 그룹화된 데이터를 기반으로 HTML 요소 생성 및 추가
         Object.keys(groupedGroup).forEach((contact_group) => {
@@ -73,7 +71,7 @@ export function updateList(results) {
                 const contactItem = document.createElement("li");
                 const contactData = JSON.stringify(contact);
                 contactItem.innerHTML = `
-                <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
+                <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; };" id="detail" data-contactData='${contactData}'>
                 </app-list-card>
             `;
                 groupList.appendChild(contactItem);

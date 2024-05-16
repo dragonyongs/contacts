@@ -27,6 +27,7 @@ if ("serviceWorker" in navigator) {
 
 // iOS 기기에서 PWA를 홈 화면에 추가한 경우에만 CSS를 적용
 if (isIOS && isPWAWithoutBrowserUI) {
+  document.querySelector("#contact-list").style.paddingBottom = "0.875rem";
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
 

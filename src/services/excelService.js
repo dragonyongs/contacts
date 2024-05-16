@@ -1,28 +1,48 @@
 import { getContactsData } from "../services/dataService.js";
-import { listContact } from "../eventHandlers/contactEvents.js";
+import { listContact, triggerContactUpdateEvent } from "../eventHandlers/contactEvents.js";
+import { notification } from "../services/notificationService.js";
 
 let globalJsonData = null;
+const resetButton = document.getElementById("reset_button");
+const exportButton = document.getElementById("export_button");
+const importButton = document.getElementById("import_button");
+const applyButton = document.getElementById("apply_button");
 
 export async function setupExcelService(database) {
   const contactsData = await getContactsData();
   const contactsCount = contactsData.length;
   
+  const importFileInput = document.getElementById("import_file").shadowRoot.querySelector("input");
+
+
   if (contactsCount === 0) {
-    const exportButton = document.getElementById("export_button");
+    resetButton.classList.add('hidden');
     exportButton.classList.add('hidden');  
   }
 
-  const importFileInput = document.getElementById("import_file").shadowRoot.querySelector("input");
-  const exportButton = document.getElementById("export_button");
-  const importButton = document.getElementById("import_button");
-  const applyButton = document.getElementById("apply_button");
-
   importButton.addEventListener("click", () => importFileInput.click());
-  exportButton.addEventListener("click", () => handleExportToExcel(database));
-  importFileInput.addEventListener("change", (e) =>
-    handleImportFromExcel(e, database)
-  );
+  exportButton.addEventListener("click", () => handleExportToExcel());
+  importFileInput.addEventListener("change", (e) => handleImportFromExcel(e, database));
   applyButton.addEventListener("click", () => handleApply(database));
+  resetButton.addEventListener("click", () => handleResetData(contactsData, database));
+}
+
+async function handleResetData(contactsData, database) {
+  const isConfirmed = confirm("정말로 데이터를 초기화 하시겠습니까?");
+
+
+  if (isConfirmed) {
+    await database.contacts.clear()
+    triggerContactUpdateEvent(contactsData); // 커스텀 이벤트 발생시키기
+    notification(`데이터 초기화를 완료했습니다.`);
+
+    resetButton.classList.add('hidden');
+    exportButton.classList.add('hidden');
+    
+  } else {
+    notification(`데이터 초기화를 취소되었습니다.`);
+  }
+  
 }
 
 export async function importContactsFromExcel() {
@@ -34,9 +54,9 @@ export async function importContactsFromExcel() {
     reader.onload = async function (e) {
       console.log("File upload changed!");
       // 불러오기 버튼 숨기기
-      document.getElementById("import_button").classList.add("hidden");
+      importButton.classList.add("hidden");
       // 적용하기 버튼 표시
-      document.getElementById("apply_button").classList.remove("hidden");
+      applyButton.classList.remove("hidden");
 
       var data = new Uint8Array(e.target.result);
       var workbook = XLSX.read(data, { type: "array" });
@@ -45,23 +65,23 @@ export async function importContactsFromExcel() {
       var jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
       // 한국어 헤더를 영어 키로 매핑
-      const fieldMappingReverse = {
-        "연락처 그룹": "contact_group",
-        "전체 이름": "full_name",
-        "휴대폰 번호": "personal_phone_number",
-        "회사 전화": "office_phone_number",
-        "내선 번호": "extension_number",
-        "이메일 주소": "email_address",
-        "직급 명칭": "rank",
-        "직책 명칭": "position",
-        "소속 부서": "division_name",
-        "팀 이름": "team_name",
-        "현재 상태": "status",
-        "사진 URL": "photo_url",
-        // "입사 일자": "joining_date",
-      };
+      // const fieldMappingReverse = {
+      //   "연락처 그룹": "contact_group",
+      //   "전체 이름": "full_name",
+      //   "휴대폰 번호": "personal_phone_number",
+      //   "회사 전화": "office_phone_number",
+      //   "내선 번호": "extension_number",
+      //   "이메일 주소": "email_address",
+      //   "직급 명칭": "rank",
+      //   "직책 명칭": "position",
+      //   "소속 부서": "division_name",
+      //   "팀 이름": "team_name",
+      //   "현재 상태": "status",
+      //   "사진 URL": "photo_url",
+      //   // "입사 일자": "joining_date",
+      // };
 
-      // 한국어 헤더를 영어로 변경
+      // // 한국어 헤더를 영어로 변경
       // globalJsonData = jsonData.map((row) => {
       //   return Object.keys(row).reduce((acc, key) => {
       //     const englishKey = fieldMappingReverse[key] || key;
@@ -81,6 +101,24 @@ export async function importContactsFromExcel() {
 }
 
 function mapHeadersFromKoreanToEnglish(jsonData) {
+      const fieldMappingReverse = {
+        "연락처 그룹": "contact_group",
+        "전체 이름": "full_name",
+        "휴대폰 번호": "personal_phone_number",
+        "회사 전화": "office_phone_number",
+        "내선 번호": "extension_number",
+        "이메일 주소": "email_address",
+        "직급 명칭": "rank",
+        "직책 명칭": "position",
+        "소속 부서": "division_name",
+        "팀 이름": "team_name",
+        "현재 상태": "status",
+        "사진 URL": "photo_url",
+        "근무지": "work_place",
+        "도입자": "introducer",
+        "입사일": "joining_date",
+        "비고": "remarks",
+      };
   return jsonData.map((row) => {
       return Object.keys(row).reduce((acc, key) => {
           const englishKey = fieldMappingReverse[key] || key;
@@ -91,6 +129,8 @@ function mapHeadersFromKoreanToEnglish(jsonData) {
 }
 
 export async function exportContactsToExcel() {
+  const contacts = await getContactsData();
+
   const fieldMapping = {
     contact_group: "연락처 그룹",
     full_name: "전체 이름",
@@ -104,7 +144,10 @@ export async function exportContactsToExcel() {
     team_name: "팀 이름",
     status: "현재 상태",
     photo_url: "사진 URL",
-    // joining_date: "입사 일자",
+    work_place: "근무지",
+    introducer: "도입자",
+    joining_date: "입사일",
+    remarks: "비고",
   };
 
   // 명시적인 헤더 순서 정의
@@ -121,11 +164,14 @@ export async function exportContactsToExcel() {
     "team_name",
     "status",
     "photo_url",
-    // "joining_date",
+    "work_place",
+    "introducer",
+    "joining_date",
+    "remarks",
   ];
 
   // 헤더를 한국어로 변환하고 정의된 순서대로 데이터를 정렬
-  const koreanHeadersData = contactsData.map((contact) => {
+  const koreanHeadersData = await contacts.map((contact) => {
     return headers.reduce((acc, key) => {
       acc[fieldMapping[key] || key] = contact[key];
       return acc;
@@ -159,10 +205,10 @@ export async function exportContactsToExcel() {
 }
 
 // 연락처 목록을 엑셀 파일로 내보내기
-export async function handleExportToExcel(database) {
+export async function handleExportToExcel() {
   try {
     // 엑셀 파일 생성 및 내보내기
-    exportContactsToExcel(contactsData);
+    exportContactsToExcel();
   } catch (error) {
     console.error("Failed to export contacts to Excel: ", error);
     alert("엑셀 파일을 내보내는 중에 오류가 발생했습니다.");
@@ -197,7 +243,7 @@ async function handleApply(database) {
 
 async function applyChangesToDatabase(database) {
   try {
-    const contactsData = await getContactsData();
+    // const contactsData = await getContactsData();
 
     if (!database) {
       alert("데이터베이스가 준비되지 않았습니다.");
@@ -212,6 +258,9 @@ async function applyChangesToDatabase(database) {
 
     // 성공 알림
     alert("연락처를 성공적으로 적용하였습니다.");
+    resetButton.classList.remove('hidden');
+    exportButton.classList.remove('hidden');
+    resetButton.classList.remove('hidden');
 
     // 연락처 목록 다시 로드
     await listContact();

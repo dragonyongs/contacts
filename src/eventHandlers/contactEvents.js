@@ -1,7 +1,7 @@
 import { getContactsData } from "../services/dataService.js";
 import { handleExportToExcel } from "../services/excelService.js";
-// import { getDataDB } from "../services/dataDB.js";
 import { setFormDataCallback } from "../components/Button/app-button.js";
+// import { getDataDB } from "../services/dataDB.js";
 // import { notification } from "../services/notificationService.js";
 // import { loadContact } from "../services/dataService.js";
 
@@ -50,7 +50,7 @@ export function triggerContactUpdateEvent(updatedContacts) {
 
 window.addEventListener("contactUpdate", async (e) => {
   if (modalData) {
-    modalData.contactsData = e.detail.updatedContacts;
+    modalData.selectContact = e.detail.updatedContacts;
     await listContact();
   }
 });
@@ -97,7 +97,7 @@ export async function listContact() {
       const contactItem = document.createElement("li");
       const contactData = JSON.stringify(contact);
       contactItem.innerHTML = `
-                <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
+                <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
                 </app-list-card>
             `;
       // contactItem.innerHTML = `

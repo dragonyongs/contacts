@@ -31,10 +31,15 @@ button:focus {
   /* outline: 2px dotted #70baff; */
 }
 
-button:hover,
-button:active {
+button:hover{
   background-color: #f5f5f5;
 }
+
+button:active,
+button:focus {
+  font-weight: 600;
+}
+
 
 button > span {
   font-family: "Pretendard", sans-serif;
