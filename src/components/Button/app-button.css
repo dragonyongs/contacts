@@ -67,6 +67,7 @@ button.transparent {
 button.danger {
   color: var(--button-white);
   background-color: var(--button-danger);
+  column-gap: 0;
 }
 
 button > ion-icon.md {
