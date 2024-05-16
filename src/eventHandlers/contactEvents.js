@@ -121,4 +121,9 @@ export async function listContact() {
   } else if (fetchData.length > 0) {
     document.getElementById("contact-list").classList.remove("h-full");
   }
+
+  const searchTitle = document.getElementById('searchTitle');
+  if (!searchTitle.classList.contains('hidden')) {
+    searchTitle.classList.add('hidden');
+  }
 }

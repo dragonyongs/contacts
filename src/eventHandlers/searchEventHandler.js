@@ -1,29 +1,29 @@
 import { searchDatabase } from '../services/searchService.js';
 import { clearList, blankMessage } from '../utils/helpers.js';
-// import { listContact } from "../eventHandlers/contactEvents.js";
-// import { getContactsData } from "../services/dataService.js";
 
 export function handleSearchInput(event) {
-    // const contactData = getContactsData();
     const modalBackground = document.getElementById('modalBackground');
+    const searchTitle = document.getElementById('searchTitle');
     const searchText = event.target.value.toLowerCase();
 
     if (searchText === '') {
         modalBackground.classList.remove('hidden');
         document.body.classList.add("active", "overflow-hidden");
         clearList('contact-list'); // 검색 입력값이 없는 경우 목록 초기화
+        searchTitle.classList.add('hidden');
     } else {
         modalBackground.classList.add('hidden');
         document.body.classList.remove("active", "overflow-hidden");
+        searchTitle.classList.remove('hidden');
     }
 
     searchDatabase(searchText)
         .then(results => {
             if (results.length === 0) {
                 clearList('contact-list'); // 검색 입력값이 없는 경우 목록 초기화
-                // listContact(contactData);
                 blankMessage('contact-list', '일치하는 결과가 없습니다.');
             } else {
+                searchTitle.querySelector("span").innerText = searchText;
                 updateList(results);
             }
         })
@@ -79,7 +79,4 @@ export function updateList(results) {
             contactList.appendChild(groupList);
         });
     }
-    // if (!results) {
-    //     console.log('입력 값이 존재하지 않습니다.');
-    // }
 }

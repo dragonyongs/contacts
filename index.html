@@ -22,15 +22,19 @@
     window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;});
     ">
 
-    <!-- notification window.addEventListener('show-notification', event => { notification = !notification;}); -->
+    <!-- notification -->
     <div id="notificationContainer" x-show="notification"></div>
 
-    <!-- middle x-data="{ modalOpen: false, modalTabState: 'detail'}" x-init="window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;})" -->
+    <!-- middle -->
     <div class="relative flex-grow bg-white">
-      <!-- top bg-[#0635c9]-->
+      <!-- top -->
       <div class="fixed z-20 top-0 left-0 w-full">
-        <div class="text-center py-3 bg-slate-800" @click="showNotification">
-          <h1 class="text-2xl font-normal text-white cursor-pointer">연락처</h1>
+        <div class="flex justify-center items-center text-center py-3 bg-slate-800 cursor-pointer"
+          @click="showNotification"> <!--  bg-[#0635c9] -->
+          <h1 class="text-2xl font-normal text-white">연락처</h1>
+          <h1 id="searchTitle" class="ml-1 text-2xl font-normal text-white hidden">
+            검색 : <span>김</span>
+          </h1>
         </div>
       </div>
 
