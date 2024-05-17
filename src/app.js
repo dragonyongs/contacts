@@ -27,7 +27,7 @@ if ("serviceWorker" in navigator) {
 
 // iOS 기기에서 PWA를 홈 화면에 추가한 경우에만 CSS를 적용
 if (isIOS && isPWAWithoutBrowserUI) {
-  document.querySelector("#contact-list").style.paddingBottom = "0.875rem";
+  document.querySelector("#contact-list").style.paddingBottom = "0.675rem";
   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
 }
 
@@ -53,7 +53,3 @@ function changeThemeColor(color) {
     .querySelector('meta[name="theme-color"]')
     .setAttribute("content", color);
 }
-
-// if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-//   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
-// }

@@ -33,23 +33,17 @@
           @click="showNotification"> <!--  bg-[#0635c9] -->
           <h1 class="text-2xl font-normal text-white">연락처</h1>
           <h1 id="searchTitle" class="ml-1 text-2xl font-normal text-white hidden">
-            검색 : <span>김</span>
+            검색 : <span></span>
           </h1>
         </div>
       </div>
 
       <div class="contactWrap">
-
         <!-- scroll-shadows -->
         <div class="w-full h-full">
-          <!-- <div id="searchForm" class="flex gap-x-2 w-full mt-14">
-            <input type="text" placeholder="이름, 전화번호, 팀 검색"
-              class="flex-1 py-3 px-4 w-4/6 border border-slate-200 rounded-md text-sm" />
-          </div> -->
           <div id="contact-list">
           </div>
         </div>
-
       </div>
 
       <!-- Tab Button -->
@@ -396,9 +390,9 @@
         // Check whether notification permissions have already been granted;
         const title = 'StarRich Advisor'
         const options = {
-          body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다. 볼링클럽은 앞으로 진행하지 않습니다.',
+          body: '어머! 이걸 발견하다니?!',
           dir: 'ltr',
-          icon: './public/icons/common/img-notification.png',
+          icon: './public/icons/common/icon-badge.png',
         }
         // if so, create a notification
         const notification = new Notification(title, options);
