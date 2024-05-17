@@ -127,64 +127,76 @@
         <!-- Contact Info -->
         <div class="flex flex-col gap-y-2 mt-2">
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">이름</span>
+            <span class="inline-block w-24 font-semibold">이름</span>
             <span class="full_name">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">소속 본부</span>
+            <span class="inline-block w-24 font-semibold">소속 본부</span>
             <span class="division_name">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">소속 팀</span>
+            <span class="inline-block w-24 font-semibold">소속 팀</span>
             <span class="team_name">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">직책</span>
+            <span class="inline-block w-24 font-semibold">직책</span>
             <span class="position">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">직급</span>
+            <span class="inline-block w-24 font-semibold">직급</span>
             <span class="rank">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">회사</span>
+            <span class="inline-block w-24 font-semibold">회사</span>
             <a href="" class="office_phone_number hover:text-blue-600">-</a>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">내선</span>
+            <span class="inline-block w-24 font-semibold">회사(추가)</span>
+            <a href="" class="office_phone_number2 hover:text-blue-600">-</a>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-24 font-semibold">내선</span>
             <span class="extension_number">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">개인</span>
+            <span class="inline-block w-24 font-semibold">개인</span>
             <a href="" class="personal_phone_number hover:text-blue-600">-</a>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">이메일</span>
+            <span class="inline-block w-24 font-semibold">업무폰</span>
+            <a href="" class="office_personal_phone_number hover:text-blue-600">-</a>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-24 font-semibold">업무폰(추가)</span>
+            <a href="" class="office_personal_phone_number2 hover:text-blue-600">-</a>
+          </div>
+          <div class="p-4 bg-white">
+            <span class="inline-block w-24 font-semibold">이메일</span>
             <span class="email_address">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">상태</span>
+            <span class="inline-block w-24 font-semibold">상태</span>
             <span class="status">-</span>
           </div>
           <div class="p-4 bg-white flex items-center">
-            <span class="inline-block w-20 font-semibold">사진 URL</span>
+            <span class="inline-block w-24 font-semibold">사진 URL</span>
             <span
               class="photo_url inline-block max-w-[200px] text-ellipsis overflow-hidden whitespace-nowrap text-nowrap">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">근무지</span>
+            <span class="inline-block w-24 font-semibold">근무지</span>
             <span class="work_place">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">도입자</span>
+            <span class="inline-block w-24 font-semibold">도입자</span>
             <span class="introducer">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">입사일</span>
+            <span class="inline-block w-24 font-semibold">입사일</span>
             <span class="joining_date">-</span>
           </div>
           <div class="p-4 bg-white">
-            <span class="inline-block w-20 font-semibold">비고</span>
+            <span class="inline-block w-24 font-semibold">비고</span>
             <span class="remarks">-</span>
           </div>
         </div>
@@ -246,7 +258,16 @@
 
               <app-modal-input type="text" id="rank" name="rank" data-label="직급" value=""></app-modal-input>
 
+              <app-modal-input type="text" id="office_personal_phone_number" name="office_personal_phone_number"
+                data-label="업무폰 번호" value="" required="true"></app-modal-input>
+
+              <app-modal-input type="text" id="office_personal_phone_number2" name="office_personal_phone_number2"
+                data-label="추가 업무폰 번호" value="" required="true"></app-modal-input>
+
               <app-modal-input type="text" id="office_phone_number" name="office_phone_number" data-label="회사 전화"
+                value=""></app-modal-input>
+
+              <app-modal-input type="text" id="office_phone_number2" name="office_phone_number2" data-label="추가 회사 전화"
                 value=""></app-modal-input>
 
               <app-modal-input type="number" id="extension_number" name="extension_number" data-label="내선 번호"
@@ -450,7 +471,10 @@
         ".team_name": "textContent",
         ".extension_number": "textContent",
         ".personal_phone_number": "href",
+        ".office_personal_phone_number": "href",
+        ".office_personal_phone_number2": "href",
         ".office_phone_number": "href",
+        ".office_phone_number2": "href",
         ".email_address": "textContent",
         ".status": "textContent",
         ".photo_url": "textContent",
@@ -582,9 +606,21 @@
       let personalPhoneNumber = document.getElementById('personal_phone_number').shadowRoot.querySelector('#personal_phone_number');
       personalPhoneNumber.value = selectData.personal_phone_number;
 
+      // office_personal_phone_number
+      let officePersonalPhoneNumber = document.getElementById('office_personal_phone_number').shadowRoot.querySelector('#office_personal_phone_number');
+      officePersonalPhoneNumber.value = selectData.office_personal_phone_number;
+
+      // office_personal_phone_number2
+      let officePersonalPhoneNumber2 = document.getElementById('office_personal_phone_number2').shadowRoot.querySelector('#office_personal_phone_number2');
+      officePersonalPhoneNumber2.value = selectData.office_personal_phone_number2;
+
       // office_phone_number
       let officePhoneNumber = document.getElementById('office_phone_number').shadowRoot.querySelector('#office_phone_number');
       officePhoneNumber.value = selectData.office_phone_number;
+
+      // office_phone_number
+      let officePhoneNumber2 = document.getElementById('office_phone_number2').shadowRoot.querySelector('#office_phone_number2');
+      officePhoneNumber2.value = selectData.office_phone_number2;
 
       // extension_number
       let extensionNumber = document.getElementById('extension_number').shadowRoot.querySelector('#extension_number');
