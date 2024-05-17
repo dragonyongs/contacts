@@ -30,7 +30,6 @@ export async function setupExcelService(database) {
 async function handleResetData(contactsData, database) {
   const isConfirmed = confirm("정말로 데이터를 초기화 하시겠습니까?");
 
-
   if (isConfirmed) {
     await database.contacts.clear()
     triggerContactUpdateEvent(contactsData); // 커스텀 이벤트 발생시키기
@@ -64,61 +63,36 @@ export async function importContactsFromExcel() {
       var worksheet = workbook.Sheets[firstSheetName];
       var jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
-      // 한국어 헤더를 영어 키로 매핑
-      // const fieldMappingReverse = {
-      //   "연락처 그룹": "contact_group",
-      //   "전체 이름": "full_name",
-      //   "휴대폰 번호": "personal_phone_number",
-      //   "회사 전화": "office_phone_number",
-      //   "내선 번호": "extension_number",
-      //   "이메일 주소": "email_address",
-      //   "직급 명칭": "rank",
-      //   "직책 명칭": "position",
-      //   "소속 부서": "division_name",
-      //   "팀 이름": "team_name",
-      //   "현재 상태": "status",
-      //   "사진 URL": "photo_url",
-      //   // "입사 일자": "joining_date",
-      // };
-
-      // // 한국어 헤더를 영어로 변경
-      // globalJsonData = jsonData.map((row) => {
-      //   return Object.keys(row).reduce((acc, key) => {
-      //     const englishKey = fieldMappingReverse[key] || key;
-      //     acc[englishKey] = row[key];
-      //     return acc;
-      //   }, {});
-      // });
-      
       // 한국어 헤더를 영어 키로 매핑하고 데이터를 변환
       globalJsonData = mapHeadersFromKoreanToEnglish(jsonData);
     };
     reader.readAsArrayBuffer(file);
   } catch (error) {
     console.error("Failed to import contacts from Excel: ", error);
-    alert("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
+    notification("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
   }
 }
 
 function mapHeadersFromKoreanToEnglish(jsonData) {
-      const fieldMappingReverse = {
-        "연락처 그룹": "contact_group",
-        "전체 이름": "full_name",
-        "휴대폰 번호": "personal_phone_number",
-        "회사 전화": "office_phone_number",
-        "내선 번호": "extension_number",
-        "이메일 주소": "email_address",
-        "직급 명칭": "rank",
-        "직책 명칭": "position",
-        "소속 부서": "division_name",
-        "팀 이름": "team_name",
-        "현재 상태": "status",
-        "사진 URL": "photo_url",
-        "근무지": "work_place",
-        "도입자": "introducer",
-        "입사일": "joining_date",
-        "비고": "remarks",
-      };
+  const fieldMappingReverse = {
+    "연락처 그룹": "contact_group",
+    "전체 이름": "full_name",
+    "휴대폰 번호": "personal_phone_number",
+    "회사 전화": "office_phone_number",
+    "내선 번호": "extension_number",
+    "이메일 주소": "email_address",
+    "직급 명칭": "rank",
+    "직책 명칭": "position",
+    "소속 부서": "division_name",
+    "팀 이름": "team_name",
+    "현재 상태": "status",
+    "사진 URL": "photo_url",
+    "근무지": "work_place",
+    "도입자": "introducer",
+    "입사일": "joining_date",
+    "비고": "remarks",
+  };
+  
   return jsonData.map((row) => {
       return Object.keys(row).reduce((acc, key) => {
           const englishKey = fieldMappingReverse[key] || key;
@@ -211,7 +185,7 @@ export async function handleExportToExcel() {
     exportContactsToExcel();
   } catch (error) {
     console.error("Failed to export contacts to Excel: ", error);
-    alert("엑셀 파일을 내보내는 중에 오류가 발생했습니다.");
+    notification("엑셀 파일을 내보내는 중에 오류가 발생했습니다.");
   }
 }
 
@@ -221,7 +195,7 @@ async function handleImportFromExcel(e, database) {
     await importContactsFromExcel(e, database);
   } catch (error) {
     console.error("Failed to import contacts from Excel: ", error);
-    alert("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
+    notification("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
   }
 }
 
@@ -237,7 +211,7 @@ async function handleApply(database) {
     document.body.classList.remove("overflow-hidden");
   } catch (error) {
     console.error("Failed to apply contacts data: ", error);
-    alert("데이터를 적용하는 중에 오류가 발생했습니다.");
+    notification("데이터를 적용하는 중에 오류가 발생했습니다.");
   }
 }
 
@@ -246,7 +220,7 @@ async function applyChangesToDatabase(database) {
     // const contactsData = await getContactsData();
 
     if (!database) {
-      alert("데이터베이스가 준비되지 않았습니다.");
+      notification("데이터베이스가 준비되지 않았습니다.");
       return;
     }
 
@@ -257,7 +231,7 @@ async function applyChangesToDatabase(database) {
     });
 
     // 성공 알림
-    alert("연락처를 성공적으로 적용하였습니다.");
+    notification("연락처를 불러오기가 완료되었습니다.");
     resetButton.classList.remove('hidden');
     exportButton.classList.remove('hidden');
     resetButton.classList.remove('hidden');
@@ -271,6 +245,6 @@ async function applyChangesToDatabase(database) {
     );
   } catch (error) {
     console.error("Failed to apply changes to the database: ", error);
-    alert("데이터를 적용하는 중에 오류가 발생했습니다.");
+    notification("데이터를 적용하는 중에 오류가 발생했습니다.");
   }
 }

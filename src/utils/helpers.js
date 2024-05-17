@@ -1,7 +1,5 @@
 export function clearList(elementId) {
-    // console.log('elementId', elementId);
     const listContainer = document.getElementById(elementId);
-    // console.log('listContainer', listContainer);
     listContainer.innerHTML = '';
 }
 

@@ -18,7 +18,11 @@ export async function getDataDB() {
                 extension_number,
                 email_address,
                 photo_url,
-                status
+                status,
+                work_place,
+                introducer,
+                joining_date,
+                remarks
             `,
         });
 

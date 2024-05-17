@@ -1,5 +1,6 @@
 import { resetDetailContent } from "../../eventHandlers/modalEvents.js";
 import { loadContact, addContactToIndexedDB, updateContactInIndexedDB } from "../../services/dataService.js";
+import { notification } from "../../services/notificationService.js";
 
 let formDataCallback;
 
@@ -217,11 +218,11 @@ export class AppButton extends HTMLElement {
     
     if (!selectValid || !requiredInputsFilled) {
       if (!selectValid) {
-        alert("유효한 연락처 그룹을 선택해주세요.");
+        notification("유효한 연락처 그룹을 선택해주세요.");
       }
 
       if (!requiredInputsFilled) {
-        alert("필수 입력값을 채워주세요.");
+        notification("필수 입력값을 채워주세요.");
       }
       return false;
     }

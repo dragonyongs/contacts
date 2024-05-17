@@ -52,9 +52,7 @@ export function updateList(results) {
         return acc;
     }, {});
 
-    if (results.length === 0) {
-        console.log('results 0');
-    } else {
+    if (results.length !== 0) {
         // 그룹화된 데이터를 기반으로 HTML 요소 생성 및 추가
         Object.keys(groupedGroup).forEach((contact_group) => {
             // group 타이틀 생성

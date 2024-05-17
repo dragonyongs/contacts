@@ -68,12 +68,12 @@ export class AppModalInput extends HTMLElement {
     }
   }
 
-  submitPhoneNumber() {
-    const input = document.getElementById("phone");
-    const phoneNumber = input.value.replace(/-/g, ""); // '-' 문자 제거
-    // phoneNumber 변수를 사용하여 서버로 전송
-    console.log(phoneNumber); // 예: 서버로 전송하는 로직
-  }
+  // submitPhoneNumber() {
+  //   const input = document.getElementById("phone");
+  //   const phoneNumber = input.value.replace(/-/g, ""); // '-' 문자 제거
+  //   // phoneNumber 변수를 사용하여 서버로 전송
+  //   console.log(phoneNumber); // 예: 서버로 전송하는 로직
+  // }
 
   connectedCallback() {
     this.render();

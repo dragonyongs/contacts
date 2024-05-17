@@ -31,9 +31,5 @@ function handleConfirmClick() {
 }
 
 function handleDetailClick() {
-    console.log('----handleDetailClick 실행!', this.modalTabState);
-    this.modalTabState = "test";
-    console.log('----handleDetailClick 실행!', this.modalTabState);
-
-
+  this.modalTabState = "";
 }

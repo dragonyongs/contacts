@@ -1,9 +1,7 @@
 import { getContactsData } from "../services/dataService.js";
 import { handleExportToExcel } from "../services/excelService.js";
 import { setFormDataCallback } from "../components/Button/app-button.js";
-// import { getDataDB } from "../services/dataDB.js";
-// import { notification } from "../services/notificationService.js";
-// import { loadContact } from "../services/dataService.js";
+import { notification } from "../services/notificationService.js";
 
 export async function setupContactEvents() {
   const contactsData = await getContactsData();
@@ -28,7 +26,7 @@ export async function setupContactEvents() {
         // 셀렉트 값이 선택되었는지 확인
         if (selectValue === "" || selectValue === "연락처 그룹 선택") {
           // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
-          alert("setFormDataCallback 유효한 연락처 그룹을 선택해주세요.");
+          notification("유효한 연락처 그룹을 선택해주세요.");
           return false; // 성공 여부를 반환하지 않음
         }
       }

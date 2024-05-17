@@ -24,7 +24,7 @@ export async function deleteContact(contactId) {
       }
     }
   } catch (error) {
-    alert("연락처 삭제에 실패했습니다: " + error);
+    notification("연락처 삭제에 실패했습니다: " + error);
     console.log(error);
   }
 }
