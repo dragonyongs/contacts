@@ -28,7 +28,10 @@ button:hover {
 button:hover,
 button:focus {
   color: var(--button-primary);
-  /* outline: 2px dotted #70baff; */
+}
+button:hover > .icon > svg > g :is(circle, rect),
+button:hover > .icon > svg path {
+  fill: var(--button-primary);
 }
 
 button:active{
@@ -48,12 +51,27 @@ button > span {
   line-height: 1rem;
 }
 
-button > ion-icon {
-  /* margin-bottom: 0.25rem; */
+button > .icon {
   padding: 0.25rem;
 }
 
-button > ion-icon.md {
+button > .icon.small {
   width: 1.5rem;
   height: 1.5rem;
 }
+
+button > .icon.large {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* 
+button > ion-icon {
+  margin-bottom: 0.25rem;
+  padding: 0.25rem;
+} */
+
+/* button > ion-icon.md {
+  width: 1.5rem;
+  height: 1.5rem;
+} */

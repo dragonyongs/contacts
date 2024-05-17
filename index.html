@@ -70,7 +70,7 @@
           <span slot="label">검색</span>
         </app-tab-button>
 
-        <app-tab-button id="data" data-icon="server-outline"
+        <app-tab-button id="data" data-icon="data-outline"
           x-on:click="if(modalTabState === 'data') return; modalOpen = true; modalTabState = 'data';">
           <span slot="label">데이터</span>
         </app-tab-button>
@@ -399,32 +399,6 @@
           body: '스타리치 어드바이져에서 알림 6기를 모집합니다. 많은 신청 바랍니다. 볼링클럽은 앞으로 진행하지 않습니다.',
           dir: 'ltr',
           icon: './public/icons/common/img-notification.png',
-          // badge: './public/icons/common/icon-badge.png',
-          // image: './public/icons/common/icon-notification.png', // 알림에 표시될 아이콘 이미지 URL
-          // actions: [
-          //   {
-          //     action: 'reply',
-          //     type: 'text',
-          //     title: 'Reply',
-          //     icon: './public/icons/common/icon-notification.png',
-          //     placeholder: '여기에 작성해주세요.',
-          //   },
-          //   {
-          //     action: 'yes',
-          //     type: 'button',
-          //     title: '👍 Yes',
-          //   },
-          //   {
-          //     action: 'no',
-          //     type: 'text',
-          //     title: '👎 No (explain why)',
-          //     placeholder: 'Type your explanation here',
-          //   },
-          // ],
-          // vibrate: [200, 100, 200, 100, 300], // 진동 패턴 (옵션)
-          // data: {
-          //   url: 'https://starrich.co.kr' // 클릭시 열릴 링크 (옵션)
-          // }
         }
         // if so, create a notification
         const notification = new Notification(title, options);
