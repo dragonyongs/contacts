@@ -7,13 +7,14 @@ input {
     display: block;
     position: relative;
     width: 100%;
+    min-height: 50px;
+    margin-top: .5rem;
+    padding: 1.5rem 0 0.25rem;
     appearance: none;
     -webkit-appearance: none;
     border: none;
     border-bottom: 2px solid #d1d5db; /* border-gray-300 */
     background-color: transparent;
-    margin-top: .5rem;
-    padding: 1.5rem 0 0.25rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
     color: #111827;

@@ -526,7 +526,6 @@
           }
         }
 
-        console.log(`Number of non-empty fields: ${nonEmptyCount}`);
         return nonEmptyCount;
       }
 
@@ -536,6 +535,7 @@
 
       if (fieldCount <= 3) {
         contactMoreButton.click();
+        this.contactMore = true;
       }
 
       // contact_id
