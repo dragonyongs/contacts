@@ -179,9 +179,10 @@ export class AppButton extends HTMLElement {
   }
 
   validateSelect(selectElement) {
+    console.log('selectElement', selectElement);
+
     if (selectElement) {
-      const selectValue =
-        selectElement.shadowRoot.querySelector("select").value;
+      const selectValue = selectElement.value;
 
       if (selectElement.required && !selectValue) {
         selectElement.classList.add("required");
@@ -200,17 +201,16 @@ export class AppButton extends HTMLElement {
     let selectValid = true;
     let requiredInputsFilled = true;
 
-    const selectElement = document.querySelector("#contact_group_select");
-
-    if (selectElement) {
-      const elementSelect = selectElement.shadowRoot.querySelector("select");
-
-      const selectValue = this.validateSelect(selectElement);
-      formData.append("contact_group", elementSelect.value);
-      if (!selectValue) {
-        selectValid = false;
+    const appSelectElement = document.querySelector("#contact_group_select");
+    if (appSelectElement) {
+      const selectElement = appSelectElement.shadowRoot.querySelector("select");
+      if (selectElement) {
+        const selectValue = this.validateSelect(selectElement);
+        formData.append("contact_group", selectValue);
+        if (!selectValue) {
+          selectValid = false;
+        }
       }
-
     }
 
     const modalInputs = document.querySelector("#addEdit").querySelectorAll("app-modal-input");

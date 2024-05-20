@@ -1,18 +1,18 @@
 // 모달이 닫힐 때 모달 내의 요소들을 초기화하는 함수
 export function clearModalContent() {
-    const contactSelect = document.getElementById('contact_group_select');
+    const contactSelect = document.getElementById('contact_group_select').shadowRoot.querySelector('select');
     const contactForm = document.getElementById('contact-form');
     const inputElements = contactForm.querySelectorAll('app-modal-input');
-
-    inputElements.forEach(element => {
-        let inputValue = element.shadowRoot.querySelector('input');
-        inputValue.value = "";
-    });
-
+    console.log('contactSelect', contactSelect);
     if (contactSelect) {
-        let selectValue = contactSelect.shadowRoot.querySelector('select');
-        selectValue.value = "";
-    } 
+        let selectValue = contactSelect.value;
+        selectValue = "";
+    } else {
+        inputElements.forEach(element => {
+            let inputValue = element.shadowRoot.querySelector('input');
+            inputValue.value = "";
+        });
+    }
 }
 
 export function resetDetailContent() {
