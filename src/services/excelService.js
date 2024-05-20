@@ -226,7 +226,6 @@ async function handleApply(database) {
 
 async function applyChangesToDatabase(database) {
   try {
-    // const contactsData = await getContactsData();
 
     if (!database) {
       notification("데이터베이스가 준비되지 않았습니다.");
@@ -237,10 +236,11 @@ async function applyChangesToDatabase(database) {
     await database.transaction("rw", database.contacts, async () => {
       await database.contacts.clear(); // 기존 연락처 데이터 삭제
       await database.contacts.bulkAdd(globalJsonData); // 새로운 데이터 추가
+      triggerContactUpdateEvent(database.contacts);
+      notification("연락처를 불러오기가 완료되었습니다.");
     });
 
     // 성공 알림
-    notification("연락처를 불러오기가 완료되었습니다.");
     resetButton.classList.remove('hidden');
     exportButton.classList.remove('hidden');
     resetButton.classList.remove('hidden');
