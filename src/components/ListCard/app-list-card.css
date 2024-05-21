@@ -147,6 +147,14 @@ li .info-wrap .info + .team > span.extension_number {
   color:#0059d6;
 }
 
+li.leave .info-wrap .info + .team > span.extension_number {
+  color: var(--status--leave);
+}
+
+li.sick .info-wrap .info + .team > span.extension_number {
+  color: var(--status--sick);
+}
+
 li .info-wrap .icon-wrap {
   width: 24px;
   height: 24px;
