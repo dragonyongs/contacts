@@ -142,6 +142,11 @@ li .info-wrap .info + .team {
   color: #4b5563;
 }
 
+li .info-wrap .info + .team > span.extension_number {
+  font-weight: 600;
+  color:#0059d6;
+}
+
 li .info-wrap .icon-wrap {
   width: 24px;
   height: 24px;
