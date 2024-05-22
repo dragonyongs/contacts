@@ -73,6 +73,16 @@ export async function importContactsFromExcel() {
   }
 }
 
+async function handleImportFromExcel(e, database) {
+  try {
+    // 엑셀 파일에서 데이터 읽기 및 데이터베이스에 적용
+    await importContactsFromExcel(e, database);
+  } catch (error) {
+    console.error("Failed to import contacts from Excel: ", error);
+    notification("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
+  }
+}
+
 function mapHeadersFromKoreanToEnglish(jsonData) {
   const fieldMappingReverse = {
     "연락처 그룹": "contact_group",
@@ -106,6 +116,9 @@ function mapHeadersFromKoreanToEnglish(jsonData) {
 }
 
 export async function exportContactsToExcel() {
+
+  console.log('exportContactsToExcel');
+
   const contacts = await getContactsData();
 
   const fieldMapping = {
@@ -192,19 +205,10 @@ export async function handleExportToExcel() {
   try {
     // 엑셀 파일 생성 및 내보내기
     exportContactsToExcel();
+    console.log('handleExportToExcel');
   } catch (error) {
     console.error("Failed to export contacts to Excel: ", error);
     notification("엑셀 파일을 내보내는 중에 오류가 발생했습니다.");
-  }
-}
-
-async function handleImportFromExcel(e, database) {
-  try {
-    // 엑셀 파일에서 데이터 읽기 및 데이터베이스에 적용
-    await importContactsFromExcel(e, database);
-  } catch (error) {
-    console.error("Failed to import contacts from Excel: ", error);
-    notification("엑셀 파일을 가져오는 중에 오류가 발생했습니다.");
   }
 }
 

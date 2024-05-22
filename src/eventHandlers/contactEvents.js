@@ -9,9 +9,9 @@ export async function setupContactEvents() {
   listContact(contactsData);
 
   // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
-  document
-    .getElementById("export_button")
-    .addEventListener("click", handleExportToExcel);
+  // document
+  //   .getElementById("export_button")
+  //   .addEventListener("click", handleExportToExcel);
 
   // formDataCallback 설정
   setFormDataCallback((formData) => {
