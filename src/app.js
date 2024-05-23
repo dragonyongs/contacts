@@ -2,6 +2,7 @@ import { setupContactEvents } from "./eventHandlers/contactEvents.js";
 import { getDataDB } from "./services/dataDB.js";
 import { setupExcelService } from "./services/excelService.js";
 import { handleSearchInput } from './eventHandlers/searchEventHandler.js';
+import { changeThemeColor } from "./utils/changeThemeColor.js"
 
 const searchInput = document.getElementById('searchForm');
 searchInput.addEventListener('input', handleSearchInput);
@@ -47,9 +48,3 @@ const contactWrapElement = document.querySelector(".contactWrap");
 contactWrapElement.addEventListener("click", function () {
   changeThemeColor(detailColor);
 });
-
-function changeThemeColor(color) {
-  document
-    .querySelector('meta[name="theme-color"]')
-    .setAttribute("content", color);
-}

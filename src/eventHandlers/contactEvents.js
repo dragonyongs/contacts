@@ -1,38 +1,33 @@
 import { getContactsData } from "../services/dataService.js";
-import { handleExportToExcel } from "../services/excelService.js";
-import { setFormDataCallback } from "../components/Button/app-button.js";
-import { notification } from "../services/notificationService.js";
+// import { handleExportToExcel } from "../services/excelService.js";
+// import { setFormDataCallback } from "../components/Button/app-button.js";
+// import { notification } from "../services/notificationService.js";
 
 export async function setupContactEvents() {
   const contactsData = await getContactsData();
   modalData.contactsData = contactsData;
   listContact(contactsData);
 
-  // 여기에서 연락처 관련 이벤트 핸들러를 설정합니다.
-  // document
-  //   .getElementById("export_button")
-  //   .addEventListener("click", handleExportToExcel);
-
   // formDataCallback 설정
-  setFormDataCallback((formData) => {
-    const selectElement = document.getElementById("contact_group_select");
+  // setFormDataCallback((formData) => {
+  //   const selectElement = document.getElementById("contact_group_select");
 
-    if (selectElement) {
-      const elementSelect = selectElement.shadowRoot.querySelector("select");
-      if (selectElement && elementSelect) {
-        const selectValue =
-          selectElement.shadowRoot.querySelector("select").value;
+  //   if (selectElement) {
+  //     const elementSelect = selectElement.shadowRoot.querySelector("select");
+  //     if (selectElement && elementSelect) {
+  //       const selectValue =
+  //         selectElement.shadowRoot.querySelector("select").value;
 
-        // 셀렉트 값이 선택되었는지 확인
-        if (selectValue === "" || selectValue === "연락처 그룹 선택") {
-          // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
-          notification("유효한 연락처 그룹을 선택해주세요.");
-          return false; // 성공 여부를 반환하지 않음
-        }
-      }
-    }
-
-  });
+  //       // 셀렉트 값이 선택되었는지 확인
+  //       if (selectValue === "" || selectValue === "연락처 그룹 선택") {
+  //         // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
+  //         notification("유효한 연락처 그룹을 선택해주세요.");
+  //         return false; // 성공 여부를 반환하지 않음
+  //       }
+  //     }
+  //   }
+  //   console.log('setFormDataCallback 실행');
+  // });
 
 }
 
@@ -50,6 +45,7 @@ window.addEventListener("contactUpdate", async (e) => {
   if (modalData) {
     modalData.selectContact = e.detail.updatedContacts;
     await listContact();
+    console.log('contactUpdate 발생');
   }
 });
 
@@ -95,15 +91,9 @@ export async function listContact() {
       const contactItem = document.createElement("li");
       const contactData = JSON.stringify(contact);
       contactItem.innerHTML = `
-                <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
-                </app-list-card>
-            `;
-      // contactItem.innerHTML = `
-      //           <app-list-card x-on:click="if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactId="${contact.contact_id}" data-contactGroup="${contact.contact_group}" data-fullName="${contact.full_name}" data-position="${contact.position}" data-rank="${contact.rank}" 
-      //           data-teamName="${contact.team_name}" data-status="${contact.status}" data-photoUrl="${contact.photo_url}" data-divisionName="${contact.division_name}"
-      //           data-personalNumber="${contact.personal_phone_number}" data-officeNumner="${contact.office_phone_number}" data-extensionNumber="${contact.extension_number}" data-emailAddress="${contact.email_address}">
-      //           </app-list-card>
-      //       `;
+          <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
+          </app-list-card>
+      `;
       groupList.appendChild(contactItem);
     });
     contactList.appendChild(groupList);
@@ -124,4 +114,6 @@ export async function listContact() {
   if (!searchTitle.classList.contains('hidden')) {
     searchTitle.classList.add('hidden');
   }
+
+  console.log('List Contact 호출');
 }
