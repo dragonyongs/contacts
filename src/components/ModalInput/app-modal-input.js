@@ -28,6 +28,14 @@ export class AppModalInput extends HTMLElement {
     return this.getAttribute("required") || "";
   }
 
+  get inputmode() {
+    return this.getAttribute("inputmode") || "";
+  }
+
+  get pattern() {
+    return this.getAttribute("pattern") || "";
+  }
+
   template(state) {
     return `
             <link rel="stylesheet" href="./src/components/ModalInput/app-modal-input.css">
@@ -36,7 +44,7 @@ export class AppModalInput extends HTMLElement {
       state.id
     }" value="${state.value}" placeholder=" " ${
       state.required === "true" ? "required" : ""
-    } />
+    } inputmode="${state.inputmode}" pattern="${state.pattern}" autocomplete="off" />
                 <label for="${state.id}">${state.label}</label>
             </div>
         `;
@@ -117,6 +125,8 @@ export class AppModalInput extends HTMLElement {
       label: this.label,
       value: this.value,
       required: this.required,
+      inputmode: this.inputmode,
+      pattern: this.pattern,
     });
   }
 }

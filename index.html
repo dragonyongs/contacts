@@ -219,7 +219,7 @@
             <ion-icon name="close-outline" size="large"></ion-icon>
           </button>
         </div>
-        <form id="contact-form" autocomplete="off">
+        <form id="contact-form">
           <div class="overflow-y-auto max-h-80 px-6 bg-slate-100 scroll-shadows">
             <app-modal-select id="contact_group_select" name="contact_group" data-label="연락처 그룹" value="" class="mt-2"
               required="true"></app-modal-select>
@@ -230,7 +230,7 @@
               required="true"></app-modal-input>
 
             <app-modal-input type="text" id="personal_phone_number" name="personal_phone_number" data-label="개인 전화"
-              value="" required="true"></app-modal-input>
+              value="" required="true" inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
             <div id="more-button" class="mt-4" x-show="!contactMore">
               <app-button type="button" role="button" data-iconName="add-circle-outline" data-iconSize="small"
@@ -253,19 +253,19 @@
               <app-modal-input type="text" id="rank" name="rank" data-label="직급" value=""></app-modal-input>
 
               <app-modal-input type="text" id="office_personal_phone_number" name="office_personal_phone_number"
-                data-label="업무폰 번호" value=""></app-modal-input>
+                data-label="업무폰 번호" value="" inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
               <app-modal-input type="text" id="office_personal_phone_number2" name="office_personal_phone_number2"
-                data-label="추가 업무폰 번호" value=""></app-modal-input>
+                data-label="추가 업무폰 번호" value="" inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
               <app-modal-input type="text" id="office_phone_number" name="office_phone_number" data-label="회사 전화"
-                value=""></app-modal-input>
+                value="" inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
               <app-modal-input type="text" id="office_phone_number2" name="office_phone_number2" data-label="추가 회사 전화"
-                value=""></app-modal-input>
+                value="" inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
-              <app-modal-input type="number" id="extension_number" name="extension_number" data-label="내선 번호"
-                value=""></app-modal-input>
+              <app-modal-input type="number" id="extension_number" name="extension_number" data-label="내선 번호" value=""
+                inputmode="numeric" pattern="[0-9]*"></app-modal-input>
 
               <app-modal-input type="email" id="email_address" name="email_address" data-label="이메일"
                 value=""></app-modal-input>
