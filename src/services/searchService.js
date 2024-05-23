@@ -1,43 +1,31 @@
 import { getContactsData } from "../services/dataService.js";
 
-export async function searchDatabase(searchText) {
-    const contactsData = await getContactsData();
-    return contactsData.filter(contact => {
-        const contact_group = contact.contact_group.toLowerCase();
-        const fullName = contact.full_name.toLowerCase();
-        const teamName = contact.team_name.toLowerCase();
-        const status = contact.status.toLowerCase();
-        const phoneNumber = typeof contact.personal_phone_number === 'number' ? contact.personal_phone_number.toString() : '';
-        
-        return  contact_group.includes(searchText.toLowerCase()) ||
-                fullName.includes(searchText.toLowerCase()) ||
-                teamName.includes(searchText.toLowerCase()) ||
-                status.includes(searchText.toLowerCase()) ||
-                phoneNumber.includes(searchText.toLowerCase());
-    });
+function normalizePhoneNumber(phoneNumber) {
+    if (typeof phoneNumber !== 'string') {
+        return ''; // 전화번호가 문자열이 아닌 경우 빈 문자열 반환
+    }
+    return phoneNumber.replace(/[^\d]/g, ''); // 숫자 이외의 문자 제거
 }
 
-// export async function searchDatabase(searchText) {
-//     const database = await getDataDB();
-//     return database.contacts
-//         .filter(contact =>
-//             contact.full_name.toLowerCase().includes(searchText.toLowerCase()) ||
-//             contact.personal_phone_number.toLowerCase().includes(searchText.toLowerCase()) ||
-//             contact.team_name.toLowerCase().includes(searchText.toLowerCase()) ||
-//             contact.status.toLowerCase().includes(searchText.toLowerCase())
-//         )
-//         .toArray();
-// }
+function searchInContact(contact, searchTerms) {
+    const contact_group = contact.contact_group.toLowerCase();
+    const fullName = contact.full_name.toLowerCase();
+    const teamName = contact.team_name.toLowerCase();
+    const status = contact.status.toLowerCase();
+    const phoneNumber = normalizePhoneNumber(contact.personal_phone_number);
+    
+    return searchTerms.some(term => 
+        contact_group.includes(term) ||
+        fullName.includes(term) ||
+        teamName.includes(term) ||
+        status.includes(term) ||
+        phoneNumber.includes(term)
+    );
+}
 
-// 쿼리로만 검색
-// export async function searchDatabase(searchText) {
-//     const database = await getDataDB();
-//     return database.contacts
-//         .where('full_name') // 첫 번째 컬럼
-//         .startsWithIgnoreCase(searchText)
-//         .or('personal_phone_number') // 두 번째 컬럼
-//         .startsWithIgnoreCase(searchText)
-//         .or('team_name') // 세 번째 컬럼
-//         .startsWithIgnoreCase(searchText)
-//         .toArray();
-// }
+export async function searchDatabase(searchText) {
+    const contactsData = await getContactsData();
+    const searchTerms = searchText.toLowerCase().split(' ').map(term => term.trim());
+    
+    return contactsData.filter(contact => searchInContact(contact, searchTerms));
+}
