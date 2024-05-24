@@ -1,34 +1,9 @@
 import { getContactsData } from "../services/dataService.js";
-// import { handleExportToExcel } from "../services/excelService.js";
-// import { setFormDataCallback } from "../components/Button/app-button.js";
-// import { notification } from "../services/notificationService.js";
 
 export async function setupContactEvents() {
   const contactsData = await getContactsData();
   modalData.contactsData = contactsData;
   listContact(contactsData);
-
-  // formDataCallback 설정
-  // setFormDataCallback((formData) => {
-  //   const selectElement = document.getElementById("contact_group_select");
-
-  //   if (selectElement) {
-  //     const elementSelect = selectElement.shadowRoot.querySelector("select");
-  //     if (selectElement && elementSelect) {
-  //       const selectValue =
-  //         selectElement.shadowRoot.querySelector("select").value;
-
-  //       // 셀렉트 값이 선택되었는지 확인
-  //       if (selectValue === "" || selectValue === "연락처 그룹 선택") {
-  //         // 셀렉트 값이 선택되지 않았을 때는 데이터를 전달하지 않음
-  //         notification("유효한 연락처 그룹을 선택해주세요.");
-  //         return false; // 성공 여부를 반환하지 않음
-  //       }
-  //     }
-  //   }
-  //   console.log('setFormDataCallback 실행');
-  // });
-
 }
 
 // 커스텀 이벤트 생성 및 발생시키기
@@ -52,8 +27,6 @@ window.addEventListener("contactUpdate", async (e) => {
 
 // listContact 함수 내에서 연락처 데이터를 가져와서 DOM에 반영
 export async function listContact() {
-
-  // const fetchData = modalData.contactsData;
   const fetchData = await getContactsData();
 
   const contactList = document.getElementById("contact-list");
@@ -68,31 +41,34 @@ export async function listContact() {
     const key = contact.contact_group;
 
     if (!acc[key]) {
-      acc[key] = [];
+      acc[key] = {
+        groupId: `${Math.floor(Math.random() * 1000)}`,
+        contacts: []
+      };
     }
 
-    acc[key].push(contact);
+    acc[key].contacts.push(contact);
     return acc;
   }, {});
 
   // 그룹화된 데이터를 기반으로 HTML 요소 생성 및 추가
-  Object.keys(groupedGroup).forEach((contact_group) => {
+  Object.values(groupedGroup).forEach((group, i) => {
     // group 타이틀 생성
     const groupTitle = document.createElement("div");
     groupTitle.className =
       "z-10 sticky top-[56px] px-3 py-2 border-t-0 border-b border-l-0 border-r-0 border-gray-200 bg-white";
-    const memberCount = groupedGroup[contact_group].length; // 그룹 내 데이터 수 계산
-    groupTitle.innerHTML = `<p class="text-sm font-semibold">${contact_group}</p> <div class="absolute top-1/2 -translate-y-1/2 right-4 text-sm tracking-tight text-blue-600">${memberCount}명</div>`;
+    const memberCount = group.contacts.length; // 그룹 내 데이터 수 계산
+    groupTitle.innerHTML = `<p class="text-sm font-semibold">${Object.keys(groupedGroup)[i]}</p> <div class="absolute top-1/2 -translate-y-1/2 right-4 text-sm tracking-tight text-blue-600">${memberCount}명</div>`;
     contactList.appendChild(groupTitle);
 
     // group 속한 사용자 목록 생성
     const groupList = document.createElement("ul");
-    groupedGroup[contact_group].forEach((contact) => {
+    group.contacts.forEach((contact) => {
       const contactItem = document.createElement("li");
       const contactData = JSON.stringify(contact);
       contactItem.innerHTML = `
-          <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}'>
-          </app-list-card>
+        <app-list-card x-on:click="handleDetailClick; if (modalState !== 'detail') { modalOpen = true; modalState = 'detail'; notification = false; }" id="detail" data-contactData='${contactData}' data-group="${group.groupId}">
+        </app-list-card>
       `;
       groupList.appendChild(contactItem);
     });
@@ -114,6 +90,11 @@ export async function listContact() {
   if (!searchTitle.classList.contains('hidden')) {
     searchTitle.classList.add('hidden');
   }
-
-  console.log('List Contact 호출');
 }
+
+  
+// const appListCard = document.querySelectorAll('app-list-card');
+// const groupListCard = appListCard.reduce((acc, cur) => {
+//   const groupIndex = acc.findIndex(item => item.)
+// });
+// console.log(groupListCard);

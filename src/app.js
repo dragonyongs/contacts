@@ -34,11 +34,13 @@ if (isIOS && isPWAWithoutBrowserUI) {
 
 // iOS 기기인지 여부를 확인하는 함수
 function isIOS() {
+  alert('isIOS 추가 요소');
   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
 // PWA로 추가된 경우 상단 및 하단 브라우저 요소가 없는지 확인하는 함수
 function isPWAWithoutBrowserUI() {
+  alert('isPWAWithoutBrowserUI 추가 요소');
   return window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
 }
 

@@ -26,7 +26,7 @@ export function notification(message) {
         <div class="content relative min-h-32">
             <div class="w-11/12">
                 <p class="mb-6 font-semibold text-xl text-white">${message}</p>
-                <app-button type="button" role="button" data-iconName="checkmark-outline" data-iconSize="small" class="small remove-overflow w-48 font-semibold text-2xl text-black bg-white rounded-full" @click="handleConfirmClick">
+                <app-button type="button" role="button" class="small remove-overflow w-48 font-semibold text-2xl text-black bg-white rounded-full" @click="handleConfirmClick">
                     <span slot="label">확인</span>
                 </app-button>
             </div>

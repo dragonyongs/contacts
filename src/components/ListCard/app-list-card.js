@@ -14,9 +14,9 @@ export class AppListCard extends HTMLElement {
     return this.getAttribute("id") || "";
   }
 
-  // get contact_id() {
-  //   return this.getAttribute("data-contactId") || "";
-  // }
+  get groupId() {
+    return this.getAttribute("data-group") || "groups-none";
+  }
 
   // get full_name() {
   //   return this.getAttribute("data-fullName").trim() || "";
@@ -80,44 +80,64 @@ export class AppListCard extends HTMLElement {
   //   return this.getAttribute("data-emailAddress").trim() || "";
   // }
 
+// 색상 코드 배열
+
 template(state) {
-    const statusInfo = this.statusInfo;
-    // const familyName = state.full_name.charAt(0);
-    return `
-                <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
-                <li id="${state.id}" data-id="contact-id-${state.contact_id}" ${
+
+  const statusInfo = this.statusInfo;
+  const groupId = state.groupId;
+  const colorCodes = [
+    '#C4B5D6', // 연한 보라색
+    '#B5D6C4', // 연한 민트색
+    '#D6C4B5', // 연한 베이지색
+    '#D6B5C4', // 연한 핑크색
+    '#C4D6B5', // 연한 연두색
+    '#D6C4C4', // 연한 살구색
+    '#C4B5C4', // 연한 라벤더색
+    '#B5C4D6', // 연한 하늘색
+    '#D6B5B5', // 연한 복숭아색
+    '#C4C4D6'  // 연한 라일락색
+  ];
+  const backgroundColor = colorCodes[groupId % colorCodes.length];
+
+  return `
+    <link rel="stylesheet" href="./src/components/ListCard/app-list-card.css">
+    <li id="${state.id}" data-id="contact-id-${state.contact_id}" ${
       statusInfo.status ? `class="${statusInfo.class}"` : ""
     }>
-                    <div
-                        class="img-wrap">
-                        ${
-                          state.photo_url
-                            ? `<img src="${state.photo_url}"
-                        alt="" class="object-contain">`
-                            : `${state.family_name}`
-                        }
-                    </div>
-                    <div class="info-wrap">
-                        <div>
-                            <div class="info">
-                                <p class="name">${
-                                  state.full_name
-                                } <span class="role">${state.rank ? state.rank : state.position } ${ state.rank && state.position ? `/ ${state.position}` : ''}</span></p>
-                                ${
-                                  statusInfo.status !== "default"
-                                    ? `<span class="status">${statusInfo.text}</span>`
-                                    : ""
-                                }
-                            </div>
-                            <p class="team">${state.team_name} ${ state.team_name && state.extension_number ? `(내선 <span class="extension_number">${state.extension_number}</span>)` : `${state.personal_phone_number}` }</p>
-                        </div>
-                        <div class="icon-wrap">
-                            <svg fill="#000000" width="24" height="24" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.489 31.975c-0.271 0-0.549-0.107-0.757-0.316-0.417-0.417-0.417-1.098 0-1.515l14.258-14.264-14.050-14.050c-0.417-0.417-0.417-1.098 0-1.515s1.098-0.417 1.515 0l14.807 14.807c0.417 0.417 0.417 1.098 0 1.515l-15.015 15.022c-0.208 0.208-0.486 0.316-0.757 0.316z"></path> </g></svg>
-                        </div>
-                    </div>
-                </li>
-            `;
-  }
+      <div class="img-wrap" style="background-color: ${backgroundColor};">
+        ${
+          state.photo_url
+            ? `<img src="${state.photo_url}" alt="" class="object-contain">`
+            : `${state.family_name}`
+        }
+      </div>
+      <div class="info-wrap">
+        <div>
+          <div class="info">
+            <p class="name">${state.full_name} <span class="role">${
+      state.rank ? state.rank : state.position
+    } ${state.rank && state.position ? `/ ${state.position}` : ''}</span></p>
+            ${
+              statusInfo.status !== "default"
+                ? `<span class="status">${statusInfo.text}</span>`
+                : ""
+            }
+          </div>
+          <p class="team">${state.team_name} ${
+      state.team_name && state.extension_number
+        ? `(내선 <span class="extension_number">${state.extension_number}</span>)`
+        : `${state.personal_phone_number}`
+    }</p>
+        </div>
+        <div class="icon-wrap">
+          <svg fill="#000000" width="24" height="24" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8.489 31.975c-0.271 0-0.549-0.107-0.757-0.316-0.417-0.417-0.417-1.098 0-1.515l14.258-14.264-14.050-14.050c-0.417-0.417-0.417-1.098 0-1.515s1.098-0.417 1.515 0l14.807 14.807c0.417 0.417 0.417 1.098 0 1.515l-15.015 15.022c-0.208 0.208-0.486 0.316-0.757 0.316z"></path> </g></svg>
+        </div>
+      </div>
+    </li>
+  `;
+}
+
 // <p class="team">${state.division_name} ${ state.division_name && state.team_name ? `/ ${state.team_name}` : `${state.division_name}` }</p>
   connectedCallback() {
     this.render();
@@ -207,6 +227,7 @@ template(state) {
       extension_number: this.contactData.extension_number,
       status: this.contactData.statusInfo,
       email_address: this.contactData.email_address,
+      groupId: this.groupId,
     });
   }
 }
