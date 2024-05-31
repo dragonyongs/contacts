@@ -1,4 +1,4 @@
-const CACHE_NAME = "Contacts-v1.63";
+const CACHE_NAME = "Contacts-v1.631";
 const urlsToCache = [
   "./",
   "./index.html",
