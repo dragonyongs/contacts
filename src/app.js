@@ -27,22 +27,22 @@ if ("serviceWorker" in navigator) {
 }
 
 // iOS 기기에서 PWA를 홈 화면에 추가한 경우에만 CSS를 적용
-// if (isIOS && isPWAWithoutBrowserUI) {
-//   document.querySelector("#contact-list").style.paddingBottom = "0.675rem";
-//   document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
-// }
+if (isIOS && isPWAWithoutBrowserUI) {
+  document.querySelector("#contact-list").style.paddingBottom = "0.675rem";
+  document.querySelector(".button-tap").style.paddingBottom = "1.5rem";
+}
 
 // iOS 기기인지 여부를 확인하는 함수
-// function isIOS() {
-//   alert('isIOS 추가 요소');
-//   return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-// }
+function isIOS() {
+  alert('isIOS 추가 요소');
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
 // PWA로 추가된 경우 상단 및 하단 브라우저 요소가 없는지 확인하는 함수
-// function isPWAWithoutBrowserUI() {
-//   alert('isPWAWithoutBrowserUI 추가 요소');
-//   return window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
-// }
+function isPWAWithoutBrowserUI() {
+  alert('isPWAWithoutBrowserUI 추가 요소');
+  return window.matchMedia('(display-mode: standalone)').matches && !window.navigator.standalone;
+}
 
 
 const detailColor = "#22326E";

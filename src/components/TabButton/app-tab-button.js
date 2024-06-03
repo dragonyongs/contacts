@@ -92,18 +92,19 @@ export class AppTabButton extends HTMLElement {
   
 
   handleListButtonClick() {
-    const isActive = document.body.classList.contains("active");
-
     this.vibrate();
-    listContact();
-    changeThemeColor('#1e293b');
 
+    const isActive = document.body.classList.contains("active");
     if (isActive) {
+      alert('active, overflow-hidden 제거');
       document.body.classList.remove("active", "overflow-hidden");
     } else {
+      alert('overflow-hidden 제거');
       document.body.classList.remove("overflow-hidden");
     }
 
+    listContact();
+    changeThemeColor('#1e293b');
     document.getElementById("searchForm").querySelector("input").value = "";
   }
   
