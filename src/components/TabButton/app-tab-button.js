@@ -93,8 +93,6 @@ export class AppTabButton extends HTMLElement {
   }
   
   async handleListButtonClick() {
-    this.vibrate();
-  
     const isActive = document.body.classList.contains("active");
     console.log(`isActive: ${isActive}`);
   
@@ -112,6 +110,8 @@ export class AppTabButton extends HTMLElement {
       changeThemeColor('#1e293b');
       document.getElementById("searchForm").querySelector("input").value = "";
       console.log('listContact completed');
+      // this.vibrate();
+
     } catch (error) {
       console.error('Error in listContact:', error);
     }

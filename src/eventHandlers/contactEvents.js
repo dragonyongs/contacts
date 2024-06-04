@@ -27,6 +27,7 @@ window.addEventListener("contactUpdate", async (e) => {
 
 // listContact 함수 내에서 연락처 데이터를 가져와서 DOM에 반영
 export async function listContact() {
+  console.log('listContact function called');
   const fetchData = await getContactsData();
 
   const contactList = document.getElementById("contact-list");
