@@ -95,3 +95,15 @@ img.photo_url {
   width: 96px;
   height: 96px;
 }
+
+
+.custom-alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: #fff;
+  color: #000;
+  z-index: 100;
+}

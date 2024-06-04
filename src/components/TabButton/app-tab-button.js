@@ -66,13 +66,13 @@ export class AppTabButton extends HTMLElement {
   }
 
   handleButtonClick(event) {
-    const buttonId = event.target.id || event.currentTarget.id;
+    const buttonId = event.currentTarget.id;
     console.log(`Button clicked: ${buttonId}`);
-    
+  
     const isScroll = document.body.classList.contains("overflow-hidden");
     if (!isScroll) {
-        document.body.classList.add("overflow-hidden");
-    } 
+      document.body.classList.add("overflow-hidden");
+    }
   
     switch (buttonId) {
       case "list":
@@ -92,24 +92,31 @@ export class AppTabButton extends HTMLElement {
     }
   }
   
-
   async handleListButtonClick() {
     this.vibrate();
-
+  
     const isActive = document.body.classList.contains("active");
+    console.log(`isActive: ${isActive}`);
+  
     if (isActive) {
       this.showCustomAlert('active, overflow-hidden 제거');
-      document.body.classList.remove("active", "overflow-hidden");
+      document.body.classList.remove("active");
+      document.body.classList.remove("overflow-hidden");
     } else {
       this.showCustomAlert('overflow-hidden 제거');
       document.body.classList.remove("overflow-hidden");
     }
-
-    await listContact();
-    changeThemeColor('#1e293b');
-    document.getElementById("searchForm").querySelector("input").value = "";
+  
+    try {
+      await listContact();
+      changeThemeColor('#1e293b');
+      document.getElementById("searchForm").querySelector("input").value = "";
+      console.log('listContact completed');
+    } catch (error) {
+      console.error('Error in listContact:', error);
+    }
   }
-
+  
   showCustomAlert(message) {
     const alertDiv = document.createElement('div');
     alertDiv.className = 'custom-alert';
@@ -119,6 +126,7 @@ export class AppTabButton extends HTMLElement {
       document.body.removeChild(alertDiv);
     }, 3000);
   }
+  
   
   handleAddButtonClick() {
       this.vibrate();
