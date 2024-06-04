@@ -51,8 +51,9 @@ export class AppTabButton extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    
     this.addEventListener("click", this.handleButtonClick.bind(this));
+    this.addEventListener("touchend", this.handleButtonClick.bind(this));
+    console.log("Button connected:", this.id);
   }
 
   render() {
@@ -66,8 +67,9 @@ export class AppTabButton extends HTMLElement {
 
   handleButtonClick(event) {
     const buttonId = event.target.id || event.currentTarget.id;
+    console.log(`Button clicked: ${buttonId}`);
+    
     const isScroll = document.body.classList.contains("overflow-hidden");
-
     if (!isScroll) {
         document.body.classList.add("overflow-hidden");
     } 
@@ -91,21 +93,31 @@ export class AppTabButton extends HTMLElement {
   }
   
 
-  handleListButtonClick() {
+  async handleListButtonClick() {
     this.vibrate();
 
     const isActive = document.body.classList.contains("active");
     if (isActive) {
-      alert('active, overflow-hidden 제거');
+      this.showCustomAlert('active, overflow-hidden 제거');
       document.body.classList.remove("active", "overflow-hidden");
     } else {
-      alert('overflow-hidden 제거');
+      this.showCustomAlert('overflow-hidden 제거');
       document.body.classList.remove("overflow-hidden");
     }
 
-    listContact();
+    await listContact();
     changeThemeColor('#1e293b');
     document.getElementById("searchForm").querySelector("input").value = "";
+  }
+
+  showCustomAlert(message) {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'custom-alert';
+    alertDiv.textContent = message;
+    document.body.appendChild(alertDiv);
+    setTimeout(() => {
+      document.body.removeChild(alertDiv);
+    }, 3000);
   }
   
   handleAddButtonClick() {
