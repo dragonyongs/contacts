@@ -32,9 +32,28 @@ export class AppTabButton extends HTMLElement {
     return this.getAttribute("class") || '';
   }
 
-  // 진동을 발생시키는 멤버 메서드
-  vibrate() {
-    navigator.vibrate([200, 100]);
+  isVibrationSupported() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+    // iOS 및 사파리인지 확인
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+  
+    // iOS 또는 사파리에서는 진동 기능을 지원하지 않음
+    if (isIOS || isSafari) {
+      return false;
+    }
+  
+    // 그 외의 경우(안드로이드 또는 크롬)에서는 진동 기능을 지원
+    return 'vibrate' in navigator;
+  }
+
+  vibratePattern() {
+    if (isVibrationSupported()) {
+      navigator.vibrate([200, 100]);
+    } else {
+      console.log("이 장치에서는 진동 기능을 지원하지 않습니다.");
+    }
   }
 
   template(state) {
@@ -97,11 +116,11 @@ export class AppTabButton extends HTMLElement {
     console.log(`isActive: ${isActive}`);
   
     if (isActive) {
-      this.showCustomAlert('active, overflow-hidden 제거');
+      // this.showCustomAlert('active, overflow-hidden 제거');
       document.body.classList.remove("active");
       document.body.classList.remove("overflow-hidden");
     } else {
-      this.showCustomAlert('overflow-hidden 제거');
+      // this.showCustomAlert('overflow-hidden 제거');
       document.body.classList.remove("overflow-hidden");
     }
   
@@ -110,35 +129,35 @@ export class AppTabButton extends HTMLElement {
       changeThemeColor('#1e293b');
       document.getElementById("searchForm").querySelector("input").value = "";
       console.log('listContact completed');
-      // this.vibrate();
+      this.vibratePattern();
 
     } catch (error) {
       console.error('Error in listContact:', error);
     }
   }
   
-  showCustomAlert(message) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = 'custom-alert';
-    alertDiv.textContent = message;
-    document.body.appendChild(alertDiv);
-    setTimeout(() => {
-      document.body.removeChild(alertDiv);
-    }, 3000);
-  }
+  // showCustomAlert(message) {
+  //   const alertDiv = document.createElement('div');
+  //   alertDiv.className = 'custom-alert';
+  //   alertDiv.textContent = message;
+  //   document.body.appendChild(alertDiv);
+  //   setTimeout(() => {
+  //     document.body.removeChild(alertDiv);
+  //   }, 3000);
+  // }
   
   
   handleAddButtonClick() {
-      this.vibrate();
+      this.vibratePattern();
       clearModalContent();
   }
   
   handleSearchButtonClick() {
-      this.vibrate();
+      this.vibratePattern();
   }
   
   handleDataButtonClick() {
-      this.vibrate();
+      this.vibratePattern();
   }
 }
 
