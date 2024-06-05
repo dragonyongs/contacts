@@ -61,6 +61,7 @@ export async function addContactToIndexedDB(formData) {
   try {
     const database = await getDataDB();
     const contact = Object.fromEntries(formData.entries());
+    
     await database.contacts.add(contact);
     console.log("New contact added to IndexedDB:", contact);
     triggerContactUpdateEvent(contact);
@@ -72,6 +73,7 @@ export async function addContactToIndexedDB(formData) {
     return false;
   }
 }
+
 
 export async function updateContactInIndexedDB(event, formData) {
   try {

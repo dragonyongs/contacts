@@ -13,7 +13,7 @@ export class AppTabButton extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.vibratePattern = this.vibratePattern.bind(this);
+    this.vibratePattern = this.isVibrationSupported.bind(this);
   }
 
   get id() {

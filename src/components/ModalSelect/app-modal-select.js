@@ -38,7 +38,7 @@ export class AppModalSelect extends HTMLElement {
       .join("");
 
     const inputHTML = `
-            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
+            <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value="" required="true"></app-modal-input>
         `;
 
     const selectHTML = `
@@ -67,7 +67,7 @@ export class AppModalSelect extends HTMLElement {
     selectElement.addEventListener("change", function () {
       if (this.value === "직접입력") {
         deleteSelectElement.remove();
-        testWrap.innerHTML = `<app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>`;
+        testWrap.innerHTML = `<app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value="" required="true"></app-modal-input>`;
         testWrap
           .querySelector("app-modal-input")
           .shadowRoot.querySelector("input")
@@ -104,7 +104,7 @@ export class AppModalSelect extends HTMLElement {
 
   renderInput() {
     const inputHTML = `
-      <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value=""></app-modal-input>
+      <app-modal-input type="text" id="contact_group_input" name="contact_group" data-label="연락처 그룹" value="" required="true"></app-modal-input>
     `;
     const insertContactGroup = document.querySelector("#insertContactGroup");
     insertContactGroup.innerHTML = inputHTML;

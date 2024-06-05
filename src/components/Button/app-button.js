@@ -105,6 +105,103 @@ export class AppButton extends HTMLElement {
     }
   }
 
+  render() {
+    this.shadowRoot.innerHTML = this.template({
+      id: this.id,
+      type: this.type,
+      for: this.for,
+      class: this.class,
+      role: this.role,
+      iconName: this.iconName,
+      iconSize: this.iconSize,
+      method: this.method,
+    });
+  }
+
+
+  // 유효성 검사 함수
+  validateInput(inputElement) {
+    const inputValue = inputElement.value.trim();
+    if (inputElement.required && !inputValue) {
+      inputElement.classList.add("required");
+      return false; // 유효성 검사 실패
+    }
+    inputElement.classList.remove("required");
+    return inputValue; // 유효성 검사 통과한 값 반환
+  }
+
+  validateSelect(selectElement) {
+    console.log('selectElement', selectElement);
+    if (selectElement) {
+      const selectValue = selectElement.value;
+      if (selectElement.required && !selectValue) {
+        selectElement.classList.add("required");
+        return false; // 유효성 검사 실패
+      }
+      selectElement.classList.remove("required");
+      return selectValue; // 유효성 검사 통과한 값 반환
+    }
+    return false; // selectElement가 없는 경우
+  }
+
+  async processForm(event, formData, isNew) {
+    event.preventDefault();
+  
+    let selectValid = true;
+    let requiredInputsFilled = true;
+  
+    const appSelectElement = document.querySelector("#contact_group_select");
+    if (appSelectElement) {
+      const selectElement = appSelectElement.shadowRoot.querySelector("select");
+      if (selectElement) {
+        const selectValue = this.validateSelect(selectElement);
+        if (selectValue) {
+          formData.append("contact_group", selectValue);
+        } else {
+          selectValid = false;
+        }
+      }
+    }
+  
+    const modalInputs = document.querySelector("#addEdit").querySelectorAll("app-modal-input");
+  
+    modalInputs.forEach((modalInput) => {
+      const inputElement = modalInput.shadowRoot.querySelector("input");
+      const inputName = inputElement.getAttribute("name");
+      const validatedValue = this.validateInput(inputElement);
+  
+      if (validatedValue === false) {
+        requiredInputsFilled = false;
+      } else {
+        formData.append(inputName, validatedValue);
+      }
+    });
+  
+    if (!selectValid || !requiredInputsFilled) {
+      window.dispatchEvent(
+        new CustomEvent("notification-modal", { detail: { notification: true } })
+      );
+      if (!selectValid) {
+        notification("유효한 연락처 그룹을 선택해주세요.");
+      }
+      if (!requiredInputsFilled) {
+        notification("필수 입력값을 채워주세요.");
+      }
+      return false; // 유효성 검사 실패 시 처리 중단
+    }
+  
+    // isNew 값에 따라 등록 또는 수정 동작 수행
+    if (isNew) {
+      // 새 데이터 추가
+      await addContactToIndexedDB(formData);
+    } else {
+      // 기존 데이터 수정
+      await updateContactInIndexedDB(event, formData);
+    }
+  
+    return true; // 성공적으로 처리된 경우 true 반환
+  }
+
   async handleClick(event) {
     event.stopPropagation(); // Stop event bubbling
     const target = event.target;
@@ -124,7 +221,17 @@ export class AppButton extends HTMLElement {
   // 등록 버튼 클릭 이벤트 핸들러
   async handleSaveButtonClick(event) {
     const formData = new FormData();
-    await this.processForm(event, formData, true);
+    const isFormProcessed = await this.processForm(event, formData, true);
+    if (isFormProcessed) {
+      console.log('handleSaveButtonClick isFormProcessed로 resetModal() 함수 실행');
+      this.resetModal();
+      window.dispatchEvent(
+        new CustomEvent("close-modal", { detail: { modalOpen: false } })
+      );
+      window.dispatchEvent(
+        new CustomEvent("notification-modal", { detail: { notification: true } })
+      );
+    }
   }
 
   // 수정 버튼 클릭 이벤트 핸들러
@@ -148,112 +255,27 @@ export class AppButton extends HTMLElement {
       }
 
       // FormData를 처리하는 메서드 호출
-      await this.processForm(event, formData, false);
-      
+      const isFormProcessed = await this.processForm(event, formData, false);
+      if (isFormProcessed) {
+        console.log('handleUpdateButtonClick isFormProcessed로 resetModal() 함수 실행');
+        this.resetModal();
+        window.dispatchEvent(
+          new CustomEvent("close-modal", { detail: { modalOpen: false} })
+        );
+        window.dispatchEvent(
+          new CustomEvent("notification-modal", { detail: { notification: true } })
+        );
+      }
+
     } else {
       console.error("Failed to load data to update.");
     }
   }
 
-  render() {
-    this.shadowRoot.innerHTML = this.template({
-      id: this.id,
-      type: this.type,
-      for: this.for,
-      class: this.class,
-      role: this.role,
-      iconName: this.iconName,
-      iconSize: this.iconSize,
-      method: this.method,
-    });
-  }
-
-  // 유효성 검사 함수
-  validateInput(inputElement) {
-    const inputValue = inputElement.value.trim();
-    if (inputElement.required && !inputValue) {
-      inputElement.classList.add("required");
-      return false; // 유효성 검사 실패
-    }
-    inputElement.classList.remove("required");
-    return inputValue; // 유효성 검사 통과한 값 반환
-  }
-
-  validateSelect(selectElement) {
-    console.log('selectElement', selectElement);
-
-    if (selectElement) {
-      const selectValue = selectElement.value;
-
-      if (selectElement.required && !selectValue) {
-        selectElement.classList.add("required");
-        return false; // 유효성 검사 실패
-      }
-
-      selectElement.classList.remove("required");
-      return selectValue; // 유효성 검사 통과한 값 반환
-    }
-  }
-
-  // processForm 함수 수정
-  async processForm(event, formData, isNew) {
-    event.preventDefault();
-
-    let selectValid = true;
-    let requiredInputsFilled = true;
-
-    const appSelectElement = document.querySelector("#contact_group_select");
-    if (appSelectElement) {
-      const selectElement = appSelectElement.shadowRoot.querySelector("select");
-      if (selectElement) {
-        const selectValue = this.validateSelect(selectElement);
-        formData.append("contact_group", selectValue);
-        if (!selectValue) {
-          selectValid = false;
-        }
-      }
-    }
-
-    const modalInputs = document.querySelector("#addEdit").querySelectorAll("app-modal-input");
-
-    modalInputs.forEach((modalInput) => {
-      const inputElement = modalInput.shadowRoot.querySelector("input");
-      const inputName = inputElement.getAttribute("name");
-      const validatedValue = this.validateInput(inputElement);
-
-      if (requiredInputsFilled) {
-        formData.append(inputName, validatedValue);
-      } else {
-        requiredInputsFilled = false;
-      }
-      
-    });
-    
-    if (!selectValid || !requiredInputsFilled) {
-      if (!selectValid) {
-        notification("유효한 연락처 그룹을 선택해주세요.");
-      }
-
-      if (!requiredInputsFilled) {
-        notification("필수 입력값을 채워주세요.");
-      }
-      return false;
-    }
-
-    // isNew 값에 따라 등록 또는 수정 동작 수행
-    if (isNew) {
-      // 새 데이터 추가
-      await addContactToIndexedDB(formData);
-    } else {
-      // 기존 데이터 수정
-      await updateContactInIndexedDB(event, formData);
-    }
-    
-    // 처리 후에는 모달을 초기화
-    this.resetModal();
-  }
 
   resetModal() {
+    console.log('resetModal 실행!');
+
     // 입력 필드 초기화
     const modalInputs = document.querySelectorAll("app-modal-input");
 

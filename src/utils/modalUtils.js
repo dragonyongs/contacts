@@ -33,3 +33,7 @@ function handleConfirmClick() {
 function handleDetailClick() {
   this.modalTabState = "";
 }
+
+function handleConfirmNotificationClick() {
+  this.notification = false;
+}

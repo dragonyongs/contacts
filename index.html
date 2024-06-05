@@ -18,8 +18,9 @@
 
 <body>
   <div class="flex flex-col h-full" x-data="modalData" x-init="
-    window.addEventListener('close-modal', event => { modalOpen = !event.detail.open; });
-    window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open;});
+    window.addEventListener('close-modal', event => { modalOpen = !modalOpen; });
+    window.addEventListener('detail-modal', event => { modalOpen = !event.detail.open; });
+    window.addEventListener('notification-modal', event => { notification = !notification; });
     ">
 
     <!-- notification -->
@@ -55,7 +56,7 @@
         </app-tab-button>
 
         <app-tab-button id="add" data-icon="add-outline"
-          x-on:click="if(modalTabState === 'add') return; modalOpen = true; modalTabState = 'add';">
+          x-on:click="if(modalTabState === 'add') return; modalOpen = true; modalTabState = 'add'; modalState = ''">
           <span slot="label">등록</span>
         </app-tab-button>
 
@@ -290,13 +291,12 @@
 
           <div class="py-4 px-5 shadow-2xl w-full flex justify-between gap-x-2">
             <app-button x-show="modalTabState === 'add'" type="submit" role="button" data-iconName="save-outline"
-              data-iconSize="small" data-method="post" class="w-full primary" @click="handleConfirmClick">
+              data-iconSize="small" data-method="post" class="w-full primary">
               <span slot="label">등록</span>
             </app-button>
 
             <app-button x-show="modalTabState === 'edit'" type="submit" role="button" data-iconName="create-outline"
-              data-iconSize="small" data-method="put" class="update_contact_button w-full success"
-              @click="handleConfirmClick">
+              data-iconSize="small" data-method="put" class="update_contact_button w-full success">
               <span slot="label">수정</span>
             </app-button>
           </div>
