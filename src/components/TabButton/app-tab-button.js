@@ -13,7 +13,8 @@ export class AppTabButton extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.vibratePattern = this.isVibrationSupported.bind(this);
+    this.isVibrationSupported = this.isVibrationSupported.bind(this);
+    this.vibratePattern = this.vibratePattern.bind(this);
   }
 
   get id() {
@@ -49,7 +50,7 @@ export class AppTabButton extends HTMLElement {
   }
 
   vibratePattern() {
-    if (isVibrationSupported()) {
+    if (this.isVibrationSupported()) {
       navigator.vibrate([200, 100]);
     } else {
       console.log("이 장치에서는 진동 기능을 지원하지 않습니다.");
@@ -58,14 +59,14 @@ export class AppTabButton extends HTMLElement {
 
   template(state) {
     return `
-            <link rel="stylesheet" href="./src/components/TabButton/app-tab-button.css">
-            <button id="${state.id}" class="${state.class}" type="button" role="button">
-              <div class="icon ${state.size}">
-                ${icons[state.icon]}
-              </div>
-              <slot name="label"></slot>
-            </button>
-        `;
+      <link rel="stylesheet" href="./src/components/TabButton/app-tab-button.css">
+      <button id="${state.id}" class="${state.class}" type="button" role="button">
+        <div class="icon ${state.size}">
+          ${icons[state.icon]}
+        </div>
+        <slot name="label"></slot>
+      </button>
+    `;
   }
 
   connectedCallback() {
@@ -116,11 +117,9 @@ export class AppTabButton extends HTMLElement {
     console.log(`isActive: ${isActive}`);
   
     if (isActive) {
-      // this.showCustomAlert('active, overflow-hidden 제거');
       document.body.classList.remove("active");
       document.body.classList.remove("overflow-hidden");
     } else {
-      // this.showCustomAlert('overflow-hidden 제거');
       document.body.classList.remove("overflow-hidden");
     }
   
@@ -130,11 +129,29 @@ export class AppTabButton extends HTMLElement {
       document.getElementById("searchForm").querySelector("input").value = "";
       console.log('listContact completed');
       this.vibratePattern();
-
     } catch (error) {
       console.error('Error in listContact:', error);
     }
   }
+  
+  handleAddButtonClick() {
+    this.vibratePattern();
+    clearModalContent();
+  }
+  
+  handleSearchButtonClick() {
+    this.vibratePattern();
+  }
+  
+  handleDataButtonClick() {
+    this.vibratePattern();
+  }
+}
+
+customElements.define("app-tab-button", AppTabButton);
+      // this.showCustomAlert('active, overflow-hidden 제거');
+
+      // this.showCustomAlert('overflow-hidden 제거');
   
   // showCustomAlert(message) {
   //   const alertDiv = document.createElement('div');
@@ -146,23 +163,6 @@ export class AppTabButton extends HTMLElement {
   //   }, 3000);
   // }
   
-  
-  handleAddButtonClick() {
-      this.vibratePattern();
-      clearModalContent();
-  }
-  
-  handleSearchButtonClick() {
-      this.vibratePattern();
-  }
-  
-  handleDataButtonClick() {
-      this.vibratePattern();
-  }
-}
-
-customElements.define("app-tab-button", AppTabButton);
-
     // import { setupExcelService } from "../../services/excelService.js";
     // import { getDataDB } from "../../services/dataDB.js";
     // this.notification = this.notification.bind(this);
