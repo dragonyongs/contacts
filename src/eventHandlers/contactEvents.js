@@ -92,10 +92,3 @@ export async function listContact() {
     searchTitle.classList.add('hidden');
   }
 }
-
-  
-// const appListCard = document.querySelectorAll('app-list-card');
-// const groupListCard = appListCard.reduce((acc, cur) => {
-//   const groupIndex = acc.findIndex(item => item.)
-// });
-// console.log(groupListCard);

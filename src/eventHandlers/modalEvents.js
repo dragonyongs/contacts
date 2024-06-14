@@ -20,12 +20,10 @@ export function resetDetailContent() {
     const detailHeaderElement = document.querySelector('.detailHeader');
 
     // 자식 요소 선택
-    // const familyNameElement = detailHeaderElement.querySelector('.family_name');
     const photoUrlElement = detailHeaderElement.querySelector('.photo_url_img');
     const photoUrlBgElement = detailHeaderElement.querySelector('.photo_url_bg');
     photoUrlElement.classList.add('hidden');
     photoUrlBgElement.classList.add('hidden');
-    // familyNameElement.classList.add('hidden');
 
     photoUrlElement.src = "";
     photoUrlBgElement.style.backgroundImage = `url()`;

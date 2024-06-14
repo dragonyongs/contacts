@@ -20,5 +20,4 @@ export function setupUI() {
 
   importButton.addEventListener("click", () => importFileInput.click());
 
-  // 다른 UI 이벤트 처리 코드 추가
 }

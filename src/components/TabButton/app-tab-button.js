@@ -149,28 +149,3 @@ export class AppTabButton extends HTMLElement {
 }
 
 customElements.define("app-tab-button", AppTabButton);
-      // this.showCustomAlert('active, overflow-hidden 제거');
-
-      // this.showCustomAlert('overflow-hidden 제거');
-  
-  // showCustomAlert(message) {
-  //   const alertDiv = document.createElement('div');
-  //   alertDiv.className = 'custom-alert';
-  //   alertDiv.textContent = message;
-  //   document.body.appendChild(alertDiv);
-  //   setTimeout(() => {
-  //     document.body.removeChild(alertDiv);
-  //   }, 3000);
-  // }
-  
-    // import { setupExcelService } from "../../services/excelService.js";
-    // import { getDataDB } from "../../services/dataDB.js";
-    // this.notification = this.notification.bind(this);
-
-    // 모달 창이 오픈될때 뒤에 있는 바디 스크롤을 제한하려고 overflow-hidden을 추가했는데
-    // 모달 창이 닫히면 함게 제거해줘야하고, 만약 탭 버튼을 연속으로 눌러서 다른 모달이 열릴 경우 overflow-hidden은 유효한 상태야
-    // 그러기 위해서 active 클래스를 추가해서 이 경우 이걸 유지하게 하는 요소로 사용했어
-    // active가 존재하면 overflow-hidden을 제거하지 않고 active가 없다면 제거
-    // 하지만 스스로를 두번 클릭했을때는 제거
-
-

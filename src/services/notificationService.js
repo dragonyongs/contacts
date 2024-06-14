@@ -39,8 +39,3 @@ export function notification(message) {
     // 알림 모달을 컨테이너에 추가
     notificationContainer.appendChild(notificationDiv);
 }    
-
-// 일정 시간이 지난 후에 모달을 제거 (여기서는 3초 후)
-// setTimeout(function() {
-//     notificationDiv.remove();
-// }, 3000);
